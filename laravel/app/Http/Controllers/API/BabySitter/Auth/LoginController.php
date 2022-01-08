@@ -19,7 +19,7 @@ class LoginController extends BaseController
 {
     public function __construct()
     {
-        $this->middleware('auth:baby_sitter')->except(['login_one','login_two']);
+        //$this->middleware('auth:baby_sitter')->except(['login_one','login_two']);
     }
 
     public function loginOne(Request $request)
@@ -28,6 +28,7 @@ class LoginController extends BaseController
             'phone' => 'required',
             'kvkk' => 'required',
         ]);
+        return ($request->all());
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
