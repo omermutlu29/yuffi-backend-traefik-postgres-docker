@@ -28,7 +28,7 @@ class LoginController extends BaseController
             'phone' => 'required',
             'kvkk' => 'required',
         ]);
-        return ($request->all());
+        //return ($request->all());
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
