@@ -1,26 +1,26 @@
 version: '3'
 services:
-  #traefik:
-  #  container_name: traefik
-  #  image: traefik:1.7.4-alpine
-  #  restart: always
-  #  depends_on:
-  #    - laravel
-  #  command: --docker
-  #  ports:
-  #    - 80:80
-  #    - 443:443
-  #  labels:
-  #    - traefik.backend=traefik
-  #    - traefik.frontend.rule=Host:monitor.oymt.xyz
-  #    - traefik.port=8080
-  #  networks:
-  #    - proxy
-  #    - internal
-  #  volumes:
-  #    - /var/run/docker.sock:/var/run/docker.sock
-  #    - $PWD/traefik.toml:/traefik.toml
-  #    - $PWD/acme.json:/acme.json
+  traefik:
+    container_name: traefik
+    image: traefik:1.7.4-alpine
+    restart: always
+    depends_on:
+      - laravel
+    command: --docker
+    ports:
+      - 80:80
+      - 443:443
+    labels:
+      - traefik.backend=traefik
+      - traefik.frontend.rule=Host:monitor.oymt.xyz
+      - traefik.port=8080
+    networks:
+      - proxy
+      - internal
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - $PWD/traefik.toml:/traefik.toml
+      - $PWD/acme.json:/acme.json
   laravel:
     build:
       args:
@@ -32,8 +32,8 @@ services:
     restart: always
     container_name: laravel
     tty: true
-    #labels:
-    #  - traefik.enable=false
+    labels:
+      - traefik.enable=false
     depends_on:
       - postgres
     working_dir: /var/www
@@ -48,12 +48,10 @@ services:
     image: nginx:alpine
     container_name: nginx
     tty: true
-    #labels:
-    #  - traefik.backend=web
-    #  - traefik.frontend.rule=Host:oymt.xyz
-    #  - traefik.port=80
-    ports:
-      - "80:80"
+    labels:
+      - traefik.backend=web
+      - traefik.frontend.rule=Host:api.oymt.xyz
+      - traefik.port=80
     depends_on:
       - postgres
     volumes:
@@ -75,8 +73,8 @@ services:
       PGDATA: /data/postgres
     volumes:
       - ./postgres/:/data/postgres
-    #labels:
-    #  - traefik.enable=false
+    labels:
+      - traefik.enable=false
     ports:
       - "5432:5432"
     networks:
