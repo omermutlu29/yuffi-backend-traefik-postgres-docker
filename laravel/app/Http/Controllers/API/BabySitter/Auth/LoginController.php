@@ -22,7 +22,7 @@ class LoginController extends BaseController
         $this->middleware('auth:baby_sitter')->except(['login_one','login_two']);
     }
 
-    public function login_one(Request $request)
+    public function loginOne(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'phone' => 'required',
@@ -59,7 +59,7 @@ class LoginController extends BaseController
         }
     }
 
-    public function login_two(Request $request)
+    public function loginTwo(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'code' => 'required',

@@ -21,7 +21,7 @@ class LoginController extends BaseController
 
     }
 
-    public function login_one(Request $request)
+    public function loginOne(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'phone' => 'required',
@@ -61,7 +61,7 @@ class LoginController extends BaseController
 
 
 
-    public function login_two(Request $request)
+    public function loginTwo(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'code' => 'required',

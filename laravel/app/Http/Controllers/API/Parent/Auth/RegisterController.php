@@ -23,7 +23,7 @@ class RegisterController extends BaseController
      * @return BabySitterResource|\Illuminate\Http\Response
      * Bakicinin temel bilgileri alınacak. Kaydedilecek.
      */
-    public function update_information(Request $request)
+    public function updateInformation(Request $request)
     {
         try {
             $parent = Auth::user();

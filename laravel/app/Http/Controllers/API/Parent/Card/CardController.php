@@ -134,7 +134,7 @@ class CardController extends BaseController
         }
     }
 
-    public function card_list()
+    public function cardList()
     {
         $user = Auth::user();
 

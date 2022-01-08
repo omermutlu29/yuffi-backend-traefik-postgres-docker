@@ -28,7 +28,7 @@ class ProfileController extends BaseController
      * @return BabySitterResource|\Illuminate\Http\Response
      * Bakicinin temel bilgileri alınacak. Kaydedilecek.
      */
-    public function store_general_information(Request $request)
+    public function storeGeneralInformation(Request $request)
     {
         try {
             $baby_sitter = Auth::user();
@@ -94,7 +94,7 @@ class ProfileController extends BaseController
         }
     }
 
-    public function update_iban(Request $request)
+    public function updateIban(Request $request)
     {
         $baby_sitter = Auth::user();
         if ($request->iban) {

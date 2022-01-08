@@ -31,7 +31,7 @@ class DepositController extends PaymentController
         }
     }
 
-    public function deposit_pay(\Illuminate\Http\Request $request)
+    public function depositPay(\Illuminate\Http\Request $request)
     {
 
         $validator = Validator::make($request->all(), [
@@ -73,7 +73,7 @@ class DepositController extends PaymentController
         }
     }
 
-    public function deposit_pay_3d()
+    public function depositPay3d()
     {
         $price = 30 - Auth::user()->deposit;
         $baby_sitter = Auth::user();
