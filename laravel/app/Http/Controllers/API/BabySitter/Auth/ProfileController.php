@@ -20,7 +20,7 @@ class ProfileController extends BaseController
     public function __construct()
     {
         $this->middleware('auth:baby_sitter');
-        $this->middleware('bs_first_step',['except'=>['store_general_information', 'getProfile']]);
+        $this->middleware('bs_first_step',['except'=>['storeGeneralInformation', 'getProfile']]);
     }
 
     /**
