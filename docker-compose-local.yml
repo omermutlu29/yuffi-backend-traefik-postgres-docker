@@ -1,0 +1,63 @@
+version: '3'
+services:
+  laravel:
+    build:
+      args:
+        user: sammy
+        uid: 1000
+      context: ./laravel
+      dockerfile: ./Dockerfile
+    image: laravel
+    restart: always
+    container_name: laravel
+    tty: true
+    depends_on:
+      - postgres
+    working_dir: /var/www
+    volumes:
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./laravel/:/var/www
+    networks:
+      - local-bridge
+      - internal
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    tty: true
+    ports:
+      - "80:80"
+    depends_on:
+      - postgres
+    volumes:
+      - ./laravel/:/var/www
+      - ./nginx/conf.d/:/etc/nginx/conf.d
+    networks:
+      - local-bridge
+      - internal
+
+
+  postgres:
+    container_name: postgres_container
+    image: postgres
+    command: postgres -c listen_addresses='*'
+    environment:
+      POSTGRES_DB: yuffi
+      POSTGRES_USER: ${POSTGRES_USER:-omermutlu}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-Omer@2015}
+      PGDATA: /data/postgres
+    volumes:
+      - ./postgres/:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - local-bridge
+    restart: unless-stopped
+
+
+networks:
+  local-bridge:
+    driver: bridge
+  proxy:
+    external: true
+  internal:
