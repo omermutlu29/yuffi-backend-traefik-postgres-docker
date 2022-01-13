@@ -4,22 +4,19 @@
 namespace App\Http\Controllers\API\BabySitter\Auth;
 
 
+use App\Http\Controllers\API\BaseController;
+use App\Http\Resources\BabySitterResource;
 use App\Models\BabySitter;
 use App\Models\BabySitterSmsCode;
-use App\Http\Controllers\API\BaseController;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\BabySitterResource;
-use App\Models\Parents;
 use App\Models\Log;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class LoginController extends BaseController
 {
     public function __construct()
     {
-        //$this->middleware('auth:baby_sitter')->except(['login_one','login_two']);
+        $this->middleware('auth:baby_sitter', ['except' => ['login_one', 'login_two']]);
     }
 
     public function loginOne(Request $request)
@@ -42,7 +39,7 @@ class LoginController extends BaseController
             $babySitter = new BabySitter();
             $babySitter->phone = $request->phone;//Enesten Gelecek
             $babySitter->network = $request->ip();//Enesten Gelecek
-            $babySitter->kvkk =  $request->kvkk;//Enesten Gelecek
+            $babySitter->kvkk = $request->kvkk;//Enesten Gelecek
             $babySitter->google_st = $request->google_st;//Enesten Gelecek
             $babySitter->save();
         }
@@ -50,7 +47,7 @@ class LoginController extends BaseController
         if ($code) {
             $result = true;//$this->smsSend($code, $babySitter->phone);
             if ($result) {
-                $success['result'] ='Telefonunuza SMS Gönderildi';
+                $success['result'] = 'Telefonunuza SMS Gönderildi';
                 return $this->sendResponse($success, 'Telefonunuza SMS Gönderildi');
             } else {
                 return $this->sendError('SMS Gönderilemedi', null, 400);
@@ -85,8 +82,8 @@ class LoginController extends BaseController
             } else {
                 return $this->sendError('Yanlış kod!', $validator->errors(), 401);
             }
-        }else{
-            return $this->sendError('Eksik Veri Gönderimi',null,400);
+        } else {
+            return $this->sendError('Eksik Veri Gönderimi', null, 400);
         }
     }
 
