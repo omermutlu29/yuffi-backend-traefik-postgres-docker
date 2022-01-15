@@ -4,7 +4,6 @@
 namespace App\Services;
 
 
-use Illuminate\Support\Facades\Auth;
 use Iyzipay\Model\Buyer;
 use Iyzipay\Options;
 use Iyzipay\Request;

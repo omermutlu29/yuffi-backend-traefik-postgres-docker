@@ -7,6 +7,7 @@ namespace App\Http\Controllers\API\BabySitter\Deposit;
 use App\Models\BabySitter;
 use App\Models\BabySitterDeposit;
 use App\Http\Controllers\API\BaseController;
+use Illuminate\Http\Request;
 
 
 class PaymentController extends BaseController
@@ -18,7 +19,6 @@ class PaymentController extends BaseController
 
     public function pay($conversationId, $totalPrice = null, BabySitter $babySitter, $productType, $cardInfos)
     {
-
         $options = new \Iyzipay\Options();
         $options->setApiKey($this->apiKey);
         $options->setSecretKey($this->secretKey);

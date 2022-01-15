@@ -108,28 +108,7 @@ class LoginController extends BaseController
 
     private function smsSend($code, $phone)
     {
-        $baslik = '2129095285';
-        $username = "2129095285"; //
-        $password = urlencode("123ABCD123"); //
-        $url = "https://api.netgsm.com.tr/sms/send/get/?usercode=" . $username . "&password=" . $password . "&gsmno=" . $phone . "&message=" . $code . "&msgheader=" . $baslik;
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        $http_response = curl_exec($ch);
-        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        if (substr($http_response, 0, 2) != "00") {
-            $log = new Log();
-            $log->operation = 'SMS Sending';
-            $log->ip = \request()->ip();
-            $log->result = 'failed';
-            $log->raw_input = $url;
-            $log->raw_output = $http_response;
-            $log->user_id = BabySitter::where('phone', $phone)->first()->id;
-            $log->save();
-            return false;
-        } else {
-            return true;
-        }
+
 
     }
 }
