@@ -4,9 +4,9 @@
 namespace App\Interfaces\PaymentInterfaces;
 
 
-interface IPayableToSubMerchant
+interface IPaymentService
 {
-    public function payToSubMerchant(
+    public function payToMerchant(
         array $cardInformation,
         array $products,
         array $addressInformation,
@@ -15,15 +15,12 @@ interface IPayableToSubMerchant
         string $currency,
         int $installment,
         int $conversationId,
-        string $subMerchant,
-        float $subMerchantPrice
     );
 
-    public static function generateBasketItemForSubMerchant(
-        string $subMerchantKey,
-        float $subMerchantPrice,
+    public static function generateBasketItemMerchant(
         int $basketItemId,
         string $basketItemName,
         string $basketItemCategory,
         float $basketItemPrice);
+
 }

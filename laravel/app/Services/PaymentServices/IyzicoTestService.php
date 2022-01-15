@@ -5,8 +5,9 @@ namespace App\Services\PaymentServices;
 
 
 use App\Interfaces\PaymentInterfaces\ICardStoreService;
-use App\Interfaces\PaymentInterfaces\IPayableToSubMerchant;
-use App\Interfaces\PaymentInterfaces\IPayment;
+use App\Interfaces\PaymentInterfaces\IPaymentService;
+use App\Interfaces\PaymentInterfaces\IPayToSubMerchantService;
+use App\Interfaces\PaymentInterfaces\IThreeDPaymentService;
 use Iyzipay\Model\Address;
 use Iyzipay\Model\BasketItem;
 use Iyzipay\Model\Buyer;
@@ -14,7 +15,7 @@ use Iyzipay\Model\PaymentCard;
 use Iyzipay\Options;
 use Iyzipay\Request\CreatePaymentRequest;
 
-class IyzicoTestService implements IPayment, ICardStoreService, IPayableToSubMerchant
+class IyzicoTestService implements IPaymentService, ICardStoreService, IPayToSubMerchantService, IThreeDPaymentService
 {
     private $apiKey;
     private $secretKey;
@@ -70,7 +71,7 @@ class IyzicoTestService implements IPayment, ICardStoreService, IPayableToSubMer
         $this->paymentCard->setExpireMonth($cardInformation['expireMonth']);
         $this->paymentCard->setExpireYear($cardInformation['expireYear']);
         $this->paymentCard->setCvc($cardInformation['cvc']);
-        $this->paymentCard->setRegisterCard(isset($cardInformation['save']) ? 1 : 0);
+        $this->paymentCard->setRegisterCard(0);
         $this->paymentRequest->setPaymentCard($this->paymentCard);
     }
 
@@ -201,4 +202,13 @@ class IyzicoTestService implements IPayment, ICardStoreService, IPayableToSubMer
         // TODO: Implement deleteCard() method.
     }
 
+    public function initializeThreeDPayment()
+    {
+        // TODO: Implement initializeThreeDPayment() method.
+    }
+
+    public function completeThreeDPayment()
+    {
+        // TODO: Implement completeThreeDPayment() method.
+    }
 }
