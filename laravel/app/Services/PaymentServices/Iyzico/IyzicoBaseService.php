@@ -1,13 +1,8 @@
 <?php
 
 
-namespace App\Services\PaymentServices;
+namespace App\Services\PaymentServices\Iyzico;
 
-
-use App\Interfaces\PaymentInterfaces\ICardStoreService;
-use App\Interfaces\PaymentInterfaces\IPaymentService;
-use App\Interfaces\PaymentInterfaces\IPayToSubMerchantService;
-use App\Interfaces\PaymentInterfaces\IThreeDPaymentService;
 use Iyzipay\Model\Address;
 use Iyzipay\Model\BasketItem;
 use Iyzipay\Model\Buyer;
@@ -15,16 +10,16 @@ use Iyzipay\Model\PaymentCard;
 use Iyzipay\Options;
 use Iyzipay\Request\CreatePaymentRequest;
 
-class IyzicoTestService implements IPaymentService, ICardStoreService, IPayToSubMerchantService, IThreeDPaymentService
+abstract class IyzicoBaseService
 {
-    private $apiKey;
-    private $secretKey;
-    private $baseUrl;
+    protected $apiKey;
+    protected $secretKey;
+    protected $baseUrl;
 
-    private $options;
-    private $paymentRequest;
-    private $paymentCard;
-    private $buyer;
+    protected $options;
+    protected $paymentRequest;
+    protected $paymentCard;
+    protected $buyer;
 
     public function __construct(
         Options $options,
@@ -44,14 +39,14 @@ class IyzicoTestService implements IPaymentService, ICardStoreService, IPayToSub
         $this->address = $address;
     }
 
-    private function setOptions()
+    protected function setOptions()
     {
         $this->options->setApiKey($this->apiKey);
         $this->options->setSecretKey($this->secretKey);
         $this->options->setBaseUrl($this->baseUrl);
     }
 
-    private function createPaymentRequest(float $totalPrice, int $installment, $conversationID, $currency)
+    protected function createPaymentRequest(float $totalPrice, int $installment, $conversationID, $currency)
     {
         $this->paymentRequest->setLocale(\Iyzipay\Model\Locale::TR);
         $this->paymentRequest->setConversationId($conversationID);
@@ -61,10 +56,14 @@ class IyzicoTestService implements IPaymentService, ICardStoreService, IPayToSub
         $this->paymentRequest->setInstallment($installment);
         $this->paymentRequest->setBasketId($conversationID);
         $this->paymentRequest->setPaymentChannel(\Iyzipay\Model\PaymentChannel::WEB);
-        $this->paymentRequest->setPaymentGroup(\Iyzipay\Model\PaymentGroup::SUBSCRIPTION);
+        $this->paymentRequest->setPaymentGroup(\Iyzipay\Model\PaymentGroup::PRODUCT);
+        /**
+         * if user wants to pay with threeD user can add below method
+         * $this->paymentRequest->setCallback('example.com');
+         */
     }
 
-    private function createPaymentCard(array $cardInformation)
+    protected function createPaymentCard(array $cardInformation)
     {
         $this->paymentCard->setCardHolderName($cardInformation['cardHolderName']);
         $this->paymentCard->setCardNumber($cardInformation['cardNumber']);
@@ -73,9 +72,12 @@ class IyzicoTestService implements IPaymentService, ICardStoreService, IPayToSub
         $this->paymentCard->setCvc($cardInformation['cvc']);
         $this->paymentCard->setRegisterCard(0);
         $this->paymentRequest->setPaymentCard($this->paymentCard);
+        /**
+         * if user want to pay with registered card, this method can change
+         */
     }
 
-    private function createBuyer(array $buyerInformation)
+    protected function createBuyer(array $buyerInformation)
     {
         $this->buyer->setId((string)$buyerInformation['id']);
         $this->buyer->setName($buyerInformation['name']);
@@ -93,7 +95,7 @@ class IyzicoTestService implements IPaymentService, ICardStoreService, IPayToSub
         $this->paymentRequest->setBuyer($this->buyer);
     }
 
-    private function createBillingAddress(array $addressInformation)
+    protected function createBillingAddress(array $addressInformation)
     {
         $this->address->setContactName($addressInformation['contact_name']);
         $this->address->setCity($addressInformation['city']);
@@ -103,66 +105,21 @@ class IyzicoTestService implements IPaymentService, ICardStoreService, IPayToSub
         $this->paymentRequest->setBillingAddress($this->address);
     }
 
-    public function payToMerchant(array $cardInformation, array $products, array $addressInformation, array $buyerInformation, float $totalPrice, string $currency, int $installment, int $conversationId): \Iyzipay\Model\Payment
+    protected function createShippingAddress(array $addressInformation)
     {
-        $this->setupForPayment($totalPrice, $installment, $conversationId, $currency, $cardInformation, $buyerInformation, $addressInformation);
-        $basketItems = [];
-        foreach ($products as $product) {
-            $basketItems[] = $this->generateBasketItemMerchant(
-                $product['id'],
-                $product['name'],
-                $product['category'],
-                $product['price'],
-            );
-        }
-        $this->paymentRequest->setBasketItems($basketItems);
-        return \Iyzipay\Model\Payment::create($this->paymentRequest, $this->options);
+        $this->address->setContactName($addressInformation['contact_name']);
+        $this->address->setCity($addressInformation['city']);
+        $this->address->setCountry($addressInformation['country']);
+        $this->address->setAddress($addressInformation['address']);
+        $this->address->setZipCode($addressInformation['zip_code']);
+        $this->paymentRequest->setShippingAddress($this->address);
     }
 
-    public function payToSubMerchant(
-        array $cardInformation,
-        array $products,
-        array $addressInformation,
-        array $buyerInformation,
-        float $totalPrice,
-        string $currency,
-        int $installment,
-        int $conversationId,
-        string $subMerchantKey,
-        float $subMerchantPrice,
-    )
-    {
-        $this->setupForPayment($totalPrice, $installment, $conversationId, $currency, $cardInformation, $buyerInformation, $addressInformation);
-        $basketItems = [];
-        foreach ($products as $product) {
-            $basketItems[] = $this->generateBasketItemForSubMerchant(
-                $subMerchantKey,
-                $subMerchantPrice,
-                $product['id'],
-                $product['name'],
-                $product['category'],
-                $product['price'],
-            );
-        }
-        $this->paymentRequest->setBasketItems($basketItems);
-        return \Iyzipay\Model\Payment::create($this->paymentRequest, $this->options);
-    }
-
-
-    private function setupForPayment($totalPrice, $installment, $conversationId, $currency, $cardInformation, $buyerInformation, $addressInformation)
-    {
-        $this->setOptions();
-        $this->createPaymentRequest($totalPrice, $installment, $conversationId, $currency);
-        $this->createPaymentCard($cardInformation);
-        $this->createBuyer($buyerInformation);
-        $this->createBillingAddress($addressInformation);
-    }
-
-    public static function generateBasketItemMerchant(
+    protected static function generateBasketItemMerchant(
         int $basketItemId,
         string $basketItemName,
         string $basketItemCategory,
-        float $basketItemPrice)
+        float $basketItemPrice): BasketItem
     {
         $basketItem = new BasketItem();
         $basketItem->setId($basketItemId);
@@ -173,13 +130,13 @@ class IyzicoTestService implements IPaymentService, ICardStoreService, IPayToSub
         return $basketItem;
     }
 
-    public static function generateBasketItemForSubMerchant(
+    protected static function generateBasketItemForSubMerchant(
         string $subMerchantKey,
         float $subMerchantPrice,
         int $basketItemId,
         string $basketItemName,
         string $basketItemCategory,
-        float $basketItemPrice)
+        float $basketItemPrice): BasketItem
     {
         $basketItem = new BasketItem();
         $basketItem->setSubMerchantKey($subMerchantKey);
@@ -187,28 +144,8 @@ class IyzicoTestService implements IPaymentService, ICardStoreService, IPayToSub
         $basketItem->setId($basketItemId);
         $basketItem->setName($basketItemName);
         $basketItem->setCategory1($basketItemCategory);
-        $basketItem->setItemType(\Iyzipay\Model\BasketItemType::VIRTUAL);
+        $basketItem->setItemType(\Iyzipay\Model\BasketItemType::PHYSICAL);
         $basketItem->setPrice($basketItemPrice);
         return $basketItem;
-    }
-
-    public function storeCard(array $cardInformation)
-    {
-        // TODO: Implement storeCard() method.
-    }
-
-    public function deleteCard()
-    {
-        // TODO: Implement deleteCard() method.
-    }
-
-    public function initializeThreeDPayment()
-    {
-        // TODO: Implement initializeThreeDPayment() method.
-    }
-
-    public function completeThreeDPayment()
-    {
-        // TODO: Implement completeThreeDPayment() method.
     }
 }

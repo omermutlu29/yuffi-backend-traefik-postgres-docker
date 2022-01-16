@@ -18,12 +18,4 @@ interface IPayToSubMerchantService
         string $subMerchant,
         float $subMerchantPrice
     );
-
-    public static function generateBasketItemForSubMerchant(
-        string $subMerchantKey,
-        float $subMerchantPrice,
-        int $basketItemId,
-        string $basketItemName,
-        string $basketItemCategory,
-        float $basketItemPrice);
 }

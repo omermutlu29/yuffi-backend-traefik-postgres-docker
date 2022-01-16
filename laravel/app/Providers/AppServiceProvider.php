@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use App\Interfaces\NotificationInterfaces\INotification;
-use App\Interfaces\PaymentInterfaces\IPayableToSubmerchant;
-use App\Services\NotificationServices\NetGSMSmsNotification;
-use App\Services\NotificationServices\PushNotificationService;
-use App\Services\PaymentServices\IyzicoPaymentService;
+use App\Interfaces\PaymentInterfaces\IPaymentService;
+use App\Interfaces\PaymentInterfaces\IPayToSubMerchantService;
+use App\Interfaces\PaymentInterfaces\IThreeDPaymentService;
+use App\Services\PaymentServices\Iyzico\IyzicoDirectPaymentService;
+use App\Services\PaymentServices\Iyzico\IyzicoThreeDPaymentService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -18,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+
     }
 
     /**
@@ -28,6 +28,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->bind(IPayableToSubmerchant::class,IyzicoPaymentService::class);
+        $this->app->bind(IPaymentService::class,IyzicoDirectPaymentService::class);
+        $this->app->bind(IPayToSubMerchantService::class,IyzicoDirectPaymentService::class);
+        $this->app->bind(IThreeDPaymentService::class,IyzicoThreeDPaymentService::class);
     }
 }
