@@ -1,24 +1,24 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: o.mutlu
- * Date: 12/29/2019
- * Time: 6:47 PM
- */
 
 namespace App\Http\Controllers\API\BabySitter\Deposit;
 
 
+use App\Http\Controllers\API\BaseController;
+use App\Http\Requests\DepositPayRequest;
+use App\Models\BabySitter;
 use App\Models\BabySitterDeposit;
+use App\Services\DepositService\DepositService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 
 
-class DepositController extends PaymentController
+class DepositController extends BaseController
 {
-    public function __construct()
+    private $depositService;
+
+    public function __construct(DepositService $depositService)
     {
-        $this->middleware(['auth:baby_sitter', 'bs_first_step', 'bs_second_step']);
+        //$this->middleware(['auth:baby_sitter', 'bs_first_step', 'bs_second_step']);
+        $this->depositService=$depositService;
     }
 
     public function deposit()
@@ -31,45 +31,17 @@ class DepositController extends PaymentController
         }
     }
 
-    public function depositPay(\Illuminate\Http\Request $request)
+    public function pay(DepositPayRequest $request)
     {
-
-        $validator = Validator::make($request->all(), [
-            'cardHolderName' => 'required',
-            'cardNumber' => 'required',
-            'expireMonth' => 'required',
-            'expireYear' => 'required',
-            'cvc' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
-        }
-        $cardInfos = $request->only(['cardHolderName', 'cvc', 'cardNumber', 'expireMonth', 'expireYear', 'registerCard']);
-        $price = 30 - Auth::user()->deposit;
-        $baby_sitter = Auth::user();
-        if ($price > 1) {
-            $baby_sitter_deposit = new BabySitterDeposit();
-            $baby_sitter_deposit->baby_sitter_id = $baby_sitter->id;
-            $baby_sitter_deposit->price = $price;
-            $baby_sitter_deposit->save();
-            $result = $this->pay($baby_sitter_deposit->id, $price, $baby_sitter, 'Depozito', $cardInfos);
-            $baby_sitter_deposit->raw_result = $result->getRawResult();
-            if ($result->getStatus() != 'failure') {
-                $baby_sitter_deposit->status = 1;
-                $baby_sitter_deposit->save();
-                $baby_sitter->deposit = $baby_sitter->deposit + $price;
-                $baby_sitter->baby_sitter_status_id = 4;
-                $baby_sitter->save();
-
-                return $this->sendResponse('Ödemeniz Alınmıştır', 'Ödeme başarı ile gerçekleşti!');
-            } else {
-                $baby_sitter_deposit->status = 0;
-                $baby_sitter_deposit->save();
-                return $this->sendError($result->getErrorCode(), $result->getErrorMessage(), 400);
+        try {
+            $babySitter= BabySitter::find(8);
+            $cardInformation = $request->only('cardHolderName', 'cardNumber', 'cvc', 'expireMonth', 'expireYear');
+            if ($this->depositService->pay($babySitter, $cardInformation) == 'success'){
+               return $this->sendResponse(true,'Ödemeniz başarı ile geçekleşti');
             }
-
-        } else {
-            return $this->sendError('Depozit :' . $baby_sitter->deposit, 'Herhangi bir ödeme yapmanıza gerek yoktur.', 400);
+            return $this->sendError('Error','Ödemeniz alınırken bir hata ile karşılaşıldı');
+        } catch (\Exception $exception) {
+            throw $exception;
         }
     }
 

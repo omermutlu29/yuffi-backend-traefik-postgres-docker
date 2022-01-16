@@ -21,23 +21,30 @@ class IyzicoDirectPaymentService extends IyzicoBaseService implements IPaymentSe
 
     public function pay(array $cardInformation, array $products, array $addressInformation, array $buyerInformation, float $totalPrice, string $currency, int $installment, int $conversationId): \Iyzipay\Model\Payment
     {
-        parent::setOptions();
-        parent::createPaymentRequest($totalPrice, $installment, $conversationId, $currency);
-        parent::createPaymentCard($cardInformation);
-        parent::createBuyer($buyerInformation);
-        parent::createBillingAddress($addressInformation);
-        parent::createShippingAddress($addressInformation);
-        $basketItems = [];
-        foreach ($products as $product) {
-            $basketItems[] = self::generateBasketItemMerchant(
-                $product['id'],
-                $product['name'],
-                $product['category'],
-                $product['price'],
-            );
+        try {
+            parent::setOptions();
+            parent::createPaymentRequest($totalPrice, $installment, $conversationId, $currency);
+            parent::createPaymentCard($cardInformation);
+            parent::createBuyer($buyerInformation);
+            parent::createBillingAddress($addressInformation);
+            parent::createShippingAddress($addressInformation);
+            $basketItems = [];
+            foreach ($products as $product) {
+                $basketItems[] = self::generateBasketItemMerchant(
+                    $product['id'],
+                    $product['name'],
+                    $product['category'],
+                    $product['price'],
+                );
+            }
+            $this->paymentRequest->setBasketItems($basketItems);
+            return dd(\Iyzipay\Model\Payment::create($this->paymentRequest, $this->options));
+
+        }catch (\Exception $exception){
+            dd($exception);
+            throw $exception;
         }
-        $this->paymentRequest->setBasketItems($basketItems);
-        return \Iyzipay\Model\Payment::create($this->paymentRequest, $this->options);
+
     }
 
     public function payToSubMerchant(array $cardInformation, array $products, array $addressInformation, array $buyerInformation, float $totalPrice, string $currency, int $installment, int $conversationId, string $subMerchant, float $subMerchantPrice): \Iyzipay\Model\Payment

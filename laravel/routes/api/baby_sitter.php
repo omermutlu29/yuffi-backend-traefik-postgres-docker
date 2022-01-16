@@ -22,7 +22,7 @@ Route::prefix('baby-sitter')->group(function () {
 
     Route::prefix('deposit')->group(function () {
         Route::get('debt', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class, 'deposit']);//Bitti
-        Route::post('pay', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class, 'depositPay']);//Bitti
+        Route::post('pay', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class,'pay']);//Bitti
         Route::post('pay_3d', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class, 'depositPay3d']);//Bitti
         Route::post('pay_3d_complete', [\App\Http\Controllers\API\BabySitter\Deposit\PaymentController::class, 'pay_3d_complete']);//Bitti Test Edilecek
     });//Bitti
