@@ -18,7 +18,7 @@ class DepositController extends BaseController
     public function __construct(DepositService $depositService)
     {
         //$this->middleware(['auth:baby_sitter', 'bs_first_step', 'bs_second_step']);
-        $this->depositService=$depositService;
+        $this->depositService = $depositService;
     }
 
     public function deposit()
@@ -34,12 +34,17 @@ class DepositController extends BaseController
     public function pay(DepositPayRequest $request)
     {
         try {
-            $babySitter= BabySitter::find(8);
-            $cardInformation = $request->only('cardHolderName', 'cardNumber', 'cvc', 'expireMonth', 'expireYear');
-            if ($this->depositService->pay($babySitter, $cardInformation) == 'success'){
-               return $this->sendResponse(true,'Ödemeniz başarı ile geçekleşti');
+            $babySitter = \auth()->user();
+            if ($babySitter->deposit == 30) {
+                return $this->sendError('Error', 'Depozitonuz zaten ödenmiş görünüyor');
             }
-            return $this->sendError('Error','Ödemeniz alınırken bir hata ile karşılaşıldı');
+            $cardInformation = $request->only('cardHolderName', 'cardNumber', 'cvc', 'expireMonth', 'expireYear');
+            $paymentResult = $this->depositService->pay($babySitter, $cardInformation);
+            if ($paymentResult['status'] != 'success') {
+                return $this->sendError($paymentResult['errorCode'], $paymentResult['errorMessage']);
+            }
+            $babySitter = BabySitter::find(\auth()->id());
+            return $this->sendResponse(true, 'Ödemeniz başarı ile alındı. Depozitonuz : ' . $babySitter->deposit);
         } catch (\Exception $exception) {
             throw $exception;
         }
@@ -71,6 +76,10 @@ class DepositController extends BaseController
         } else {
             return $this->sendError('Depozit :' . $baby_sitter->deposit, 'Herhangi bir ödeme yapmanıza gerek yoktur.', 400);
         }
+    }
+
+    public function threeDComplete(){
+
     }
 
 

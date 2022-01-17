@@ -24,6 +24,7 @@ class IyzicoThreeDPaymentService extends IyzicoBaseService implements IThreeDPay
         parent::setOptions();
         parent::createPaymentRequest($totalPrice, $installment, $conversationId, $currency);
         $this->paymentRequest->setCallbackUrl(env('IYZICO_CALLBACK_URL'));//For ThreeD
+        $this->paymentRequest->setPaymentGroup(\Iyzipay\Model\PaymentGroup::SUBSCRIPTION);
         parent::createPaymentCard($cardInformation);
         parent::createBuyer($buyerInformation);
         parent::createBillingAddress($addressInformation);
@@ -46,6 +47,7 @@ class IyzicoThreeDPaymentService extends IyzicoBaseService implements IThreeDPay
         parent::setOptions();
         parent::createPaymentRequest($totalPrice, $installment, $conversationId, $currency);
         $this->paymentRequest->setCallbackUrl(env('IYZICO_CALLBACK_URL'));//For ThreeD
+        $this->paymentRequest->setPaymentGroup(\Iyzipay\Model\PaymentGroup::PRODUCT);
         parent::createPaymentCard($cardInformation);
         parent::createBuyer($buyerInformation);
         parent::createBillingAddress($addressInformation);
@@ -75,5 +77,4 @@ class IyzicoThreeDPaymentService extends IyzicoBaseService implements IThreeDPay
         $request->setConversationData("conversation data");
         return \Iyzipay\Model\ThreedsPayment::create($request, $this->options);
     }
-
 }

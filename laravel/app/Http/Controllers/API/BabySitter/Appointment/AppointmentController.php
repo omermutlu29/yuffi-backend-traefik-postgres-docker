@@ -6,7 +6,7 @@ namespace App\Http\Controllers\API\BabySitter\Appointment;
 
 use App\Models\Appointment;
 use App\Http\Controllers\API\BaseController;
-use App\Services\PushNotificationService;
+use App\Services\NotificationServices\PushNotificationService;
 
 class AppointmentController extends BaseController
 {

@@ -24,24 +24,20 @@ class IyzicoDirectPaymentService extends IyzicoBaseService implements IPaymentSe
         try {
             parent::setOptions();
             parent::createPaymentRequest($totalPrice, $installment, $conversationId, $currency);
+            $this->paymentRequest->setPaymentGroup(\Iyzipay\Model\PaymentGroup::SUBSCRIPTION);
             parent::createPaymentCard($cardInformation);
             parent::createBuyer($buyerInformation);
             parent::createBillingAddress($addressInformation);
             parent::createShippingAddress($addressInformation);
             $basketItems = [];
             foreach ($products as $product) {
-                $basketItems[] = self::generateBasketItemMerchant(
-                    $product['id'],
-                    $product['name'],
-                    $product['category'],
-                    $product['price'],
+                $basketItems[] = self::generateBasketItemMerchant($product['id'], $product['name'], $product['category'], $product['price'],
                 );
             }
             $this->paymentRequest->setBasketItems($basketItems);
-            return dd(\Iyzipay\Model\Payment::create($this->paymentRequest, $this->options));
+            return \Iyzipay\Model\Payment::create($this->paymentRequest, $this->options);
 
-        }catch (\Exception $exception){
-            dd($exception);
+        } catch (\Exception $exception) {
             throw $exception;
         }
 
@@ -51,6 +47,7 @@ class IyzicoDirectPaymentService extends IyzicoBaseService implements IPaymentSe
     {
         parent::setOptions();
         parent::createPaymentRequest($totalPrice, $installment, $conversationId, $currency);
+        $this->paymentRequest->setPaymentGroup(\Iyzipay\Model\PaymentGroup::PRODUCT);
         parent::createPaymentCard($cardInformation);
         parent::createBuyer($buyerInformation);
         parent::createBillingAddress($addressInformation);

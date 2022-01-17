@@ -56,7 +56,6 @@ abstract class IyzicoBaseService
         $this->paymentRequest->setInstallment($installment);
         $this->paymentRequest->setBasketId($conversationID);
         $this->paymentRequest->setPaymentChannel(\Iyzipay\Model\PaymentChannel::WEB);
-        $this->paymentRequest->setPaymentGroup(\Iyzipay\Model\PaymentGroup::PRODUCT);
         /**
          * if user wants to pay with threeD user can add below method
          * $this->paymentRequest->setCallback('example.com');
