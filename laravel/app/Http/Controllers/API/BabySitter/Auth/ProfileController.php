@@ -65,8 +65,11 @@ class ProfileController extends BaseController
                 return $this->sendError('Hata', 'Gönderilen iban hatalı formattadır');
             }
 
+            if ($request->hasFile('criminal_record')){
+                $path=$request->file('criminal_record')->store('criminalrecords');
+                $baby_sitter->criminal_record = $path;
+            }
             //Buraya dosya yükleyeceğiz
-            $baby_sitter->criminal_record = $request->criminal_record;
 
             $baby_sitter->save();
             if ($baby_sitter->sub_merchant != null) {
