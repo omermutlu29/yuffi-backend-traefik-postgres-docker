@@ -27,10 +27,9 @@ class PreferenceController extends BaseController
         $json = json_encode($request->all());
         $data = json_decode($json);
 
-
         if ($request->hasFile('photo')) {
-            $path = Storage::disk('files')->put('files/' . $baby_sitter->id, $request->file('photo'));
-            $baby_sitter->photo = 'storage/' . $path;
+            $path=$request->file('criminal_record')->store('criminalrecords');
+            $baby_sitter->photo = $path;
             $baby_sitter->save();
         }
         if ($request->has('price_per_hour')) {
