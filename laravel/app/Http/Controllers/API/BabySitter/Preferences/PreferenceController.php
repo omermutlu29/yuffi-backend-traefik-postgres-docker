@@ -24,9 +24,7 @@ class PreferenceController extends BaseController
     public function update(Request $request)
     {
 
-
         $baby_sitter = Auth::user();
-
         $json = json_encode($request->all());
         $data = json_decode($json);
 
