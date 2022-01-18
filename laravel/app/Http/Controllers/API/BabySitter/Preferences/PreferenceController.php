@@ -24,9 +24,10 @@ class PreferenceController extends BaseController
     public function update(Request $request)
     {
         $baby_sitter = Auth::user();
+        return $baby_sitter;
         $json = json_encode($request->all());
         $data = json_decode($json);
-        return $data;
+
         if ($request->hasFile('photo')) {
             $path=$request->file('criminal_record')->store('criminalrecords');
             $baby_sitter->photo = $path;
