@@ -17,8 +17,8 @@ class AppointmentController extends BaseController
 
     public function index(){
         $data = [
-            'pending_approve' => \auth()->user()->appointments()->pendingApprove()->get(),
-            'pending_payment' => \auth()->user()->appointments()->pendingPayment()->get(),
+            'pending_approve' => \auth()->user()->appointments()->pendingApprove()->with('parent')->get(),
+            'pending_payment' => \auth()->user()->appointments()->pendingPayment()->with('parent')->get(),
             'paid' => \auth()->user()->appointments()->paid()->get(),
             'not_approved' => \auth()->user()->appointments()->notApproved()->get(),
         ];
