@@ -18,7 +18,7 @@ class PreferenceController extends BaseController
 
     public function __construct()
     {
-       // $this->middleware(['auth:baby_sitter', 'bs_first_step', 'bs_second_step', 'deposit']);
+        $this->middleware(['auth:baby_sitter', 'bs_first_step', 'bs_second_step', 'deposit']);
     }
 
     public function update(Request $request)
