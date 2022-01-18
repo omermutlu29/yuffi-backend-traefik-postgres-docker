@@ -14,7 +14,7 @@ Route::prefix('baby-sitter')->group(function () {
         Route::post('update/personal', [\App\Http\Controllers\API\BabySitter\Preferences\PreferenceController::class, 'update']);
     });//Bitti
     Route::prefix('calendar')->group(function () {
-        Route::post('add', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'store']);
+        Route::post('add', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, ' ']);
         Route::put('update/{babySitterAvaliableTime}', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'update']);
         Route::delete('delete/{babySitterAvaliableTime}/', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'delete']);
         Route::get('get', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'get']);

@@ -18,7 +18,7 @@ class PreferenceController extends BaseController
 
     public function __construct()
     {
-        $this->middleware(['auth:baby_sitter', 'bs_first_step', 'bs_second_step', 'deposit']);
+       // $this->middleware(['auth:baby_sitter', 'bs_first_step', 'bs_second_step', 'deposit']);
     }
 
     public function update(Request $request)
@@ -26,7 +26,7 @@ class PreferenceController extends BaseController
 
 
         $baby_sitter = Auth::user();
-        return $baby_sitter;
+
         $json = json_encode($request->all());
         $data = json_decode($json);
 
