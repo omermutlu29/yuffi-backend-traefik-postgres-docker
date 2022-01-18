@@ -57,14 +57,16 @@ class ProfileController extends BaseController
             $baby_sitter->birthday = $request->birthday;
             $baby_sitter->address = $request->address;
             $baby_sitter->email = $request->email;
-            $baby_sitter->photo = $request->photo;
             $baby_sitter->baby_sitter_status_id = 2;
             if ($this->checkIBAN($request->iban)) {
                 $baby_sitter->iban = $request->iban;
             } else {
                 return $this->sendError('Hata', 'Gönderilen iban hatalı formattadır');
             }
-
+            if ($request->hasFile('photo')){
+                $path=$request->file('photo')->store('photo');
+                $baby_sitter->photo = $path;
+            }
             if ($request->hasFile('criminal_record')){
                 $path=$request->file('criminal_record')->store('criminalrecords');
                 $baby_sitter->criminal_record = $path;
