@@ -16,7 +16,7 @@ class LoginController extends BaseController
 {
     public function __construct()
     {
-        $this->middleware('auth:baby_sitter', ['except' => ['login_one', 'login_two']]);
+        //$this->middleware('auth:baby_sitter', ['except' => ['login_one', 'login_two']]);
     }
 
     public function loginOne(Request $request)
