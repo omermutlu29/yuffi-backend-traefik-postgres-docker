@@ -31,7 +31,7 @@ class PreferenceController extends BaseController
         $data = json_decode($json);
 
         if ($request->hasFile('photo')) {
-            $path=$request->file('criminal_record')->store('criminalrecords');
+            $path=$request->file('criminal_record')->store('photo');
             $baby_sitter->photo = $path;
             $baby_sitter->save();
         }
