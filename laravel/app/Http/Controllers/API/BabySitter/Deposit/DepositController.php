@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\API\BabySitter\Deposit;
 
-
 use App\Http\Controllers\API\BaseController;
 use App\Http\Requests\DepositPayRequest;
 use App\Models\BabySitter;
-use App\Models\BabySitterDeposit;
 use App\Services\DepositService\DepositService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
 
 class DepositController extends BaseController
 {
@@ -34,7 +32,7 @@ class DepositController extends BaseController
     public function pay(DepositPayRequest $request)
     {
         try {
-            $babySitter = \auth()->user();
+            $babySitter = BabySitter::find(9);
             if ($babySitter->deposit == 30) {
                 return $this->sendError('Error', 'Depozitonuz zaten ödenmiş görünüyor');
             }
@@ -43,43 +41,41 @@ class DepositController extends BaseController
             if ($paymentResult['status'] != 'success') {
                 return $this->sendError($paymentResult['errorCode'], $paymentResult['errorMessage']);
             }
-            $babySitter = BabySitter::find(\auth()->id());
+            $babySitter = BabySitter::find(9);
             return $this->sendResponse(true, 'Ödemeniz başarı ile alındı. Depozitonuz : ' . $babySitter->deposit);
         } catch (\Exception $exception) {
             throw $exception;
         }
     }
 
-    public function depositPay3d()
+    public function depositPay3d(DepositPayRequest $request)
     {
-        $price = 30 - Auth::user()->deposit;
-        $baby_sitter = Auth::user();
-        if ($price > 1) {
-            $baby_sitter_deposit = new BabySitterDeposit();
-            $baby_sitter_deposit->baby_sitter_id = $baby_sitter->id;
-            $baby_sitter_deposit->price = $price;
-            $baby_sitter_deposit->save();
-            $result = $this->pay_3d($baby_sitter_deposit->id, $price, $baby_sitter, 'Depozito');
-
-            if ($result->getStatus() == 'success') {
-                $success['result'] = 'Bankaya yönlendiriliyorsunuz...';
-                //$success['threeds'] = view("threeds.success")->render();
-                $success['threedsPage'] = $result->getHtmlContent();
-                return $this->sendResponse($success, 'Ödeme Sayfası!');
-            } else {
-                $baby_sitter_deposit->status = 0;
-                $baby_sitter_deposit->raw_result = $result->getRawResult();
-                $baby_sitter_deposit->save();
-                return $this->sendError($result->getErrorCode(), $result->getErrorMessage(), 400);
+        try {
+            $babySitter = BabySitter::find(8);
+            if ($babySitter->deposit == 30) {
+                return $this->sendError('Error', 'Depozitonuz zaten ödenmiş görünüyor');
             }
-
-        } else {
-            return $this->sendError('Depozit :' . $baby_sitter->deposit, 'Herhangi bir ödeme yapmanıza gerek yoktur.', 400);
+            $cardInformation = $request->only('cardHolderName', 'cardNumber', 'cvc', 'expireMonth', 'expireYear');
+            $paymentResult = $this->depositService->payThreeD($babySitter, $cardInformation);
+            if ($paymentResult['status'] != 'success') {
+                return $this->sendError($paymentResult['errorCode'], $paymentResult['errorMessage']);
+            }
+            $success['result'] = 'Bankaya yönlendiriliyorsunuz...';
+            $success['threeds'] = view("threeds.success")->render();
+            $success['threedsPage'] = $paymentResult['htmlContent'];
+            return $this->sendResponse($success, 'Ödeme Sayfası!');
+        } catch (\Exception $exception) {
+            throw $exception;
         }
     }
 
-    public function threeDComplete(){
-
+    public function threeDComplete(Request $request)
+    {
+        $paymentResult = $this->depositService->completeThreeD($request->only('mdStatus','status','paymentId','conversationData','conversationId'));
+        if ($paymentResult['status'] != 'success') {
+            return $this->sendError($paymentResult['errorCode'], $paymentResult['errorMessage']);
+        }
+        return $this->sendError($paymentResult['errorCode'], $paymentResult['errorMessage']);
     }
 
 

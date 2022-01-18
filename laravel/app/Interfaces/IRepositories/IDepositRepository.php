@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Interfaces;
+namespace App\Interfaces\IRepositories;
 
 
 use App\Models\BabySitterDeposit;

@@ -4,7 +4,7 @@
 namespace App\Repositories;
 
 
-use App\Interfaces\IDepositRepository;
+use App\Interfaces\IRepositories\IDepositRepository;
 use App\Models\BabySitterDeposit;
 
 class DepositRepository implements IDepositRepository

@@ -43,7 +43,7 @@ class IyzicoDirectPaymentService extends IyzicoBaseService implements IPaymentSe
 
     }
 
-    public function payToSubMerchant(array $cardInformation, array $products, array $addressInformation, array $buyerInformation, float $totalPrice, string $currency, int $installment, int $conversationId, string $subMerchant, float $subMerchantPrice): \Iyzipay\Model\Payment
+    public function payToSubMerchant(array $cardInformation, array $products, array $addressInformation, array $buyerInformation, float $totalPrice, string $currency, int $installment, int $conversationId, string $subMerchant, float $subMerchantPrice,?string $callback): \Iyzipay\Model\Payment
     {
         parent::setOptions();
         parent::createPaymentRequest($totalPrice, $installment, $conversationId, $currency);

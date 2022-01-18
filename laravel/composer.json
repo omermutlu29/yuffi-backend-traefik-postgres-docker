@@ -9,6 +9,7 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "iyzico/iyzipay-php": "^2.0",
+        "laravel-validation-rules/credit-card": "^1.6",
         "laravel/framework": "^8.75",
         "laravel/passport": "^10.2",
         "laravel/sanctum": "^2.11",

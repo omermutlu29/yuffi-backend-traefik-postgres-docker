@@ -19,11 +19,11 @@ class IyzicoThreeDPaymentService extends IyzicoBaseService implements IThreeDPay
         parent::__construct($options, $createPaymentRequest, $paymentCard, $buyer, $address);
     }
 
-    public function initializeThreeDPayment(array $cardInformation, array $products, array $addressInformation, array $buyerInformation, float $totalPrice, string $currency, int $installment, int $conversationId, string $callbackUrl): \Iyzipay\Model\ThreedsInitialize
+    public function initializeThreeDPayment(array $cardInformation, array $products, array $addressInformation, array $buyerInformation, float $totalPrice, string $currency, int $installment, int $conversationId,?string $callbackUrl): \Iyzipay\Model\ThreedsInitialize
     {
         parent::setOptions();
         parent::createPaymentRequest($totalPrice, $installment, $conversationId, $currency);
-        $this->paymentRequest->setCallbackUrl(env('IYZICO_CALLBACK_URL'));//For ThreeD
+        $this->paymentRequest->setCallbackUrl($callbackUrl);//For ThreeD
         $this->paymentRequest->setPaymentGroup(\Iyzipay\Model\PaymentGroup::SUBSCRIPTION);
         parent::createPaymentCard($cardInformation);
         parent::createBuyer($buyerInformation);
@@ -42,7 +42,7 @@ class IyzicoThreeDPaymentService extends IyzicoBaseService implements IThreeDPay
         return \Iyzipay\Model\ThreedsInitialize::create($this->paymentRequest, $this->options);
     }
 
-    public function payToSubMerchant(array $cardInformation, array $products, array $addressInformation, array $buyerInformation, float $totalPrice, string $currency, int $installment, int $conversationId, string $subMerchantKey, float $subMerchantPrice): \Iyzipay\Model\ThreedsInitialize
+    public function payToSubMerchant(array $cardInformation, array $products, array $addressInformation, array $buyerInformation, float $totalPrice, string $currency, int $installment, int $conversationId, string $subMerchantKey, float $subMerchantPrice,?string $callbackUrl): \Iyzipay\Model\ThreedsInitialize
     {
         parent::setOptions();
         parent::createPaymentRequest($totalPrice, $installment, $conversationId, $currency);

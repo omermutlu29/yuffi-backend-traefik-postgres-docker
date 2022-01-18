@@ -5,110 +5,47 @@ namespace App\Http\Controllers\API\BabySitter\Auth;
 
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\LoginRequestVerify;
 use App\Http\Resources\BabySitterResource;
-use App\Models\BabySitter;
-use App\Models\BabySitterSmsCode;
-use App\Models\Log;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Services\LoginService\LoginService;
 
 class LoginController extends BaseController
 {
-    public function __construct()
+    private $loginService;
+
+    public function __construct(LoginService $loginService)
     {
-        $this->middleware('auth:baby_sitter', ['except' => ['login_one', 'login_two']]);
+        $this->middleware('auth:baby_sitter', ['except' => ['loginOne', 'loginTwo']]);
+        $this->loginService = $loginService;
     }
 
-    public function loginOne(Request $request)
+    public function loginOne(LoginRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'phone' => 'required',
-            'kvkk' => 'required',
-        ]);
-        //return ($request->all());
-        if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
-        }
-        $babySitters = BabySitter::where('phone', $request->phone)->get();
-        if (count($babySitters) > 0) {
-            $babySitter = $babySitters[0];
-            if ($babySitter->black_list == 1) {
-                return $this->sendError('Uygulamaya erişiminiz engellenmiştir. Lütfen bizimle iletişime geçin.', 401);
-            }
-        } else {
-            $babySitter = new BabySitter();
-            $babySitter->phone = $request->phone;//Enesten Gelecek
-            $babySitter->network = $request->ip();//Enesten Gelecek
-            $babySitter->kvkk = $request->kvkk;//Enesten Gelecek
-            $babySitter->google_st = $request->google_st;//Enesten Gelecek
-            $babySitter->save();
-        }
-        $code = $this->generateCode($babySitter);
-        if ($code) {
-            $result = true;//$this->smsSend($code, $babySitter->phone);
-            if ($result) {
+        try {
+            if ($this->loginService->login($request->only('phone', 'code'))) {
                 $success['result'] = 'Telefonunuza SMS Gönderildi';
                 return $this->sendResponse($success, 'Telefonunuza SMS Gönderildi');
-            } else {
-                return $this->sendError('SMS Gönderilemedi', null, 400);
             }
-        } else {
-            return $this->sendError('Kod oluşturulamadı!', null, 400);
+            return $this->sendError(false, ['Birşeyler ters gitti!']);
+        } catch (\Exception $exception) {
+            throw $exception;
         }
     }
 
-    public function loginTwo(Request $request)
+    public function loginTwo(LoginRequestVerify $request)
     {
-        $validator = Validator::make($request->all(), [
-            'code' => 'required',
-            'phone' => 'required',
-        ]);
-
-        $babySitters = BabySitter::where('phone', $request->phone)->get();
-        if (count($babySitters) > 0) {
-            $babySitter = $babySitters[0];
-        } else {
-            return $this->sendError('Yanlış numara!', $validator->errors());
-        }
-        $smsCode = $request->code;
-
-        if ($babySitter != null && $smsCode != null) {
-            $smsCodes = BabySitterSmsCode::where('baby_sitter_id', $babySitter->id)->where('code', $smsCode)->get();
-            if (count($smsCodes) > 0) {
-                $success['accepted'] = true;
-                $success['baby_sitter'] = BabySitterResource::make($babySitter);
-                $success['token'] = $babySitter->createToken('baby_sitter')->accessToken;
-                return $this->sendResponse($success, 'Başarılı bir şekilde giriş yapıldı!');
-            } else {
-                return $this->sendError('Yanlış kod!', $validator->errors(), 401);
+        try {
+            $result = $this->loginService->loginVerifier($request->only('phone', 'code'));
+            if ($result['status'] != false) {
+                $success['accepted'] = $result['status'];
+                $success['baby_sitter'] = BabySitterResource::make($result['user']);
+                $success['token'] = $result['token'];
+                return $this->sendResponse($success, 'Başarılı bir şekilde giriş yapıldı');
             }
-        } else {
-            return $this->sendError('Eksik Veri Gönderimi', null, 400);
+        } catch (\Exception $exception) {
+            throw $exception;
         }
     }
 
-    /**
-     * @param User $user
-     * @return bool|int
-     */
-    protected function generateCode(BabySitter $babySitter)
-    {
-        $babySitter->sms_codes()->delete();
-        $sms = 1111;
-        $smsCode = new BabySitterSmsCode();
-        $smsCode->code = $sms;
-        $smsCode->baby_sitter_id = $babySitter->id;
-        $result = $smsCode->save();
-        if ($result) {
-            return $sms;
-        } else {
-            return false;
-        }
-    }
-
-    private function smsSend($code, $phone)
-    {
-
-
-    }
 }

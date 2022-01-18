@@ -16,6 +16,7 @@ interface IPayToSubMerchantService
         int $installment,
         int $conversationId,
         string $subMerchant,
-        float $subMerchantPrice
+        float $subMerchantPrice,
+        ?string $callbackUrl
     );
 }

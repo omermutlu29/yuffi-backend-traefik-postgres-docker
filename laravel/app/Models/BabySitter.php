@@ -12,23 +12,9 @@ class BabySitter extends Authenticatable
 {
     use  HasApiTokens, Notifiable, SoftDeletes;
 
-    protected $hidden = ['id', 'created_at', 'updated_at'];
-    protected $fillable = [
-        'phone',
-        'name',
-        'surname',
-        'email',
-        'address',
-        'birthday',
-        'photo',
-        'tc',
-        'criminal_record',
-        'about',
-        'service_contrct',
-        'gender_id',
-        'price_per_hour',
-        'child_gender_id',
-        'iban',
+    protected $hidden = [];
+    protected $guarded = [
+
     ];
 
     public function modelName()
@@ -94,6 +80,14 @@ class BabySitter extends Authenticatable
     public function baby_sitter_status()
     {
         return $this->belongsTo(BabySitterStatus::class);
+    }
+
+    /**
+     * Scopes
+     */
+
+    public function scopePhone($query,string $phone){
+        return $query->where('phone',$phone);
     }
 
 }

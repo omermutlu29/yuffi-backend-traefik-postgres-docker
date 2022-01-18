@@ -1,5 +1,19 @@
 <?php
 Route::prefix('baby-sitter')->group(function () {
+    /**
+     * solid
+     */
+
+    Route::prefix('deposit')->group(function () {
+        Route::get('debt', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class, 'deposit']);//Bitti
+        Route::post('pay', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class,'pay']);//Bitti
+        Route::post('pay-3d', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class, 'depositPay3d']);//Bitti
+        Route::post('pay-3d-complete', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class, 'threeDComplete'])->name('babysitter.deposit.callback');//Bitti Test Edilecek
+    });//Bitti
+    /**
+     * solid bitenler
+     */
+
 
     Route::prefix('login')->group(function () {
         Route::post('user', [\App\Http\Controllers\API\BabySitter\Auth\LoginController::class, 'loginOne']);
@@ -20,12 +34,7 @@ Route::prefix('baby-sitter')->group(function () {
         Route::get('get', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'get']);
     });//Bitti
 
-    Route::prefix('deposit')->group(function () {
-        Route::get('debt', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class, 'deposit']);//Bitti
-        Route::post('pay', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class,'pay']);//Bitti
-        Route::post('pay-3d', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class, 'depositPay3d']);//Bitti
-        Route::post('pay-3d-complete', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class, 'threeDComplete']);//Bitti Test Edilecek
-    });//Bitti
+
 
     Route::prefix('fill')->group(function () {
         Route::get('towns/{city}', [\App\Http\Controllers\API\BabySitter\Preferences\FillController::class, 'getTowns']);

@@ -19,5 +19,5 @@ interface IThreeDPaymentService
     );
 
 
-    public function completeThreeDPayment(string $conversationId, string $paymentId, ?string $conversationDat);
+    public function completeThreeDPayment(string $conversationId, string $paymentId, ?string $conversationData);
 }
