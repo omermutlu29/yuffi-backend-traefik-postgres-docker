@@ -4,6 +4,7 @@
 namespace App\Http\Controllers\API\BabySitter\Auth;
 
 
+use App\Http\Requests\BabySitterStoreGeneralInformationRequest;
 use App\Models\BabySitter;
 use App\Models\BabySitterSmsCode;
 use App\Http\Controllers\API\BaseController;
@@ -28,27 +29,10 @@ class ProfileController extends BaseController
      * @return BabySitterResource|\Illuminate\Http\Response
      * Bakicinin temel bilgileri alınacak. Kaydedilecek.
      */
-    public function storeGeneralInformation(Request $request)
+    public function storeGeneralInformation(BabySitterStoreGeneralInformationRequest $request)
     {
         try {
             $baby_sitter = Auth::user();
-            /*
-             *   $validator = Validator::make($request->all(), [
-                  'name' => 'required',
-                  'surname' => 'required',
-                  'tc' => 'required',
-                  'gender_id' => 'required',
-                  'birthday' => 'required',
-                  'iban' => 'required',
-                  'criminal_record' => 'required|file',
-                  'address' => 'required',
-                  'email' => 'required',
-                  'photo' => 'required|file'
-              ]);
-              if ($validator->fails()) {
-                  return $this->sendError('Validation Error.', $validator->errors());
-              }
-             */
 
             $baby_sitter->name = $request->name;
             $baby_sitter->surname = $request->surname;

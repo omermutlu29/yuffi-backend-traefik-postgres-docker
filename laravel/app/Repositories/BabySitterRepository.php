@@ -30,4 +30,9 @@ class BabySitterRepository implements IUserRepository
     {
         return BabySitter::create($data);
     }
+
+    public function update(int $id, array $data)
+    {
+        return BabySitter::find($id)->update($data);
+    }
 }

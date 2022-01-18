@@ -28,7 +28,7 @@ class LoginService implements ILogin
             }
             $code = self::generateSmsCode();
             $this->userRepository->save_sms_code($user->id, $code);
-            if (env('APP_ENV')=='local'){
+            if (env('APP_ENV') == 'local') {
                 return true;
             }
             return $this->notificationService->notify("ONAY SMS'i", $code, $user->phone);
