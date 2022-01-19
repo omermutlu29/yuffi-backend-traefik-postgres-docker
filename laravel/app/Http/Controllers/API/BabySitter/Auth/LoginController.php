@@ -80,7 +80,7 @@ class LoginController extends BaseController
                 $success['token'] = $babySitter->createToken('baby_sitter')->accessToken;
                 return $this->sendResponse($success, 'Başarılı bir şekilde giriş yapıldı!');
             } else {
-                return $this->sendError('Yanlış kod!', $validator->errors(), 401);
+                return $this->sendError('Yanlış kod!', $validator->errors());
             }
         } else {
             return $this->sendError('Eksik Veri Gönderimi', null, 400);
