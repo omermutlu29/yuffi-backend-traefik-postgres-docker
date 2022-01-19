@@ -84,7 +84,7 @@ class LoginController extends BaseController
                 $success['token'] = $user->createToken('dilara')->accessToken;
                 return $this->sendResponse($success, 'Başarılı bir şekilde giriş yapıldı!');
             } else {
-                return $this->sendError('Yanlış kod!', $validator->errors(), 401);
+                return $this->sendError('Yanlış kod!', $validator->errors());
             }
         }
     }
