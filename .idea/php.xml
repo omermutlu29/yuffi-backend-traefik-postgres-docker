@@ -127,9 +127,10 @@
       <path value="$PROJECT_DIR$/laravel/vendor/psr/container" />
       <path value="$PROJECT_DIR$/laravel/vendor/psr/event-dispatcher" />
       <path value="$PROJECT_DIR$/laravel/vendor/composer" />
+      <path value="$PROJECT_DIR$/laravel/vendor/laravel-validation-rules/credit-card" />
     </include_path>
   </component>
-  <component name="PhpProjectSharedConfiguration" php_language_level="7.3">
+  <component name="PhpProjectSharedConfiguration" php_language_level="8.0">
     <option name="suggestChangeDefaultLanguageLevel" value="false" />
   </component>
   <component name="PhpUnit">

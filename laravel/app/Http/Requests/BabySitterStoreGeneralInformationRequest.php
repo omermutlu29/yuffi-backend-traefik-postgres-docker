@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\IBANRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -31,11 +32,11 @@ class BabySitterStoreGeneralInformationRequest extends FormRequest
             'tc' => 'required',
             'gender_id' => 'required',
             'birthday' => 'required',
-            'iban' => 'required',
             'criminal_record' => 'required|file',
             'address' => 'required',
             'email' => 'required',
-            'photo' => 'required|file'
+            'photo' => 'required|file',
+            'iban' => ['required', new IBANRule()]
         ];
     }
 

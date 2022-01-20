@@ -3,37 +3,37 @@ Route::prefix('baby-sitter')->group(function () {
     /**
      * solid
      */
-
     Route::prefix('deposit')->group(function () {
         Route::get('debt', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class, 'deposit']);//Bitti
-        Route::post('pay', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class,'pay']);//Bitti
+        Route::post('pay', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class, 'pay']);//Bitti
         Route::post('pay-3d', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class, 'depositPay3d']);//Bitti
         Route::post('pay-3d-complete', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class, 'threeDComplete'])->name('babysitter.deposit.callback');//Bitti Test Edilecek
+    });//Bitti
+
+    Route::prefix('login')->group(function () {
+        Route::post('user', [\App\Http\Controllers\API\BabySitter\Auth\LoginController::class, 'loginOne']);
+        Route::post('sms-code', [\App\Http\Controllers\API\BabySitter\Auth\LoginController::class, 'loginTwo']);
+    });//Bitti
+
+    Route::prefix('profile')->group(function () {
+        Route::post('store', [\App\Http\Controllers\API\BabySitter\Auth\ProfileController::class, 'storeGeneralInformation']);
+        //Route::put('update-iban', [\App\Http\Controllers\API\BabySitter\Auth\ProfileController::class, 'updateIban']);
+        Route::get('get-profile', [\App\Http\Controllers\API\BabySitter\Auth\ProfileController::class, 'getProfile']);
     });//Bitti
     /**
      * solid bitenler
      */
 
 
-    Route::prefix('login')->group(function () {
-        Route::post('user', [\App\Http\Controllers\API\BabySitter\Auth\LoginController::class, 'loginOne']);
-        Route::post('sms-code', [\App\Http\Controllers\API\BabySitter\Auth\LoginController::class, 'loginTwo']);
-    });//Bitti
-    Route::prefix('profile')->group(function () {
-        Route::post('store', [\App\Http\Controllers\API\BabySitter\Auth\ProfileController::class, 'storeGeneralInformation']);
-        Route::put('update-iban', [\App\Http\Controllers\API\BabySitter\Auth\ProfileController::class, 'updateIban']);
-        Route::get('get-profile', [\App\Http\Controllers\API\BabySitter\Auth\ProfileController::class, 'getProfile']);
-    });//Bitti
     Route::prefix('preferences')->group(function () {
-        Route::post('update/personal', [\App\Http\Controllers\API\BabySitter\Preferences\PreferenceController::class, 'update']);
-    });//Bitti
+        Route::post('update', [\App\Http\Controllers\API\BabySitter\Preferences\PreferenceController::class, 'update']);
+    });
     Route::prefix('calendar')->group(function () {
         Route::post('add', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'store']);
         Route::put('update/{babySitterAvaliableTime}', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'update']);
         Route::delete('delete/{babySitterAvaliableTime}/', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'delete']);
         Route::get('get', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'get']);
     });//Bitti
-
 
 
     Route::prefix('fill')->group(function () {
