@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBabySitterAvaliableDatesTable extends Migration
+class CreateBabySitterAvailableDatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateBabySitterAvaliableDatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('baby_sitter_avaliable_dates', function (Blueprint $table) {
+        Schema::create('baby_sitter_available_dates', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('baby_sitter_id');
             $table->foreign('baby_sitter_id')->references('id')->on('baby_sitters');
@@ -30,6 +30,6 @@ class CreateBabySitterAvaliableDatesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('baby_sitter_avaliable_dates');
+        Schema::dropIfExists('baby_sitter_available_dates');
     }
 }

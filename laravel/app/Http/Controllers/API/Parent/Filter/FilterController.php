@@ -97,11 +97,11 @@ class FilterController extends BaseController
 
                 $query->whereRaw('( child_count >= ' . count($parent->parent_children) . '  OR child_count = null OR child_count = 0 )')->get();//Çocuk Sayısı
                 $query->where('deposit', 30);//Depozitosu var mı
-                $query->whereHas('avaliable_towns', function ($q) use ($data) {
+                $query->whereHas('available_towns', function ($q) use ($data) {
                     $q->where('town_id', (int)$data->search_param->town_id);
                 });//İlçesi işaretli olanlar
 
-                $query->whereHas('baby_sitter_avaliable_dates', function ($q) use ($data, $times) {//O gün yer var mı ?
+                $query->whereHas('baby_sitter_available_dates', function ($q) use ($data, $times) {//O gün yer var mı ?
                     $q->where('date', $data->search_param->date);
                     foreach ($times as $time) {
                         $q->whereHas('times', function ($q1) use ($time) {//O günün saatlerinde yer var mı varsa meşgul mü değil mi ?

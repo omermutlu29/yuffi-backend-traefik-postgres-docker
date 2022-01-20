@@ -13,7 +13,7 @@ class Town extends Model
         return $this->belongsTo(City::class);
     }
 
-    public function avaliable_baby_sitters(){
+    public function available_baby_sitters(){
         return $this->belongsToMany(BabySitter::class,'baby_sitter_regions');
     }
 

@@ -4,6 +4,7 @@
 namespace App\Services\ProfileService;
 
 
+use App\Interfaces\IRepositories\IBabySitterRepository;
 use App\Interfaces\IRepositories\IUserRepository;
 use App\Interfaces\IServices\IProfileService;
 use App\Interfaces\PaymentInterfaces\ISubMerchantService;
@@ -15,12 +16,14 @@ use JetBrains\PhpStorm\ArrayShape;
 class ProfileService implements IProfileService
 {
     private IUserRepository $userRepository;
+    private IBabySitterRepository $babySitterRepository;
     private ISubMerchantService $subMerchantService;
 
-    public function __construct(IUserRepository $userRepository, ISubMerchantService $subMerchantService)
+    public function __construct(IUserRepository $userRepository, ISubMerchantService $subMerchantService, IBabySitterRepository $babySitterRepository)
     {
         $this->subMerchantService = $subMerchantService;
         $this->userRepository = $userRepository;
+        $this->babySitterRepository = $babySitterRepository;
     }
 
     #[ArrayShape(['status' => "bool", 'message' => "mixed|string"])]
@@ -60,12 +63,8 @@ class ProfileService implements IProfileService
             $towns = $validatedData['relational_preferences']['towns'] ?? [];
             $acceptedLocations = $validatedData['relational_preferences']['accepted_locations'] ?? [];
             $babySitter->update($validatedData['base_preferences']);
-            if ($towns) {
-                $babySitter->avaliable_towns()->sync($towns);
-            }
-            if ($acceptedLocations) {
-                $babySitter->accepted_locations()->sync($acceptedLocations);
-            }
+            $towns ? $this->babySitterRepository->updateAvailableTowns($babySitter, $towns) : null;
+            $acceptedLocations ? $this->babySitterRepository->updateAcceptedLocations($babySitter, $acceptedLocations) : null;
             $this->userRepository->update($babySitter->id, ['baby_sitter_status_id' => 5]);
         } catch (\Exception $exception) {
             throw $exception;
@@ -74,7 +73,7 @@ class ProfileService implements IProfileService
 
     public function getProfile(BabySitter $babySitter)
     {
-        $relations = ['baby_sitter_status:id,name', 'child_year:id,name', 'gender:id,name', 'child_gender:id,name', 'accepted_locations', 'avaliable_towns'];
-        return $this->userRepository->getUserWithRelations($babySitter,$relations);
+        $relations = ['baby_sitter_status:id,name', 'child_year:id,name', 'gender:id,name', 'child_gender:id,name', 'accepted_locations', 'available_towns'];
+        return $this->userRepository->getUserWithRelations($babySitter, $relations);
     }
 }

@@ -8,3 +8,8 @@ Route::any('login',function (){
     ]);
 })->name('login');
 
+Route::get('test',function (){
+    dd(today()->addDays(3));
+
+});
+

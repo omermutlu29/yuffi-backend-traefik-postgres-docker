@@ -4,8 +4,8 @@
 namespace App\Http\Controllers\API\BabySitter\Preferences;
 
 
-use App\Models\BabySitterAvaliableDate;
-use App\Models\BabySitterAvaliableTime;
+use App\Models\BabySitterAvailableDate;
+use App\Models\BabySitterAvailableTime;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\CalendarResource;
 use Carbon\Carbon;
@@ -32,13 +32,13 @@ class CalendarController extends BaseController
 
                 if (count($datum->hours) > 0) {
                     if ($today > $datum->date) return $this->sendError('Hata Mesajı', 'Geçmişe ait bir güne veri ekleyemezsiniz');
-                    $babySitterAvaliableDate = BabySitterAvaliableDate::firstOrCreate(['date' => $datum->date, 'baby_sitter_id' => $baby_sitter->id]);
+                    $babySitterAvailableDate = BabySitterAvailableDate::firstOrCreate(['date' => $datum->date, 'baby_sitter_id' => $baby_sitter->id]);
                     foreach ($datum->hours as $hour) {
                         if (($today == $datum->date && $nowTime < $hour->start)) {
                             return $this->sendError('Hata Mesajı', $nowTime . ' saatinden ileri bir saat seçmelisiniz.');
                         }
-                        $babySitterAvaliableTime = BabySitterAvaliableTime::firstOrCreate(['avaliable_date_id' => $babySitterAvaliableDate->id, 'start' => $hour->start, 'finish' => $hour->end, 'time_status_id' => 1]);
-                        $babySitterAvaliableTime->save();
+                        $babySitterAvailableTime = BabySitterAvailableTime::firstOrCreate(['available_date_id' => $babySitterAvailableDate->id, 'start' => $hour->start, 'finish' => $hour->end, 'time_status_id' => 1]);
+                        $babySitterAvailableTime->save();
                     }
                 }
             }
@@ -52,25 +52,25 @@ class CalendarController extends BaseController
         $nextDay = date('Y-m-d', strtotime("+15 days"));
         $baby_sitter = Auth::user();
         return CalendarResource::collection($baby_sitter
-            ->baby_sitter_avaliable_dates()
+            ->baby_sitter_available_dates()
             ->where('date', '>=', $date)
             ->where('date', '<=', $nextDay)
             ->with(['times', 'times.time_status'])
             ->get());
     }
 
-    public function update(Request $request, BabySitterAvaliableTime $babySitterAvaliableTime)
+    public function update(Request $request, BabySitterAvailableTime $babySitterAvailableTime)
     {
-        if ($babySitterAvaliableTime->baby_sitter_avaliable_date->baby_sitter->id == Auth::user()->id) {
-            $babySitterAvaliableTime->is_active = $request->is_active;
-            $babySitterAvaliableTime->save();
+        if ($babySitterAvailableTime->baby_sitter_available_date->baby_sitter->id == Auth::user()->id) {
+            $babySitterAvailableTime->is_active = $request->is_active;
+            $babySitterAvailableTime->save();
             return $this->get();
         }
     }
 
-    public function delete(BabySitterAvaliableTime $babySitterAvaliableTime)
+    public function delete(BabySitterAvailableTime $babySitterAvailableTime)
     {
-        $babySitterAvaliableTime->delete();
+        $babySitterAvailableTime->delete();
         return $this->get();
     }
 

@@ -32,14 +32,14 @@ class BabySitter extends Authenticatable
         return $this->belongsTo(Gender::class);
     }
 
-    public function avaliable_towns()
+    public function available_towns()
     {
         return $this->belongsToMany(Town::class, 'baby_sitter_regions');
     }
 
-    public function baby_sitter_avaliable_dates()
+    public function baby_sitter_available_dates()
     {
-        return $this->hasMany(BabySitterAvaliableDate::class);
+        return $this->hasMany(BabySitterAvailableDate::class);
     }
 
     public function baby_sitter_deposits()

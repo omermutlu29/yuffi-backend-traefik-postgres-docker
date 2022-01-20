@@ -24,26 +24,6 @@ Route::prefix('baby-sitter')->group(function () {
     Route::prefix('preferences')->group(function () {
         Route::post('update', [\App\Http\Controllers\API\BabySitter\Preferences\PreferenceController::class, 'update']);
     });
-    /**
-     * solid bitenler
-     */
-
-    /**
-     * solid işlemdekiler
-     */
-
-
-    /**
-     * solid işlemdekiler son
-     */
-
-
-    Route::prefix('calendar')->group(function () {
-        Route::post('add', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'store']);
-        Route::put('update/{babySitterAvaliableTime}', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'update']);
-        Route::delete('delete/{babySitterAvaliableTime}/', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'delete']);
-        Route::get('get', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'get']);
-    });//Bitti
 
 
     Route::prefix('fill')->group(function () {
@@ -54,6 +34,16 @@ Route::prefix('baby-sitter')->group(function () {
         Route::get('genders', [\App\Http\Controllers\API\BabySitter\Preferences\FillController::class, 'getGenders']);
         Route::get('all/{city}', [\App\Http\Controllers\API\BabySitter\Preferences\FillController::class, 'getAll']);
         Route::get('nextDays', [\App\Http\Controllers\API\BabySitter\Preferences\FillController::class, 'getNextDays']);
+    });//Bitti
+    /**
+     *
+     */
+
+    Route::prefix('calendar')->group(function () {
+        Route::post('add', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'store']);
+        Route::put('update/{babySitterAvailableTime}', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'update']);
+        Route::delete('delete/{babySitterAvailableTime}/', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'delete']);
+        Route::get('get', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'get']);
     });//Bitti
 
     Route::prefix('message')->group(function () {

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBabySitterAvaliableTimesTable extends Migration
+class CreateBabySitterAvailableTimesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateBabySitterAvaliableTimesTable extends Migration
      */
     public function up()
     {
-        Schema::create('baby_sitter_avaliable_times', function (Blueprint $table) {
+        Schema::create('baby_sitter_available_times', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('avaliable_date_id')->unsigned();
-            $table->foreign('avaliable_date_id')->references('id')->on('baby_sitter_avaliable_dates');
+            $table->bigInteger('available_date_id')->unsigned();
+            $table->foreign('available_date_id')->references('id')->on('baby_sitter_available_dates');
             $table->time('start');
             $table->time('finish');
             $table->boolean('is_active')->default(0);
@@ -34,6 +34,6 @@ class CreateBabySitterAvaliableTimesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('baby_sitter_avaliable_times');
+        Schema::dropIfExists('baby_sitter_available_times');
     }
 }

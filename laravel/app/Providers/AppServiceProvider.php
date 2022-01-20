@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Interfaces\IRepositories\IBabySitterRepository;
+use App\Interfaces\IRepositories\IUserRepository;
 use App\Interfaces\PaymentInterfaces\IPaymentService;
 use App\Interfaces\PaymentInterfaces\IPayToSubMerchantService;
 use App\Interfaces\PaymentInterfaces\IThreeDPaymentService;
@@ -11,6 +13,7 @@ use App\Services\LoginService\LoginService;
 use App\Services\NotificationServices\NetGSMSmsNotification;
 use App\Services\PaymentServices\Iyzico\IyzicoDirectPaymentService;
 use App\Services\PaymentServices\Iyzico\IyzicoThreeDPaymentService;
+use App\Services\ProfileService\ProfileService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -32,14 +35,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->bind(IPaymentService::class,IyzicoDirectPaymentService::class);
-        $this->app->bind(IPayToSubMerchantService::class,IyzicoDirectPaymentService::class);
-        $this->app->bind(IThreeDPaymentService::class,IyzicoThreeDPaymentService::class);
-        $this->app->when(\App\Http\Controllers\API\Parent\Auth\LoginController::class)->needs(LoginService::class)->give(function (){
-            return new LoginService(new NetGSMSmsNotification(),new ParentRepository());
+        $this->app->bind(IPaymentService::class, IyzicoDirectPaymentService::class);
+        $this->app->bind(IPayToSubMerchantService::class, IyzicoDirectPaymentService::class);
+        $this->app->bind(IThreeDPaymentService::class, IyzicoThreeDPaymentService::class);
+        $this->app->when(\App\Http\Controllers\API\Parent\Auth\LoginController::class)->needs(LoginService::class)->give(function () {
+            return new LoginService(new NetGSMSmsNotification(), new ParentRepository());
         });
-        $this->app->when(\App\Http\Controllers\API\BabySitter\Auth\LoginController::class)->needs(LoginService::class)->give(function (){
-            return new LoginService(new NetGSMSmsNotification(),new BabySitterRepository());
+        $this->app->when(\App\Http\Controllers\API\BabySitter\Auth\LoginController::class)->needs(LoginService::class)->give(function () {
+            return new LoginService(new NetGSMSmsNotification(), new BabySitterRepository());
         });
+
+        $this->app->when(ProfileService::class)->needs(IBabySitterRepository::class)->give(BabySitterRepository::class);
+        $this->app->when(ProfileService::class)->needs(IUserRepository::class)->give(BabySitterRepository::class);
     }
 }

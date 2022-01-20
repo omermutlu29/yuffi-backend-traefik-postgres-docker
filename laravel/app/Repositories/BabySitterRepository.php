@@ -4,10 +4,11 @@
 namespace App\Repositories;
 
 
+use App\Interfaces\IRepositories\IBabySitterRepository;
 use App\Interfaces\IRepositories\IUserRepository;
 use App\Models\BabySitter;
 
-class BabySitterRepository implements IUserRepository
+class BabySitterRepository implements IUserRepository, IBabySitterRepository
 {
     public function getUserByPhone(string $phone)
     {
@@ -36,8 +37,18 @@ class BabySitterRepository implements IUserRepository
         return BabySitter::find($id)->update($data);
     }
 
-    public function getUserWithRelations(int $id,array $relations): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Builder|array|null
+    public function getUserWithRelations(int $id, array $relations): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Builder|array|null
     {
         return BabySitter::with($relations)->findOrFail($id);
+    }
+
+    public function updateAcceptedLocations(BabySitter $babySitter, array $acceptedLocations)
+    {
+        $babySitter->accepted_locations()->sync($acceptedLocations);
+    }
+
+    public function updateAvailableTowns(BabySitter $babySitter, array $availableTowns)
+    {
+        $babySitter->accepted_locations()->sync($availableTowns);
     }
 }
