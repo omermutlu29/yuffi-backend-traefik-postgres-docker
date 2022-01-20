@@ -15,7 +15,7 @@ class DepositController extends BaseController
 
     public function __construct(DepositService $depositService)
     {
-        //$this->middleware(['auth:baby_sitter', 'bs_first_step', 'bs_second_step']);
+        $this->middleware(['auth:baby_sitter', 'bs_first_step', 'bs_second_step']);
         $this->depositService = $depositService;
     }
 
@@ -47,7 +47,7 @@ class DepositController extends BaseController
         }
     }
 
-    public function depositPay3d(DepositPayRequest $request)
+    public function depositPay3d(DepositPayRequest $request): \Illuminate\Http\Response
     {
         try {
             $babySitter = BabySitter::find(8);

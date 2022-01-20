@@ -34,6 +34,4 @@ class ProfileController extends BaseController
         $success['baby_sitter'] = $this->profileService->getProfile(\auth()->id());
         return $this->sendResponse($success, 'Veri Başarı ile Getirildi!');
     }
-
-
 }
