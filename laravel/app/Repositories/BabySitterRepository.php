@@ -35,4 +35,9 @@ class BabySitterRepository implements IUserRepository
     {
         return BabySitter::find($id)->update($data);
     }
+
+    public function getUserWithRelations(int $id,array $relations): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Builder|array|null
+    {
+        return BabySitter::with($relations)->findOrFail($id);
+    }
 }

@@ -30,4 +30,9 @@ class ParentRepository implements IUserRepository
     {
         return Parents::create($data);
     }
+
+    public function update(int $id, array $data)
+    {
+        // TODO: Implement update() method.
+    }
 }

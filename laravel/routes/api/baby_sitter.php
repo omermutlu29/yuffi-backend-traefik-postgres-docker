@@ -20,14 +20,24 @@ Route::prefix('baby-sitter')->group(function () {
         //Route::put('update-iban', [\App\Http\Controllers\API\BabySitter\Auth\ProfileController::class, 'updateIban']);
         Route::get('get-profile', [\App\Http\Controllers\API\BabySitter\Auth\ProfileController::class, 'getProfile']);
     });//Bitti
-    /**
-     * solid bitenler
-     */
-
 
     Route::prefix('preferences')->group(function () {
         Route::post('update', [\App\Http\Controllers\API\BabySitter\Preferences\PreferenceController::class, 'update']);
     });
+    /**
+     * solid bitenler
+     */
+
+    /**
+     * solid işlemdekiler
+     */
+
+
+    /**
+     * solid işlemdekiler son
+     */
+
+
     Route::prefix('calendar')->group(function () {
         Route::post('add', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'store']);
         Route::put('update/{babySitterAvaliableTime}', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'update']);

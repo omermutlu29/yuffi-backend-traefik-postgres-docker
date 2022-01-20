@@ -9,6 +9,7 @@ use App\Interfaces\IServices\IProfileService;
 use App\Interfaces\PaymentInterfaces\ISubMerchantService;
 use App\Models\BabySitter;
 use Illuminate\Http\Request;
+use JetBrains\PhpStorm\ArrayShape;
 
 
 class ProfileService implements IProfileService
@@ -22,7 +23,8 @@ class ProfileService implements IProfileService
         $this->userRepository = $userRepository;
     }
 
-    public function updateBasicInformation(BabySitter $babySitter, Request $request)
+    #[ArrayShape(['status' => "bool", 'message' => "mixed|string"])]
+    public function updateBasicInformation(BabySitter $babySitter, Request $request): array
     {
         $result = ['status' => false, 'message' => ''];
         try {
@@ -50,7 +52,29 @@ class ProfileService implements IProfileService
         } catch (\Exception $exception) {
             throw $exception;
         }
+    }
 
+    public function updatePreferences(BabySitter $babySitter, $validatedData)
+    {
+        try {
+            $towns = $validatedData['relational_preferences']['towns'] ?? [];
+            $acceptedLocations = $validatedData['relational_preferences']['accepted_locations'] ?? [];
+            $babySitter->update($validatedData['base_preferences']);
+            if ($towns) {
+                $babySitter->avaliable_towns()->sync($towns);
+            }
+            if ($acceptedLocations) {
+                $babySitter->accepted_locations()->sync($acceptedLocations);
+            }
+            $this->userRepository->update($babySitter->id, ['baby_sitter_status_id' => 5]);
+        } catch (\Exception $exception) {
+            throw $exception;
+        }
+    }
 
+    public function getProfile(BabySitter $babySitter)
+    {
+        $relations = ['baby_sitter_status:id,name', 'child_year:id,name', 'gender:id,name', 'child_gender:id,name', 'accepted_locations', 'avaliable_towns'];
+        return $this->userRepository->getUserWithRelations($babySitter,$relations);
     }
 }

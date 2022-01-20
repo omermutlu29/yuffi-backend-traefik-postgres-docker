@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class DepositController extends BaseController
 {
-    private $depositService;
+    private DepositService $depositService;
 
     public function __construct(DepositService $depositService)
     {
@@ -32,7 +32,7 @@ class DepositController extends BaseController
     public function pay(DepositPayRequest $request)
     {
         try {
-            $babySitter = BabySitter::find(9);
+            $babySitter = \auth()->user();
             if ($babySitter->deposit == 30) {
                 return $this->sendError('Error', 'Depozitonuz zaten ödenmiş görünüyor');
             }
@@ -41,8 +41,7 @@ class DepositController extends BaseController
             if ($paymentResult['status'] != 'success') {
                 return $this->sendError($paymentResult['errorCode'], $paymentResult['errorMessage']);
             }
-            $babySitter = BabySitter::find(9);
-            return $this->sendResponse(true, 'Ödemeniz başarı ile alındı. Depozitonuz : ' . $babySitter->deposit);
+            return $this->sendResponse(true, 'Ödemeniz başarı ile alındı.');
         } catch (\Exception $exception) {
             throw $exception;
         }
@@ -71,7 +70,7 @@ class DepositController extends BaseController
 
     public function threeDComplete(Request $request)
     {
-        $paymentResult = $this->depositService->completeThreeD($request->only('mdStatus','status','paymentId','conversationData','conversationId'));
+        $paymentResult = $this->depositService->completeThreeD($request->only('mdStatus', 'status', 'paymentId', 'conversationData', 'conversationId'));
         if ($paymentResult['status'] != 'success') {
             return $this->sendError($paymentResult['errorCode'], $paymentResult['errorMessage']);
         }
