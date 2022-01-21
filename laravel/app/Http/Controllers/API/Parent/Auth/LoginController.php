@@ -25,7 +25,7 @@ class LoginController extends BaseController
     public function loginOne(LoginRequest $request)
     {
         try {
-            if ($this->loginService->login($request->only('phone', 'code'))) {
+            if ($this->loginService->login($request->only('phone', 'code'),$this->userRepository)) {
                 $success['result'] = 'Telefonunuza SMS Gönderildi';
                 return $this->sendResponse($success, 'Telefonunuza SMS Gönderildi');
             }
