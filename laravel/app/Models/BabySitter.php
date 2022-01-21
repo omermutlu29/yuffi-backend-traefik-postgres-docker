@@ -10,7 +10,7 @@ use Laravel\Passport\HasApiTokens;
 
 class BabySitter extends Authenticatable
 {
-    use  HasApiTokens, Notifiable, SoftDeletes;
+    use HasApiTokens, Notifiable, SoftDeletes;
 
     protected $hidden = [];
     protected $guarded = [
@@ -84,6 +84,9 @@ class BabySitter extends Authenticatable
 
     /**
      * Scopes
+     * @param $query
+     * @param string $phone
+     * @return mixed
      */
 
     public function scopePhone($query,string $phone){

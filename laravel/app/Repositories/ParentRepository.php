@@ -35,4 +35,14 @@ class ParentRepository implements IUserRepository
     {
         // TODO: Implement update() method.
     }
+
+    public function getUserById(int $id)
+    {
+        // TODO: Implement getUserById() method.
+    }
+
+    public function getUserWithRelations(int $id, array $relations)
+    {
+        // TODO: Implement getUserWithRelations() method.
+    }
 }

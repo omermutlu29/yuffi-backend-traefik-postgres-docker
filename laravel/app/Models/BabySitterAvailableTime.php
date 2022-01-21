@@ -10,9 +10,7 @@ class BabySitterAvailableTime extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = [
-        '_date_id', 'start', 'finish', 'time_status_id'
-    ];
+    protected $guarded=[];
 
     protected $with = ['time_status'];
 

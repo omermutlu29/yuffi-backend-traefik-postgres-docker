@@ -17,7 +17,7 @@ class BabySitterRepository implements IUserRepository, IBabySitterRepository
 
     public function save_sms_code($id, $code)
     {
-        return BabySitter::find($id)->sms_codes()->create([
+        return self::getUserById($id)->sms_codes()->create([
             'code' => $code,
         ]);
     }
@@ -50,5 +50,10 @@ class BabySitterRepository implements IUserRepository, IBabySitterRepository
     public function updateAvailableTowns(BabySitter $babySitter, array $availableTowns)
     {
         $babySitter->accepted_locations()->sync($availableTowns);
+    }
+
+    public function getUserById(int $id)
+    {
+        return BabySitter::find($id);
     }
 }

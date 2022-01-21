@@ -58,6 +58,7 @@ class Appointment extends Model
         return $query->where('appointment_status_id',5);
     }
 
-
-
+    public function scopeBabySitter($query,$babySitterId){
+        return $query->where('baby_sitter_id',$babySitterId);
+    }
 }

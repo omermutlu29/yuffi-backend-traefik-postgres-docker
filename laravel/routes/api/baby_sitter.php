@@ -1,8 +1,6 @@
 <?php
 Route::prefix('baby-sitter')->group(function () {
-    /**
-     * solid
-     */
+
     Route::prefix('deposit')->group(function () {
         Route::get('debt', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class, 'deposit']);//Bitti
         Route::post('pay', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class, 'pay']);//Bitti
@@ -35,24 +33,25 @@ Route::prefix('baby-sitter')->group(function () {
         Route::get('all/{city}', [\App\Http\Controllers\API\BabySitter\Preferences\FillController::class, 'getAll']);
         Route::get('nextDays', [\App\Http\Controllers\API\BabySitter\Preferences\FillController::class, 'getNextDays']);
     });//Bitti
-    /**
-     *
-     */
 
     Route::prefix('calendar')->group(function () {
         Route::post('add', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'store']);
         Route::put('update/{babySitterAvailableTime}', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'update']);
         Route::delete('delete/{babySitterAvailableTime}/', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'delete']);
-        Route::get('get', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'get']);
+        Route::get('index', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'index']);
     });//Bitti
 
-    Route::prefix('message')->group(function () {
+    Route::prefix('appointments')->group(function () {
+        Route::get('my-approved-appointments', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'myApprovedAppointments']);
+        Route::get('my-not-approved-appointments', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'myNotApprovedAppointments']);
+        Route::get('my-paid-appointments', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'myPaidAppointments']);
+        Route::get('my-pending-appointments', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'myPendingPaymentAppointments']);
+        Route::put('approve', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'approve']);
+        Route::put('disapprove', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'disapprove']);
+    });
+    /*Route::prefix('message')->group(function () {
         Route::post('send/{appointment}', [\App\Http\Controllers\API\BabySitter\Message\MessageController::class, 'sendMessage']);
         Route::get('get/{appointment}', [\App\Http\Controllers\API\BabySitter\Message\MessageController::class, 'getMessages']);
-    });
-    Route::prefix('payment')->group(function () {
-        Route::get('success', [\App\Http\Controllers\API\BabySitter\Payment\PaymentController::class, 'index']);
-        Route::get('all', [\App\Http\Controllers\API\BabySitter\Payment\PaymentController::class, 'all']);
-    });
-    Route::get('appointments', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'index']);
+    });*/
+
 });

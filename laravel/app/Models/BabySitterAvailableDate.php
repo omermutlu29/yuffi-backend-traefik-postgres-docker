@@ -18,4 +18,9 @@ class BabySitterAvailableDate extends Model
     public function times(){
         return $this->hasMany(BabySitterAvailableTime::class,'available_date_id');
     }
+
+    public function scopeNextFifteenDays($query){
+        return $query->where('date', '>=', now()->format('Y-m-d'))
+            ->where('date', '<=', now()->addDays(15)->format('Y-m-d'));
+    }
 }

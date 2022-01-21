@@ -4,74 +4,57 @@
 namespace App\Http\Controllers\API\BabySitter\Preferences;
 
 
-use App\Models\BabySitterAvailableDate;
-use App\Models\BabySitterAvailableTime;
 use App\Http\Controllers\API\BaseController;
-use App\Http\Resources\CalendarResource;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\AvailableTimeDelete;
+use App\Http\Requests\AvailableTimeUpdate;
+use App\Http\Requests\StoreAvailableTime;
+use App\Interfaces\IServices\IBabySitterCalendarService;
 
 class CalendarController extends BaseController
 {
+    private IBabySitterCalendarService $calendarService;
 
-    public function __construct()
+    public function __construct(IBabySitterCalendarService $calendarService)
     {
         $this->middleware(['auth:baby_sitter', 'bs_first_step', 'bs_second_step', 'deposit']);
+        $this->calendarService = $calendarService;
     }
 
-    public function store(Request $request)
+    public function index()
     {
-        $baby_sitter = Auth::user();
-        $json = json_encode($request->all());
-        $data = json_decode($json);
-        $nowTime = Carbon::now('+3:00')->toTimeString();
-        $today = Carbon::now()->toDateString();
-        if (count($data) > 0) {
-            foreach ($data as $datum) {
+        try {
+            return $this->calendarService->getMyNextFifteenDaysCalendar(\auth()->id());
+        }catch (\Exception $exception){
+            throw $exception;
+        }
+    }
 
-                if (count($datum->hours) > 0) {
-                    if ($today > $datum->date) return $this->sendError('Hata Mesajı', 'Geçmişe ait bir güne veri ekleyemezsiniz');
-                    $babySitterAvailableDate = BabySitterAvailableDate::firstOrCreate(['date' => $datum->date, 'baby_sitter_id' => $baby_sitter->id]);
-                    foreach ($datum->hours as $hour) {
-                        if (($today == $datum->date && $nowTime < $hour->start)) {
-                            return $this->sendError('Hata Mesajı', $nowTime . ' saatinden ileri bir saat seçmelisiniz.');
-                        }
-                        $babySitterAvailableTime = BabySitterAvailableTime::firstOrCreate(['available_date_id' => $babySitterAvailableDate->id, 'start' => $hour->start, 'finish' => $hour->end, 'time_status_id' => 1]);
-                        $babySitterAvailableTime->save();
-                    }
-                }
-            }
+    public function store(StoreAvailableTime $request): \Illuminate\Http\Response
+    {
+        try {
+           return $this->calendarService->storeTime(\auth()->id(), $request->all());
+        } catch (\Exception $exception) {
+            throw $exception;
         }
         return $this->sendResponse($this->get(), 'Kaydetme işlemi başarılı!');
     }
 
-    public function get()
+    public function update(AvailableTimeUpdate $request)
     {
-        $date = (date('Y-m-d', time()));
-        $nextDay = date('Y-m-d', strtotime("+15 days"));
-        $baby_sitter = Auth::user();
-        return CalendarResource::collection($baby_sitter
-            ->baby_sitter_available_dates()
-            ->where('date', '>=', $date)
-            ->where('date', '<=', $nextDay)
-            ->with(['times', 'times.time_status'])
-            ->get());
-    }
-
-    public function update(Request $request, BabySitterAvailableTime $babySitterAvailableTime)
-    {
-        if ($babySitterAvailableTime->baby_sitter_available_date->baby_sitter->id == Auth::user()->id) {
-            $babySitterAvailableTime->is_active = $request->is_active;
-            $babySitterAvailableTime->save();
-            return $this->get();
+        try {
+            $this->calendarService->update(\auth()->id(),$request->only('available_time_id','time_status_id'));
+        }catch (\Exception $exception){
+            throw $exception;
         }
     }
 
-    public function delete(BabySitterAvailableTime $babySitterAvailableTime)
+    public function delete(AvailableTimeDelete $request)
     {
-        $babySitterAvailableTime->delete();
-        return $this->get();
+        try {
+            return $this->calendarService->delete(\auth()->id(),$request->only('available_time_id'));
+        }catch (\Exception $exception){
+            throw $exception;
+        }
     }
 
 

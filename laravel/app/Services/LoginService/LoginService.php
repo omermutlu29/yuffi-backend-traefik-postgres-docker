@@ -5,29 +5,27 @@ namespace App\Services\LoginService;
 
 
 use App\Interfaces\IRepositories\IUserRepository;
-use App\Interfaces\IServices\ILogin;
-use App\Services\NotificationServices\NetGSMSmsNotification;
+use App\Interfaces\IServices\ILoginService;
+use App\Interfaces\NotificationInterfaces\INotification;
 
-class LoginService implements ILogin
+class LoginService implements ILoginService
 {
-    private $notificationService;
-    private $userRepository;
+    private INotification $notificationService;
 
-    public function __construct(NetGSMSmsNotification $netGSMSmsNotification, IUserRepository $userRepository)
+    public function __construct(INotification $notification)
     {
-        $this->notificationService = $netGSMSmsNotification;
-        $this->userRepository = $userRepository;
+        $this->notificationService = $notification;
     }
 
-    public function login(array $data): bool
+    public function login(array $data, IUserRepository $userRepository): bool
     {
         try {
-            $user = $this->userRepository->getUserByPhone($data['phone']);
+            $user = $userRepository->getUserByPhone($data['phone']);
             if (!$user) {
-                $user = $this->userRepository->create($data);
+                $user = $userRepository->create($data);
             }
             $code = self::generateSmsCode();
-            $this->userRepository->save_sms_code($user->id, $code);
+            $userRepository->save_sms_code($user->id, $code);
             if (env('APP_ENV') == 'local') {
                 return true;
             }
@@ -38,12 +36,12 @@ class LoginService implements ILogin
 
     }
 
-    public function loginVerifier(array $data): array
+    public function loginVerifier(array $data, IUserRepository $userRepository): array
     {
         $return = ['status' => false];
         try {
-            $user = $this->userRepository->getUserByPhone($data['phone']);
-            if ($user && $this->userRepository->get_last_sms_code($user->id, $data['code'])) {
+            $user = $userRepository->getUserByPhone($data['phone']);
+            if ($user && $userRepository->get_last_sms_code($user->id, $data['code'])) {
                 $return['status'] = true;
                 $return['token'] = $user->createToken('user')->accessToken;
                 $return['user'] = $user;

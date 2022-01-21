@@ -7,16 +7,19 @@ namespace App\Http\Controllers\API\Parent\Auth;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Requests\LoginRequest;
 use App\Http\Resources\ParentResource;
-use App\Services\LoginService\LoginService;
+use App\Interfaces\IRepositories\IUserRepository;
+use App\Interfaces\IServices\ILoginService;
 use Illuminate\Http\Request;
 
 class LoginController extends BaseController
 {
-    private $loginService;
+    private ILoginService $loginService;
+    private IUserRepository $userRepository;
 
-    public function __construct(LoginService $loginService)
+    public function __construct(ILoginService $loginService, IUserRepository $userRepository)
     {
         $this->loginService = $loginService;
+        $this->userRepository = $userRepository;
     }
 
     public function loginOne(LoginRequest $request)
@@ -36,7 +39,7 @@ class LoginController extends BaseController
     public function loginTwo(Request $request)
     {
         try {
-            $result = $this->loginService->loginVerifier($request->only('phone', 'code'));
+            $result = $this->loginService->loginVerifier($request->only('phone', 'code'), $this->userRepository);
             if ($result['status'] != false) {
                 $success['accepted'] = $result['status'];
                 $success['user'] = ParentResource::make($result['user']);

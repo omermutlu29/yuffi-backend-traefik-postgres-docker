@@ -8,22 +8,25 @@ use App\Http\Controllers\API\BaseController;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\LoginRequestVerify;
 use App\Http\Resources\BabySitterResource;
-use App\Services\LoginService\LoginService;
+use App\Interfaces\IRepositories\IUserRepository;
+use App\Interfaces\IServices\ILoginService;
 
 class LoginController extends BaseController
 {
-    private $loginService;
+    private ILoginService $loginService;
+    private IUserRepository $userRepository;
 
-    public function __construct(LoginService $loginService)
+    public function __construct(ILoginService $loginService, IUserRepository $userRepository)
     {
         $this->middleware('auth:baby_sitter', ['except' => ['loginOne', 'loginTwo']]);
         $this->loginService = $loginService;
+        $this->userRepository = $userRepository;
     }
 
     public function loginOne(LoginRequest $request)
     {
         try {
-            if ($this->loginService->login($request->only('phone', 'code'))) {
+            if ($this->loginService->login($request->only('phone', 'code'),$this->userRepository)) {
                 $success['result'] = 'Telefonunuza SMS Gönderildi';
                 return $this->sendResponse($success, 'Telefonunuza SMS Gönderildi');
             }
@@ -36,7 +39,7 @@ class LoginController extends BaseController
     public function loginTwo(LoginRequestVerify $request)
     {
         try {
-            $result = $this->loginService->loginVerifier($request->only('phone', 'code'));
+            $result = $this->loginService->loginVerifier($request->only('phone', 'code'),$this->userRepository);
             if ($result['status'] != false) {
                 $success['accepted'] = $result['status'];
                 $success['baby_sitter'] = BabySitterResource::make($result['user']);

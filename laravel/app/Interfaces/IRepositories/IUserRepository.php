@@ -6,6 +6,8 @@ namespace App\Interfaces\IRepositories;
 
 interface IUserRepository
 {
+    public function getUserById(int $id);
+
     public function getUserByPhone(string $phone);
 
     public function save_sms_code(int $id, string $smsCode);
