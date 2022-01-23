@@ -1,8 +1,5 @@
 <?php
-
-
 namespace App\Http\Controllers\API\Parent\Child;
-
 
 use App\Models\ChildYear;
 use App\Models\Gender;
@@ -19,25 +16,13 @@ class ChildController extends BaseController
         $this->middleware('auth:parent');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public static function index()
+    public static function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $parent = Auth::user();
         return ChildResource::collection($parent->parent_children()->with(['child_year', 'gender'])->get());
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\Response|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         Auth::user()->parent_children()->delete();
 
@@ -64,15 +49,7 @@ class ChildController extends BaseController
         }
     }
 
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\ParentChild $child
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, ParentChild $child)
+    public function update(Request $request, ParentChild $child): \Illuminate\Http\Response|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         try {
             $parent = Auth::user();
@@ -93,14 +70,7 @@ class ChildController extends BaseController
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\ParentChild $child
-     * @return \Illuminate\Http\Response
-     * @throws \Exception
-     */
-    public function destroy(ParentChild $child)
+    public function destroy(ParentChild $child): \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
     {
         if ($child->parent_id == Auth::user()->id) {
             $child->delete();
@@ -109,5 +79,4 @@ class ChildController extends BaseController
         }
         return response()->json(['data' => $this->index(), 'success' => true]);
     }
-
 }
