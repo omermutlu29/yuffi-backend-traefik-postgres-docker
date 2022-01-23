@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class ParentSmsCode extends Model
 {
-    //
+    protected $guarded=[];
 }

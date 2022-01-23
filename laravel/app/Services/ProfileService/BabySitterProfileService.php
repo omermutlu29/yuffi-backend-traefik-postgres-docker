@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 use JetBrains\PhpStorm\ArrayShape;
 
 
-class ProfileService implements IProfileService
+class BabySitterProfileService implements IProfileService
 {
     private IUserRepository $userRepository;
     private IBabySitterRepository $babySitterRepository;
@@ -29,7 +29,7 @@ class ProfileService implements IProfileService
     #[ArrayShape(['status' => "bool", 'message' => "mixed|string"])]
     public function updateBasicInformation(BabySitter $babySitter, Request $request): array
     {
-        $result = ['status' => false, 'message' => ''];
+        $result = ['status' => true, 'message' => 'İşlem başarılı'];
         try {
             $criminalRecordPath = $request->file('criminal_record')->store('public/criminal-records');
             $profilePhotoPath = $request->file('photo')->store('public/profile-photo');
@@ -38,19 +38,15 @@ class ProfileService implements IProfileService
             $this->userRepository->update($babySitter->id, $request->all());
             if ($babySitter->sub_merchant != null) {
                 $serviceResult = $this->subMerchantService->updateIyzicoSubMerchant($babySitter->attributesToArray());
-                if ($serviceResult->getStatus() == "failure") {
-                    $result['message'] = $serviceResult->getErrorMessage();
-                }
             } else {
                 $serviceResult = $this->subMerchantService->insertIyzicoSubMerchant($babySitter->attributesToArray());
-                if ($serviceResult->getStatus() == "failure") {
-                    $result['message'] = $serviceResult->getErrorMessage();
-                }
+            }
+            if ($serviceResult->getStatus() == "failure") {
+                $result['status'] = false;
+                $result['message'] = $serviceResult->getErrorMessage();
             }
             $data = ['sub_merchant' => $serviceResult->getSubMerchantKey()];
             $this->userRepository->update($babySitter->id, $data);
-            $result['status'] = true;
-            $result['message'] = 'İşlem tamamlandı';
             return $result;
         } catch (\Exception $exception) {
             throw $exception;

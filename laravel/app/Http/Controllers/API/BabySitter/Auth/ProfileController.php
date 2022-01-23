@@ -6,13 +6,14 @@ namespace App\Http\Controllers\API\BabySitter\Auth;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\Requests\BabySitterStoreGeneralInformationRequest;
-use App\Services\ProfileService\ProfileService;
+use App\Interfaces\IServices\IProfileService;
+
 
 class ProfileController extends BaseController
 {
-    private ProfileService $profileService;
+    private IProfileService $profileService;
 
-    public function __construct(ProfileService $profileService)
+    public function __construct(IProfileService $profileService)
     {
         $this->middleware('auth:baby_sitter');
         $this->middleware('bs_first_step', ['except' => ['storeGeneralInformation', 'getProfile']]);
@@ -22,6 +23,7 @@ class ProfileController extends BaseController
     public function storeGeneralInformation(BabySitterStoreGeneralInformationRequest $request): \Illuminate\Http\Response
     {
         try {
+            //TODO
             $result = $this->profileService->updateBasicInformation(\auth()->user(), $request);
             return $this->sendResponse($result['status'], $result['message']);
         } catch (\Exception $e) {

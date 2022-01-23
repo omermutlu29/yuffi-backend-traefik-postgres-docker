@@ -4,15 +4,19 @@ namespace App\Policies;
 
 use App\Models\Appointment;
 use App\Models\BabySitter;
+use App\Models\Parents;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class AppointmentPolicy
 {
     use HandlesAuthorization;
 
-    public function update(BabySitter $babySitter, Appointment $appointment)
+    public function update(BabySitter|Parents $user, Appointment $appointment)
     {
-        return $babySitter->id == $appointment->baby_sitter_id;
+        if($user instanceof Parents){
+            return $appointment->parent_id === $user->id;
+        }
+        return $user->id == $appointment->baby_sitter_id;
     }
 
 

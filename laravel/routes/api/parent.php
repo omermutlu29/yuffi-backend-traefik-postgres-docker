@@ -1,14 +1,19 @@
 <?php
 Route::prefix('parent')->group(function () {
+    //SOLID
     Route::prefix('login')->group(function () {
         Route::post('user', [\App\Http\Controllers\API\Parent\Auth\LoginController::class, 'loginOne']);
         Route::post('sms-code', [\App\Http\Controllers\API\Parent\Auth\LoginController::class, 'loginTwo']);
     });//Bitti
 
+
     Route::prefix('profile')->group(function () {
-        Route::put('update', [\App\Http\Controllers\API\Parent\Auth\RegisterController::class, 'updateInformation']);
-        Route::get('get-profile', [\App\Http\Controllers\API\Parent\Auth\RegisterController::class, 'getProfile']);
+        Route::put('update', [\App\Http\Controllers\API\Parent\Auth\ProfileController::class, 'updateProfile']);
+        Route::get('get-profile', [\App\Http\Controllers\API\Parent\Auth\ProfileController::class, 'getProfile']);
     });//Bitti
+
+    //solid ends
+
 
     Route::resource('child', \App\Http\Controllers\API\Parent\Child\ChildController::class);//Bitti
 

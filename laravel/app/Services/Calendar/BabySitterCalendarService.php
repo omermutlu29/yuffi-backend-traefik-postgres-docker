@@ -11,12 +11,10 @@ use App\Interfaces\IServices\IBabySitterCalendarService;
 class BabySitterCalendarService implements IBabySitterCalendarService
 {
     private IBabySitterCalendarRepository $babySitterCalendarRepository;
-    private IUserRepository $babySitterRepository;
 
-    public function __construct(IBabySitterCalendarRepository $babySitterCalendarRepository, IUserRepository $userRepository)
+    public function __construct(IBabySitterCalendarRepository $babySitterCalendarRepository)
     {
         $this->babySitterCalendarRepository = $babySitterCalendarRepository;
-        $this->babySitterRepository = $userRepository;
     }
 
     public function storeTime($babySitterId, array $data): void
@@ -36,7 +34,7 @@ class BabySitterCalendarService implements IBabySitterCalendarService
     public function getMyNextFifteenDaysCalendar($babySitterId)
     {
         try {
-            $this->babySitterCalendarRepository->getMyNextFifteenDays($babySitterId);
+            return $this->babySitterCalendarRepository->getMyNextFifteenDays($babySitterId);
         } catch (\Exception $exception) {
             throw $exception;
         }
@@ -49,7 +47,7 @@ class BabySitterCalendarService implements IBabySitterCalendarService
             abort(403);
         }
         try {
-            $this->babySitterCalendarRepository->deleteAvailableTime($availableTimeId);
+            return $this->babySitterCalendarRepository->deleteAvailableTime($availableTimeId);
         } catch (\Exception $exception) {
             throw $exception;
         }
@@ -62,7 +60,7 @@ class BabySitterCalendarService implements IBabySitterCalendarService
             abort(403);
         }
         try {
-            $this->babySitterCalendarRepository->updateAvailableTime($availableTimeId, $status);
+            return $this->babySitterCalendarRepository->updateAvailableTime($availableTimeId, $status);
         } catch (\Exception $exception) {
             throw $exception;
         }

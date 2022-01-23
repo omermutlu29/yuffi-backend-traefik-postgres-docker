@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 
 class AppointmentController extends BaseController
 {
-
     public function __construct()
     {
         $this->middleware('auth:parent');

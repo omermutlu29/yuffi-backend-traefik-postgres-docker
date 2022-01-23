@@ -4,16 +4,14 @@ namespace App\Http\Controllers\API\BabySitter\Deposit;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\Requests\DepositPayRequest;
-use App\Models\BabySitter;
-use App\Services\DepositService\DepositService;
+use App\Interfaces\DepositService\IDeposit;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class DepositController extends BaseController
 {
-    private DepositService $depositService;
+    private IDeposit $depositService;
 
-    public function __construct(DepositService $depositService)
+    public function __construct(IDeposit $depositService)
     {
         $this->middleware(['auth:baby_sitter', 'bs_first_step', 'bs_second_step']);
         $this->depositService = $depositService;
@@ -21,7 +19,7 @@ class DepositController extends BaseController
 
     public function deposit()
     {
-        $baby_sitter = Auth::user();
+        $baby_sitter = \auth()->user();
         if ($baby_sitter->deposit < 30) {
             return $this->sendResponse(false, 30 - $baby_sitter->deposit . ' TL Ödemeniz bulunmaktadır.');
         } else {
@@ -47,10 +45,10 @@ class DepositController extends BaseController
         }
     }
 
-    public function depositPay3d(DepositPayRequest $request): \Illuminate\Http\Response
+    public function depositPay3d(DepositPayRequest $request)
     {
         try {
-            $babySitter = BabySitter::find(8);
+            $babySitter = \auth()->user();
             if ($babySitter->deposit == 30) {
                 return $this->sendError('Error', 'Depozitonuz zaten ödenmiş görünüyor');
             }

@@ -8,12 +8,12 @@ use App\Interfaces\NotificationInterfaces\INotification;
 
 class PushNotificationService implements INotification
 {
-    private $apiKey;
+    public $apiKey;
 
     public function __construct($apiKey = null)
     {
 
-        $this->apiKey = $apiKey == null ? env('FIREBASE_APIKEY') : 'AAAAMCymdGA:APA91bExY1q0NYhnLXJ3xX3IfA2f_bHdlmD0KYcWHKDG_8qN7jANu4WcQ5KcL9FEhkQtLyquJrD4Kd2D0Fg_TBwx426mv5etnTEcYMmE7QfHxajelUOyjcvDZOCtz1-Cs8RUPJDG_YLQ';
+        $this->apiKey = env('FIREBASE_APIKEY') ;
     }
 
 

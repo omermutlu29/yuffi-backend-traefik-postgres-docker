@@ -8,8 +8,5 @@ Route::any('login',function (){
     ]);
 })->name('login');
 
-Route::get('test',function (\App\Http\Requests\StoreAvailableTime $req){
-    $cs=new \App\Services\Calendar\BabySitterCalendarService();
-    return $cs->store($req->all());
-});
+
 

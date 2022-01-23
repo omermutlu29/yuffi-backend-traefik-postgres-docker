@@ -6,14 +6,14 @@ namespace App\Http\Controllers\API\BabySitter\Preferences;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\Requests\PreferencesUpdateRequest;
-use App\Services\ProfileService\ProfileService;
+use App\Services\ProfileService\BabySitterProfileService;
 
 class PreferenceController extends BaseController
 {
 
-    private ProfileService $profileService;
+    private BabySitterProfileService $profileService;
 
-    public function __construct(ProfileService $profileService)
+    public function __construct(BabySitterProfileService $profileService)
     {
         $this->middleware(['auth:baby_sitter', 'bs_first_step', 'bs_second_step', 'deposit']);
         $this->profileService = $profileService;

@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 use App\Http\Controllers\API\BabySitter\Auth\LoginController as BabySitterLoginController;
+use App\Http\Controllers\API\BabySitter\Auth\ProfileController as BabySitterProfileController;
 use App\Http\Controllers\API\Parent\Auth\LoginController as ParentLoginController;
+use App\Http\Controllers\API\Parent\Auth\ProfileController as ParentProfileController;
+use App\Interfaces\DepositService\IDeposit;
 use App\Interfaces\IRepositories\IAppointmentRepository;
 use App\Interfaces\IRepositories\IBabySitterCalendarRepository;
 use App\Interfaces\IRepositories\IBabySitterRepository;
@@ -11,6 +14,7 @@ use App\Interfaces\IRepositories\IUserRepository;
 use App\Interfaces\IServices\IAppointmentService;
 use App\Interfaces\IServices\IBabySitterCalendarService;
 use App\Interfaces\IServices\ILoginService;
+use App\Interfaces\IServices\IProfileService;
 use App\Interfaces\NotificationInterfaces\INotification;
 use App\Interfaces\PaymentInterfaces\IPaymentService;
 use App\Interfaces\PaymentInterfaces\IPayToSubMerchantService;
@@ -21,11 +25,13 @@ use App\Repositories\CalendarRepository;
 use App\Repositories\ParentRepository;
 use App\Services\Appointment\AppointmentService;
 use App\Services\Calendar\BabySitterCalendarService;
+use App\Services\DepositService\DepositService;
 use App\Services\LoginService\LoginService;
 use App\Services\NotificationServices\NetGSMSmsNotification;
 use App\Services\PaymentServices\Iyzico\IyzicoDirectPaymentService;
 use App\Services\PaymentServices\Iyzico\IyzicoThreeDPaymentService;
-use App\Services\ProfileService\ProfileService;
+use App\Services\ProfileService\BabySitterProfileService;
+use App\Services\ProfileService\ParentProfileService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -47,6 +53,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        //DEPOSIT
+        $this->app->bind(IDeposit::class, DepositService::class);
+        //Deposit Ends
+
         //Payment Systems
         $this->app->bind(IPaymentService::class, IyzicoDirectPaymentService::class);
         $this->app->bind(IPayToSubMerchantService::class, IyzicoDirectPaymentService::class);
@@ -62,9 +72,16 @@ class AppServiceProvider extends ServiceProvider
         $this->app->when(ParentLoginController::class)->needs(IUserRepository::class)->give(ParentRepository::class);
         //Login Ends
 
-        $this->app->when(ProfileService::class)->needs(IBabySitterRepository::class)->give(BabySitterRepository::class);
-        $this->app->when(ProfileService::class)->needs(IUserRepository::class)->give(BabySitterRepository::class);
+        //BabySitterProfile
+        $this->app->when(BabySitterProfileController::class)->needs(IProfileService::class)->give(BabySitterProfileService::class);
+        $this->app->when(BabySitterProfileService::class)->needs(IBabySitterRepository::class)->give(BabySitterRepository::class);
+        $this->app->when(BabySitterProfileService::class)->needs(IUserRepository::class)->give(BabySitterRepository::class);
+        //BabySitter Profile Ends
 
+        //ParentIP
+        $this->app->when(ParentProfileController::class)->needs(IProfileService::class)->give(ParentProfileService::class);
+        $this->app->when(ParentProfileService::class)->needs(IUserRepository::class)->give(ParentRepository::class);
+        //Parent Profile Ends
 
         //Calendar
         $this->app->bind(IBabySitterCalendarRepository::class, CalendarRepository::class);

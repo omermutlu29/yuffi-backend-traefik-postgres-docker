@@ -33,16 +33,16 @@ class ParentRepository implements IUserRepository
 
     public function update(int $id, array $data)
     {
-        // TODO: Implement update() method.
+        return self::getUserById($id)->update($data);
     }
 
     public function getUserById(int $id)
     {
-        // TODO: Implement getUserById() method.
+        return Parents::find($id);
     }
 
-    public function getUserWithRelations(int $id, array $relations)
+    public function getUserWithRelations(int $id, array $relations): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Builder|array|null
     {
-        // TODO: Implement getUserWithRelations() method.
+        return Parents::with($relations)->find($id);
     }
 }
