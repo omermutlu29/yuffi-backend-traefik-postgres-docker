@@ -12,7 +12,7 @@ use Iyzipay\Model\PaymentCard;
 use Iyzipay\Options;
 use Iyzipay\Request\CreatePaymentRequest;
 
-class IyzicoThreeDPaymentService extends IyzicoBaseService implements IThreeDPaymentService, IPayToSubMerchantService
+class IyzicoThreeDPaymentService extends IyzicoPaymentBaseService implements IThreeDPaymentService, IPayToSubMerchantService
 {
     public function __construct(Options $options, CreatePaymentRequest $createPaymentRequest, PaymentCard $paymentCard, Buyer $buyer, Address $address)
     {

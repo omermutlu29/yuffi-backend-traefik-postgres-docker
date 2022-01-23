@@ -13,7 +13,11 @@ Route::prefix('parent')->group(function () {
     });//Bitti
 
     Route::resource('child', \App\Http\Controllers\API\Parent\Child\ChildController::class);//Bitti
-
+    Route::prefix('card')->group(function () {
+        Route::get('index', [\App\Http\Controllers\API\Parent\Card\CardController::class, 'cardList']);
+        Route::post('store', [\App\Http\Controllers\API\Parent\Card\CardController::class, 'store']);
+        Route::delete('delete/{cardParent}', [\App\Http\Controllers\API\Parent\Card\CardController::class, 'delete'])->name('card.delete');
+    });
     //solid ends
 
 
@@ -30,13 +34,9 @@ Route::prefix('parent')->group(function () {
         Route::get('get/{appointment}', [\App\Http\Controllers\API\Parent\Message\MessageController::class, 'getMessage']);
     });
 
-    Route::prefix('card')->group(function () {
-        Route::get('index', [\App\Http\Controllers\API\Parent\Card\CardController::class, 'cardList']);
-        Route::post('store', [\App\Http\Controllers\API\Parent\Card\CardController::class, 'store']);
-        Route::delete('delete/{id}', [\App\Http\Controllers\API\Parent\Card\CardController::class, 'delete'])->name('card.delete');
-    });
 
-    Route::get('appointments', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'index']);
+
+    //Route::get('appointments', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'index']);
 
 });
 

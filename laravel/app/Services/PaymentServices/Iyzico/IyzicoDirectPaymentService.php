@@ -12,12 +12,8 @@ use Iyzipay\Model\PaymentCard;
 use Iyzipay\Options;
 use Iyzipay\Request\CreatePaymentRequest;
 
-class IyzicoDirectPaymentService extends IyzicoBaseService implements IPaymentService, IPayToSubMerchantService
+class IyzicoDirectPaymentService extends IyzicoPaymentBaseService implements IPaymentService, IPayToSubMerchantService
 {
-    public function __construct(Options $options, CreatePaymentRequest $createPaymentRequest, PaymentCard $paymentCard, Buyer $buyer, Address $address)
-    {
-        parent::__construct($options, $createPaymentRequest, $paymentCard, $buyer, $address);
-    }
 
     public function pay(array $cardInformation, array $products, array $addressInformation, array $buyerInformation, float $totalPrice, string $currency, int $installment, int $conversationId): \Iyzipay\Model\Payment
     {

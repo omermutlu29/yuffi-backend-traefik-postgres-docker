@@ -10,21 +10,26 @@ use Iyzipay\Request\UpdateSubMerchantRequest;
 
 class IyzicoSubMerchantService extends IyzicoBaseService implements ISubMerchantService
 {
-    public function insertIyzicoSubMerchant(array $data, CreateSubMerchantRequest $request)
-    {
-        parent::setOptions();
-        $request = self::prepareRequest($request, $data);
-        $request->setSubMerchantExternalId($data['tc']);
-        $request->setSubMerchantType(\Iyzipay\Model\SubMerchantType::PERSONAL);
-        $subMerchant = \Iyzipay\Model\SubMerchant::create($request, $this->options);
-        return $subMerchant;
-    }
-
-    public function updateIyzicoSubMerchant(array $data, UpdateSubMerchantRequest $request)
+    public function insertIyzicoSubMerchant(array $data): \Iyzipay\Model\SubMerchant
     {
         try {
             parent::setOptions();
-            $request = self::prepareRequest($request, $data);
+            $request = self::prepareRequest(CreateSubMerchantRequest::class, $data);
+            $request->setSubMerchantExternalId($data['tc']);
+            $request->setSubMerchantType(\Iyzipay\Model\SubMerchantType::PERSONAL);
+            $subMerchant = \Iyzipay\Model\SubMerchant::create($request, $this->options);
+            return $subMerchant;
+        } catch (\Exception $exception) {
+            throw $exception;
+        }
+
+    }
+
+    public function updateIyzicoSubMerchant(array $data): \Iyzipay\Model\SubMerchant
+    {
+        try {
+            parent::setOptions();
+            $request = self::prepareRequest(UpdateSubMerchantRequest::class, $data);
             $request->setSubMerchantKey($data['sub_merchant']);
             $subMerchant = \Iyzipay\Model\SubMerchant::update($request, $this->options);
             return $subMerchant;
@@ -35,6 +40,7 @@ class IyzicoSubMerchantService extends IyzicoBaseService implements ISubMerchant
 
     private static function prepareRequest($request, $data)
     {
+        $request = new $request();
         $request->setLocale(\Iyzipay\Model\Locale::TR);
         $request->setConversationId($data['tc']);
         $request->setIban($data['iban']);

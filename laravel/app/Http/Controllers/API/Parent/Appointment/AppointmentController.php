@@ -16,16 +16,7 @@ class AppointmentController extends BaseController
         $this->middleware('auth:parent');
     }
 
-    public function index()
-    {
-        $data = [
-            'pending_approve' => \auth()->user()->appointments()->pendingApprove()->get(),
-            'pending_payment' => \auth()->user()->appointments()->pendingPayment()->get(),
-            'paid' => \auth()->user()->appointments()->paid()->get(),
-            'not_approved' => \auth()->user()->appointments()->notApproved()->get(),
-        ];
-        return $this->sendResponse($data, 'Randevular Getirildi');
-    }
+
 
     public function payToAppointment(Appointment $appointment, Request $request)
     {
