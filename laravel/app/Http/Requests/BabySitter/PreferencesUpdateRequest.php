@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\BabySitter;
 
-use App\Rules\IBANRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class BabySitterStoreGeneralInformationRequest extends FormRequest
+class PreferencesUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,16 +26,18 @@ class BabySitterStoreGeneralInformationRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'surname' => 'required',
-            'tc' => 'required',
-            'gender_id' => 'required',
-            'birthday' => 'required',
-            'criminal_record' => 'required|file',
-            'address' => 'required',
-            'email' => 'required',
-            'photo' => 'required|file',
-            'iban' => ['required', new IBANRule()]
+            'price_per_hour'=>'required',
+            'child_gender_id'=>'required|exists:genders,id',
+            'child_year_id'=>'required|exists:child_genders,id',
+            'child_count'=>'required|min:1',
+            'disabled_status'=>'required',
+            'animal_status'=>'required',
+            'towns'=>'required|array|min:1',
+            'towns.*'=>'required|exists:towns,id',
+            'accepted_locations'=>'required|array|min:1',
+            'accepted_locations.*'=>'required|exists:appointment_locations,id',
+
+
         ];
     }
 

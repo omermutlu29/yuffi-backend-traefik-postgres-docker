@@ -3,13 +3,12 @@
 
 namespace App\Http\Controllers\API\Parent\Auth;
 
-
 use App\Http\Controllers\API\BaseController;
-use App\Http\Requests\LoginRequest;
+use App\Http\Requests\LoginRequests\LoginRequest;
+use App\Http\Requests\LoginRequests\LoginRequestVerify;
 use App\Http\Resources\ParentResource;
 use App\Interfaces\IRepositories\IUserRepository;
 use App\Interfaces\IServices\ILoginService;
-use Illuminate\Http\Request;
 
 class LoginController extends BaseController
 {
@@ -25,7 +24,7 @@ class LoginController extends BaseController
     public function loginOne(LoginRequest $request)
     {
         try {
-            if ($this->loginService->login($request->only('phone', 'code'),$this->userRepository)) {
+            if ($this->loginService->login($request->only('phone', 'code'), $this->userRepository)) {
                 $success['result'] = 'Telefonunuza SMS Gönderildi';
                 return $this->sendResponse($success, 'Telefonunuza SMS Gönderildi');
             }
@@ -36,7 +35,7 @@ class LoginController extends BaseController
     }
 
 
-    public function loginTwo(Request $request)
+    public function loginTwo(LoginRequestVerify $request)
     {
         try {
             $result = $this->loginService->loginVerifier($request->only('phone', 'code'), $this->userRepository);

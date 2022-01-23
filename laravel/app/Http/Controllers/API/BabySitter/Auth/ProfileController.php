@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API\BabySitter\Auth;
 
 
 use App\Http\Controllers\API\BaseController;
-use App\Http\Requests\BabySitterStoreGeneralInformationRequest;
+use App\Http\Requests\BabySitter\BabySitterStoreGeneralInformationRequest;
 use App\Interfaces\IServices\IProfileService;
 
 

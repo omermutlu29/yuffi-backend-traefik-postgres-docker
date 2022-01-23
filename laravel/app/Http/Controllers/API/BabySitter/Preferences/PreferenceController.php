@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API\BabySitter\Preferences;
 
 
 use App\Http\Controllers\API\BaseController;
-use App\Http\Requests\PreferencesUpdateRequest;
+use App\Http\Requests\BabySitter\PreferencesUpdateRequest;
 use App\Services\ProfileService\BabySitterProfileService;
 
 class PreferenceController extends BaseController

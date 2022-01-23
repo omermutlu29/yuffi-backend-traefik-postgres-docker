@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class BabySitterComment extends Model
 {
-    public function baby_sitter(){
+    public function baby_sitter(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
         return $this->belongsTo(BabySitter::class);
     }
 
-    public function appointment(){
+    public function appointment(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
         return $this->belongsTo(Appointment::class);
     }
 }

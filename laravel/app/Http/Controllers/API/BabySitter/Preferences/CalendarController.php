@@ -5,9 +5,9 @@ namespace App\Http\Controllers\API\BabySitter\Preferences;
 
 
 use App\Http\Controllers\API\BaseController;
-use App\Http\Requests\AvailableTimeDelete;
-use App\Http\Requests\AvailableTimeUpdate;
-use App\Http\Requests\StoreAvailableTime;
+use App\Http\Requests\AvailableTimeRequests\AvailableTimeDelete;
+use App\Http\Requests\AvailableTimeRequests\AvailableTimeUpdate;
+use App\Http\Requests\BabySitter\StoreAvailableTime;
 use App\Interfaces\IServices\IBabySitterCalendarService;
 
 class CalendarController extends BaseController
@@ -24,7 +24,7 @@ class CalendarController extends BaseController
     {
         try {
             return $this->calendarService->getMyNextFifteenDaysCalendar(\auth()->id());
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             throw $exception;
         }
     }
@@ -32,7 +32,7 @@ class CalendarController extends BaseController
     public function store(StoreAvailableTime $request): \Illuminate\Http\Response
     {
         try {
-           return $this->calendarService->storeTime(\auth()->id(), $request->all());
+            return $this->calendarService->storeTime(\auth()->id(), $request->all());
         } catch (\Exception $exception) {
             throw $exception;
         }
@@ -42,8 +42,8 @@ class CalendarController extends BaseController
     public function update(AvailableTimeUpdate $request)
     {
         try {
-            $this->calendarService->update(\auth()->id(),$request->only('available_time_id','time_status_id'));
-        }catch (\Exception $exception){
+            $this->calendarService->update(\auth()->id(), $request->only('available_time_id', 'time_status_id'));
+        } catch (\Exception $exception) {
             throw $exception;
         }
     }
@@ -51,8 +51,8 @@ class CalendarController extends BaseController
     public function delete(AvailableTimeDelete $request)
     {
         try {
-            return $this->calendarService->delete(\auth()->id(),$request->only('available_time_id'));
-        }catch (\Exception $exception){
+            return $this->calendarService->delete(\auth()->id(), $request->only('available_time_id'));
+        } catch (\Exception $exception) {
             throw $exception;
         }
     }

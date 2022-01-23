@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API\BabySitter\Appointment;
 
 
 use App\Http\Controllers\API\BaseController;
-use App\Http\Requests\ApproveDisapproveAppointmentRequest;
+use App\Http\Requests\AppointmentRequests\ApproveDisapproveAppointmentRequest;
 use App\Interfaces\IServices\IAppointmentService;
 
 class AppointmentController extends BaseController

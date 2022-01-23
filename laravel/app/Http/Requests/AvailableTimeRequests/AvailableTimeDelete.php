@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\AvailableTimeRequests;
 
 use App\Interfaces\IRepositories\IBabySitterCalendarRepository;
 use Illuminate\Foundation\Http\FormRequest;
 
-class AvailableTimeUpdate extends FormRequest
+class AvailableTimeDelete extends FormRequest
 {
     private IBabySitterCalendarRepository $calendarRepository;
 
@@ -14,10 +14,15 @@ class AvailableTimeUpdate extends FormRequest
         $this->calendarRepository = $babySitterCalendarRepository;
     }
 
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
     public function authorize()
     {
         $availableTime = $this->calendarRepository->getAvailableTimeByIdWithDate(request()->post('available_time_id'));
-        return \request()->user()->can('update', $availableTime);
+        return \request()->user()->can('delete', $availableTime);
     }
 
     /**
@@ -28,8 +33,7 @@ class AvailableTimeUpdate extends FormRequest
     public function rules()
     {
         return [
-            'available_time_id' => 'required|exists:baby_sitter_available_times,id',
-            'time_status_id' => 'required|exists:time_statuses,id'
+            'available_time_id'=>'required|exists:baby_sitter_available_times,id'
         ];
     }
 }

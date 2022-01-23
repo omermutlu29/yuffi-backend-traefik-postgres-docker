@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\API\BabySitter\Deposit;
 
 use App\Http\Controllers\API\BaseController;
-use App\Http\Requests\DepositPayRequest;
-use App\Interfaces\DepositService\IDeposit;
+use App\Http\Requests\BabySitter\DepositPayRequest;
+use App\Interfaces\DepositService\IDepositService;
 use Illuminate\Http\Request;
 
 class DepositController extends BaseController
 {
-    private IDeposit $depositService;
+    private IDepositService $depositService;
 
-    public function __construct(IDeposit $depositService)
+    public function __construct(IDepositService $depositService)
     {
         $this->middleware(['auth:baby_sitter', 'bs_first_step', 'bs_second_step']);
         $this->depositService = $depositService;

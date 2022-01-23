@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API\Parent\Auth;
 
 
 use App\Http\Controllers\API\BaseController;
-use App\Http\Requests\ParentUpdateProfileRequest;
+use App\Http\Requests\Parent\ParentUpdateProfileRequest;
 use App\Interfaces\IServices\IProfileService;
 
 class ProfileController extends BaseController

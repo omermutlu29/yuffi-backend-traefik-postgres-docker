@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Interfaces\IRepositories\IUserRepository;
 use App\Models\Parents;
+use App\Services\HttpStatuses\HttpStatuses;
 
 class ParentRepository implements IUserRepository
 {
@@ -38,7 +39,8 @@ class ParentRepository implements IUserRepository
 
     public function getUserById(int $id)
     {
-        return Parents::find($id);
+        $user = Parents::find($id);
+        if (!$user) throw new \Exception('User could not find', HttpStatuses::HTTP_BAD_REQUEST);
     }
 
     public function getUserWithRelations(int $id, array $relations): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Builder|array|null

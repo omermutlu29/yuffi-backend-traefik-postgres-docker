@@ -9,7 +9,8 @@ class AppointmentMessage extends Model
 {
     protected  $fillable=['phone','user_type','message','send_status','saw'];
 
-    public function appointment(){
+    public function appointment(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
         return $this->belongsTo(Appointment::class);
     }
 

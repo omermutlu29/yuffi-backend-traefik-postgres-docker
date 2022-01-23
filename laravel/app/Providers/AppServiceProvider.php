@@ -6,13 +6,15 @@ use App\Http\Controllers\API\BabySitter\Auth\LoginController as BabySitterLoginC
 use App\Http\Controllers\API\BabySitter\Auth\ProfileController as BabySitterProfileController;
 use App\Http\Controllers\API\Parent\Auth\LoginController as ParentLoginController;
 use App\Http\Controllers\API\Parent\Auth\ProfileController as ParentProfileController;
-use App\Interfaces\DepositService\IDeposit;
+use App\Interfaces\DepositService\IDepositService;
 use App\Interfaces\IRepositories\IAppointmentRepository;
 use App\Interfaces\IRepositories\IBabySitterCalendarRepository;
 use App\Interfaces\IRepositories\IBabySitterRepository;
+use App\Interfaces\IRepositories\IChildrenRepository;
 use App\Interfaces\IRepositories\IUserRepository;
 use App\Interfaces\IServices\IAppointmentService;
 use App\Interfaces\IServices\IBabySitterCalendarService;
+use App\Interfaces\IServices\IChildrenService;
 use App\Interfaces\IServices\ILoginService;
 use App\Interfaces\IServices\IProfileService;
 use App\Interfaces\NotificationInterfaces\INotification;
@@ -22,10 +24,12 @@ use App\Interfaces\PaymentInterfaces\IThreeDPaymentService;
 use App\Repositories\AppointmentRepository;
 use App\Repositories\BabySitterRepository;
 use App\Repositories\CalendarRepository;
+use App\Repositories\ChildrenRepository;
 use App\Repositories\ParentRepository;
 use App\Services\Appointment\AppointmentService;
 use App\Services\Calendar\BabySitterCalendarService;
-use App\Services\DepositService\DepositService;
+use App\Services\ChildrenService\ChildrenService;
+use App\Services\DepositService\DepositServiceService;
 use App\Services\LoginService\LoginService;
 use App\Services\NotificationServices\NetGSMSmsNotification;
 use App\Services\PaymentServices\Iyzico\IyzicoDirectPaymentService;
@@ -54,7 +58,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //DEPOSIT
-        $this->app->bind(IDeposit::class, DepositService::class);
+        $this->app->bind(IDepositService::class, DepositServiceService::class);
         //Deposit Ends
 
         //Payment Systems
@@ -91,5 +95,9 @@ class AppServiceProvider extends ServiceProvider
         //Appointment
         $this->app->bind(IAppointmentRepository::class, AppointmentRepository::class);
         $this->app->bind(IAppointmentService::class, AppointmentService::class);
+
+        //Children
+        $this->app->bind(IChildrenRepository::class, ChildrenRepository::class);
+        $this->app->bind(IChildrenService::class, ChildrenService::class);
     }
 }

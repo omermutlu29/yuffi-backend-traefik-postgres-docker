@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\BabySitter;
 
+use App\Rules\IBANRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class LoginRequestVerify extends FormRequest
+class BabySitterStoreGeneralInformationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,8 +27,16 @@ class LoginRequestVerify extends FormRequest
     public function rules()
     {
         return [
-            'phone'=>'required',
-            'code'=>'required|max:4|min:4'
+            'name' => 'required',
+            'surname' => 'required',
+            'tc' => 'required',
+            'gender_id' => 'required',
+            'birthday' => 'required',
+            'criminal_record' => 'required|file',
+            'address' => 'required',
+            'email' => 'required',
+            'photo' => 'required|file',
+            'iban' => ['required', new IBANRule()]
         ];
     }
 

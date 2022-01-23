@@ -6,14 +6,14 @@ namespace App\Services\DepositService;
 
 use App\Http\Resources\AddressPaymentResource;
 use App\Http\Resources\BabySitterPaymentResource;
-use App\Interfaces\DepositService\IDeposit;
+use App\Interfaces\DepositService\IDepositService;
 use App\Interfaces\PaymentInterfaces\IPaymentService;
 use App\Interfaces\PaymentInterfaces\IThreeDPaymentService;
 use App\Models\BabySitter;
 use App\Models\BabySitterDeposit;
 use App\Repositories\DepositRepository;
 
-class DepositService implements IDeposit
+class DepositServiceService implements IDepositService
 {
     const CURRENCY = 'TRY';
     const INSTALLMENT = 1;

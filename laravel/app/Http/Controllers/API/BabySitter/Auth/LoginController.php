@@ -5,8 +5,8 @@ namespace App\Http\Controllers\API\BabySitter\Auth;
 
 
 use App\Http\Controllers\API\BaseController;
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\LoginRequestVerify;
+use App\Http\Requests\LoginRequests\LoginRequest;
+use App\Http\Requests\LoginRequests\LoginRequestVerify;
 use App\Http\Resources\BabySitterResource;
 use App\Interfaces\IRepositories\IUserRepository;
 use App\Interfaces\IServices\ILoginService;

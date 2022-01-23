@@ -12,10 +12,11 @@ Route::prefix('parent')->group(function () {
         Route::get('get-profile', [\App\Http\Controllers\API\Parent\Auth\ProfileController::class, 'getProfile']);
     });//Bitti
 
+    Route::resource('child', \App\Http\Controllers\API\Parent\Child\ChildController::class);//Bitti
+
     //solid ends
 
 
-    Route::resource('child', \App\Http\Controllers\API\Parent\Child\ChildController::class);//Bitti
 
     Route::post('filter', [\App\Http\Controllers\API\Parent\Filter\FilterController::class, 'filter']);
 
