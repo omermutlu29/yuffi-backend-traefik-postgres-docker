@@ -6,11 +6,6 @@ namespace App\Services\PaymentServices\Iyzico;
 
 use App\Interfaces\PaymentInterfaces\IPaymentService;
 use App\Interfaces\PaymentInterfaces\IPayToSubMerchantService;
-use Iyzipay\Model\Address;
-use Iyzipay\Model\Buyer;
-use Iyzipay\Model\PaymentCard;
-use Iyzipay\Options;
-use Iyzipay\Request\CreatePaymentRequest;
 
 class IyzicoDirectPaymentService extends IyzicoPaymentBaseService implements IPaymentService, IPayToSubMerchantService
 {
@@ -27,12 +22,10 @@ class IyzicoDirectPaymentService extends IyzicoPaymentBaseService implements IPa
             parent::createShippingAddress($addressInformation);
             $basketItems = [];
             foreach ($products as $product) {
-                $basketItems[] = self::generateBasketItemMerchant($product['id'], $product['name'], $product['category'], $product['price'],
-                );
+                $basketItems[] = self::generateBasketItemMerchant($product['id'], $product['name'], $product['category'], $product['price'],);
             }
             $this->paymentRequest->setBasketItems($basketItems);
             return \Iyzipay\Model\Payment::create($this->paymentRequest, $this->options);
-
         } catch (\Exception $exception) {
             throw $exception;
         }

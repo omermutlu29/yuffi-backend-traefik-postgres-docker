@@ -13,10 +13,15 @@ class AppointmentPolicy
 
     public function update(BabySitter|Parents $user, Appointment $appointment)
     {
-        if($user instanceof Parents){
+        if ($user instanceof Parents) {
             return $appointment->parent_id === $user->id;
         }
         return $user->id == $appointment->baby_sitter_id;
+    }
+
+    public function confirmAppointmentAndPay(Parents $parents, Appointment $appointment)
+    {
+        return ($appointment->parent_id == $parents->id && $appointment->baby_sitter_approved == true);
     }
 
 

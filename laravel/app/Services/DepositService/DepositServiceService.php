@@ -29,9 +29,9 @@ class DepositServiceService implements IDepositService
         '8' => 'Bilinmeyen kart no',
     ];
 
-    private $directPaymentService;
-    private $threeDPaymentService;
-    private $depositRepository;
+    private IPaymentService $directPaymentService;
+    private IThreeDPaymentService $threeDPaymentService;
+    private DepositRepository $depositRepository;
     private $cardInformation;
 
     private $buyer;

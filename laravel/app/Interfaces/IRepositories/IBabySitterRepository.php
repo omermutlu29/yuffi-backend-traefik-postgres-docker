@@ -12,4 +12,6 @@ interface IBabySitterRepository
 
     public function updateAvailableTowns(BabySitter $babySitter, array $availableTowns);
 
+    public function getSubMerchantId($id);
+
 }

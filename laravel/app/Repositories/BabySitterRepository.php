@@ -56,4 +56,9 @@ class BabySitterRepository implements IUserRepository, IBabySitterRepository
     {
         return BabySitter::find($id);
     }
+
+    public function getSubMerchantId($id)
+    {
+        return self::getUserById($id)->sub_merchant;
+    }
 }

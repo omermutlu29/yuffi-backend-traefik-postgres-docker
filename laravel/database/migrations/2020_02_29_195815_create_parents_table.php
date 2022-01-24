@@ -15,7 +15,6 @@ class CreateParentsTable extends Migration
     {
         Schema::create('parents', function (Blueprint $table) {
             $table->bigIncrements('id');
-
             $table->string('name')->nullable();
             $table->string('surname')->nullable();
             $table->string('tc',11)->nullable();
@@ -29,6 +28,7 @@ class CreateParentsTable extends Migration
             $table->boolean('black_list')->default(0);
             $table->string('google_st')->nullable();
             $table->string('network')->nullable();
+            $table->text('address')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

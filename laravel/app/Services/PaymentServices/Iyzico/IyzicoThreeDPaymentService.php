@@ -4,7 +4,7 @@
 namespace App\Services\PaymentServices\Iyzico;
 
 
-use App\Interfaces\PaymentInterfaces\IPayToSubMerchantService;
+use App\Interfaces\PaymentInterfaces\IPayToSubMerchantThreeD;
 use App\Interfaces\PaymentInterfaces\IThreeDPaymentService;
 use Iyzipay\Model\Address;
 use Iyzipay\Model\Buyer;
@@ -12,7 +12,7 @@ use Iyzipay\Model\PaymentCard;
 use Iyzipay\Options;
 use Iyzipay\Request\CreatePaymentRequest;
 
-class IyzicoThreeDPaymentService extends IyzicoPaymentBaseService implements IThreeDPaymentService, IPayToSubMerchantService
+class IyzicoThreeDPaymentService extends IyzicoPaymentBaseService implements IThreeDPaymentService, IPayToSubMerchantThreeD
 {
     public function __construct(Options $options, CreatePaymentRequest $createPaymentRequest, PaymentCard $paymentCard, Buyer $buyer, Address $address)
     {
@@ -76,5 +76,10 @@ class IyzicoThreeDPaymentService extends IyzicoPaymentBaseService implements ITh
         $request->setPaymentId($paymentId);
         $request->setConversationData("conversation data");
         return \Iyzipay\Model\ThreedsPayment::create($request, $this->options);
+    }
+
+    public function payToSubMerchantWithThreeD()
+    {
+        // TODO: Implement payToSubMerchantWithThreeD() method.
     }
 }

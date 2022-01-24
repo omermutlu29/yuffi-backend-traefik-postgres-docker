@@ -67,6 +67,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(IThreeDPaymentService::class, IyzicoThreeDPaymentService::class);
         //Payment System Ends
 
+
+        //Payment System For ThreeD
+
+        //PaymentSystem For ThreeD end
+
         //LOGIN BINDINGS
         $this->app->bind(ILoginService::class, LoginService::class);
         $this->app->when(LoginService::class)
