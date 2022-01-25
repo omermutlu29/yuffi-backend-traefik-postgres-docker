@@ -4,10 +4,10 @@
 namespace App\Services\PaymentServices\Iyzico;
 
 
-use App\Interfaces\PaymentInterfaces\IPaymentService;
-use App\Interfaces\PaymentInterfaces\IPayToSubMerchantService;
+use App\Interfaces\PaymentInterfaces\IPayment;
+use App\Interfaces\PaymentInterfaces\IPaymentToSubMerchant;
 
-class IyzicoDirectPaymentService extends IyzicoPaymentBaseService implements IPaymentService, IPayToSubMerchantService
+class IyzicoPaymentService extends IyzicoPaymentBaseService implements IPayment, IPaymentToSubMerchant
 {
 
     public function pay(array $cardInformation, array $products, array $addressInformation, array $buyerInformation, float $totalPrice, string $currency, int $installment, int $conversationId): \Iyzipay\Model\Payment
@@ -32,7 +32,7 @@ class IyzicoDirectPaymentService extends IyzicoPaymentBaseService implements IPa
 
     }
 
-    public function payToSubMerchant(array $cardInformation, array $products, array $addressInformation, array $buyerInformation, float $totalPrice, string $currency, int $installment, int $conversationId, string $subMerchant, float $subMerchantPrice,?string $callback): \Iyzipay\Model\Payment
+    public function payToSubMerchant(array $cardInformation, array $products, array $addressInformation, array $buyerInformation, float $totalPrice, string $currency, int $installment, int $conversationId, string $subMerchant, float $subMerchantPrice): \Iyzipay\Model\Payment
     {
         parent::setOptions();
         parent::createPaymentRequest($totalPrice, $installment, $conversationId, $currency);

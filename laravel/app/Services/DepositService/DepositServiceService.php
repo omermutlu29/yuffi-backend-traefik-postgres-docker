@@ -7,8 +7,9 @@ namespace App\Services\DepositService;
 use App\Http\Resources\AddressPaymentResource;
 use App\Http\Resources\BabySitterPaymentResource;
 use App\Interfaces\DepositService\IDepositService;
-use App\Interfaces\PaymentInterfaces\IPaymentService;
-use App\Interfaces\PaymentInterfaces\IThreeDPaymentService;
+use App\Interfaces\PaymentInterfaces\ICompleteThreeDPayment;
+use App\Interfaces\PaymentInterfaces\IPayment;
+use App\Interfaces\PaymentInterfaces\IThreeDPaymentInitialize;
 use App\Models\BabySitter;
 use App\Models\BabySitterDeposit;
 use App\Repositories\DepositRepository;
@@ -29,8 +30,9 @@ class DepositServiceService implements IDepositService
         '8' => 'Bilinmeyen kart no',
     ];
 
-    private IPaymentService $directPaymentService;
-    private IThreeDPaymentService $threeDPaymentService;
+    private IPayment $directPaymentService;
+    private IThreeDPaymentInitialize $threeDPaymentService;
+    private ICompleteThreeDPayment $completeThreeDPayment;
     private DepositRepository $depositRepository;
     private $cardInformation;
 
@@ -50,8 +52,9 @@ class DepositServiceService implements IDepositService
         $this->products[0]['price'] = $this->totalPrice;
     }
 
-    public function __construct(IPaymentService $paymentService, DepositRepository $depositRepository, IThreeDPaymentService $threeDPaymentService)
+    public function __construct(IPayment $paymentService, DepositRepository $depositRepository, IThreeDPaymentInitialize $threeDPaymentService,ICompleteThreeDPayment $completeThreeDPayment)
     {
+        $this->completeThreeDPayment=$completeThreeDPayment;
         $this->directPaymentService = $paymentService;
         $this->depositRepository = $depositRepository;
         $this->threeDPaymentService = $threeDPaymentService;
@@ -99,7 +102,7 @@ class DepositServiceService implements IDepositService
             if (isset(self::MD_STATUSES[$data['mdStatus']])) {
                 return ['status' => $data['status'], 'errorCode' => $data['mdStatus'], 'errorMessage' => self::MD_STATUSES[$data['mdStatus']]];
             }
-            $result = $this->threeDPaymentService->completeThreeDPayment($data['conversationId'], $data['paymentId'], $data['conversationData']);
+            $result = $this->completeThreeDPayment->completeThreeDPayment($data['conversationId'], $data['paymentId'], $data['conversationData']);
             $babySitterDeposit=BabySitterDeposit::find($data['conversationId']);
             $babySitterDeposit->update(
                 [

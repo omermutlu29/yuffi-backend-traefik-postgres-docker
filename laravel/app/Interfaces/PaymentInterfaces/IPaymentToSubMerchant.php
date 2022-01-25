@@ -4,9 +4,9 @@
 namespace App\Interfaces\PaymentInterfaces;
 
 
-interface IThreeDPaymentService
+interface IPaymentToSubMerchant
 {
-    public function initializeThreeDPayment(
+    public function payToSubMerchant(
         array $cardInformation,
         array $products,
         array $addressInformation,
@@ -15,9 +15,7 @@ interface IThreeDPaymentService
         string $currency,
         int $installment,
         int $conversationId,
-        string $callbackUrl
-    );
-
-
-    public function completeThreeDPayment(string $conversationId, string $paymentId, ?string $conversationData);
+        string $subMerchant,
+        float $subMerchantPrice,
+    ): \Iyzipay\Model\Payment;
 }

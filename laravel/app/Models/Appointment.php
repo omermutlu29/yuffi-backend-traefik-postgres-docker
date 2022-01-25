@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Appointment extends Model
 {
     protected $hidden=['id'];
+    protected $casts=['payment_raw_result'=>'object'];
 
     public function baby_sitter(){
         return $this->belongsTo(BabySitter::class);

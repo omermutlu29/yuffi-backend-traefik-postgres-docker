@@ -71,4 +71,9 @@ class AppointmentRepository implements IAppointmentRepository
     {
         return Appointment::where('id', $appointmentId)->update(['baby_sitter_approved' => false, 'appointment_status_id' => 5]);
     }
+
+    public function disapproveAppointment(int $appointmentId)
+    {
+        // TODO: Implement disapproveAppointment() method.
+    }
 }

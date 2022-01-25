@@ -33,6 +33,7 @@ class CreateAppointmentsTable extends Migration
             $table->foreign('town_id')->references('id')->on('towns');
             $table->decimal('point')->nullable();
             $table->boolean('baby_sitter_approved')->nullable();
+            $table->json('payment_raw_result')->nullable();
             $table->timestamps();
         });
     }

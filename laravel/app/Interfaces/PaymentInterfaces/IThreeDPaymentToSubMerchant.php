@@ -4,9 +4,9 @@
 namespace App\Interfaces\PaymentInterfaces;
 
 
-interface IPayToSubMerchantService
+interface IThreeDPaymentToSubMerchant
 {
-    public function payToSubMerchant(
+    public function initializeThreeDForSubMerchant(
         array $cardInformation,
         array $products,
         array $addressInformation,
@@ -17,6 +17,6 @@ interface IPayToSubMerchantService
         int $conversationId,
         string $subMerchant,
         float $subMerchantPrice,
-        ?string $callbackUrl
+        string $callbackUrl
     );
 }

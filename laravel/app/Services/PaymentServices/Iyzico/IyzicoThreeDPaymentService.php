@@ -3,23 +3,14 @@
 
 namespace App\Services\PaymentServices\Iyzico;
 
+use App\Interfaces\PaymentInterfaces\ICompleteThreeDPayment;
+use App\Interfaces\PaymentInterfaces\IThreeDPaymentToSubMerchant;
+use App\Interfaces\PaymentInterfaces\IThreeDPaymentInitialize;
 
-use App\Interfaces\PaymentInterfaces\IPayToSubMerchantThreeD;
-use App\Interfaces\PaymentInterfaces\IThreeDPaymentService;
-use Iyzipay\Model\Address;
-use Iyzipay\Model\Buyer;
-use Iyzipay\Model\PaymentCard;
-use Iyzipay\Options;
-use Iyzipay\Request\CreatePaymentRequest;
-
-class IyzicoThreeDPaymentService extends IyzicoPaymentBaseService implements IThreeDPaymentService, IPayToSubMerchantThreeD
+class IyzicoThreeDPaymentService extends IyzicoPaymentBaseService
+    implements IThreeDPaymentInitialize, IThreeDPaymentToSubMerchant, ICompleteThreeDPayment
 {
-    public function __construct(Options $options, CreatePaymentRequest $createPaymentRequest, PaymentCard $paymentCard, Buyer $buyer, Address $address)
-    {
-        parent::__construct($options, $createPaymentRequest, $paymentCard, $buyer, $address);
-    }
-
-    public function initializeThreeDPayment(array $cardInformation, array $products, array $addressInformation, array $buyerInformation, float $totalPrice, string $currency, int $installment, int $conversationId,?string $callbackUrl): \Iyzipay\Model\ThreedsInitialize
+    public function initializeThreeDPayment(array $cardInformation, array $products, array $addressInformation, array $buyerInformation, float $totalPrice, string $currency, int $installment, int $conversationId, ?string $callbackUrl): \Iyzipay\Model\ThreedsInitialize
     {
         parent::setOptions();
         parent::createPaymentRequest($totalPrice, $installment, $conversationId, $currency);
@@ -39,15 +30,17 @@ class IyzicoThreeDPaymentService extends IyzicoPaymentBaseService implements ITh
             );
         }
         $this->paymentRequest->setBasketItems($basketItems);
-        return \Iyzipay\Model\ThreedsInitialize::create($this->paymentRequest, $this->options);
+        $result = \Iyzipay\Model\ThreedsInitialize::create($this->paymentRequest, $this->options);
+        if ($result->getStatus() !== "success") throw new \Exception($result->getErrorMessage(), $result->getErrorCode());
+        return $result;
     }
 
-    public function payToSubMerchant(array $cardInformation, array $products, array $addressInformation, array $buyerInformation, float $totalPrice, string $currency, int $installment, int $conversationId, string $subMerchantKey, float $subMerchantPrice,?string $callbackUrl): \Iyzipay\Model\ThreedsInitialize
+    public function initializeThreeDForSubMerchant(array $cardInformation, array $products, array $addressInformation, array $buyerInformation, float $totalPrice, string $currency, int $installment, int $conversationId, string $subMerchant, float $subMerchantPrice, string $callbackUrl)
     {
         parent::setOptions();
         parent::createPaymentRequest($totalPrice, $installment, $conversationId, $currency);
-        $this->paymentRequest->setCallbackUrl(env('IYZICO_CALLBACK_URL'));//For ThreeD
-        $this->paymentRequest->setPaymentGroup(\Iyzipay\Model\PaymentGroup::PRODUCT);
+        $this->paymentRequest->setCallbackUrl($callbackUrl);//For ThreeD
+        $this->paymentRequest->setPaymentGroup(\Iyzipay\Model\PaymentGroup::SUBSCRIPTION);
         parent::createPaymentCard($cardInformation);
         parent::createBuyer($buyerInformation);
         parent::createBillingAddress($addressInformation);
@@ -55,7 +48,7 @@ class IyzicoThreeDPaymentService extends IyzicoPaymentBaseService implements ITh
         $basketItems = [];
         foreach ($products as $product) {
             $basketItems[] = parent::generateBasketItemForSubMerchant(
-                $subMerchantKey,
+                $subMerchant,
                 $subMerchantPrice,
                 $product['id'],
                 $product['name'],
@@ -64,7 +57,9 @@ class IyzicoThreeDPaymentService extends IyzicoPaymentBaseService implements ITh
             );
         }
         $this->paymentRequest->setBasketItems($basketItems);
-        return \Iyzipay\Model\ThreedsInitialize::create($this->paymentRequest, $this->options);
+        $result = \Iyzipay\Model\ThreedsInitialize::create($this->paymentRequest, $this->options);
+        if ($result->getStatus() !== "success") throw new \Exception($result->getErrorMessage(), $result->getErrorCode());
+        return $result;
     }
 
     public function completeThreeDPayment(string $conversationId, string $paymentId, ?string $conversationData): \Iyzipay\Model\ThreedsPayment
@@ -75,11 +70,8 @@ class IyzicoThreeDPaymentService extends IyzicoPaymentBaseService implements ITh
         $request->setConversationId($conversationId);
         $request->setPaymentId($paymentId);
         $request->setConversationData("conversation data");
-        return \Iyzipay\Model\ThreedsPayment::create($request, $this->options);
-    }
-
-    public function payToSubMerchantWithThreeD()
-    {
-        // TODO: Implement payToSubMerchantWithThreeD() method.
+        $result =  \Iyzipay\Model\ThreedsPayment::create($request, $this->options);
+        if ($result->getStatus() != "success") throw new \Exception($result->getErrorMessage(),$result->getErrorCode());
+        return $result;
     }
 }

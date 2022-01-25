@@ -18,9 +18,10 @@ use App\Interfaces\IServices\IChildrenService;
 use App\Interfaces\IServices\ILoginService;
 use App\Interfaces\IServices\IProfileService;
 use App\Interfaces\NotificationInterfaces\INotification;
-use App\Interfaces\PaymentInterfaces\IPaymentService;
-use App\Interfaces\PaymentInterfaces\IPayToSubMerchantService;
-use App\Interfaces\PaymentInterfaces\IThreeDPaymentService;
+use App\Interfaces\PaymentInterfaces\IPayment;
+use App\Interfaces\PaymentInterfaces\IPaymentToSubMerchant;
+use App\Interfaces\PaymentInterfaces\IThreeDPaymentToSubMerchant;
+use App\Interfaces\PaymentInterfaces\IThreeDPaymentInitialize;
 use App\Repositories\AppointmentRepository;
 use App\Repositories\BabySitterRepository;
 use App\Repositories\CalendarRepository;
@@ -32,7 +33,7 @@ use App\Services\ChildrenService\ChildrenService;
 use App\Services\DepositService\DepositServiceService;
 use App\Services\LoginService\LoginService;
 use App\Services\NotificationServices\NetGSMSmsNotification;
-use App\Services\PaymentServices\Iyzico\IyzicoDirectPaymentService;
+use App\Services\PaymentServices\Iyzico\IyzicoPaymentService;
 use App\Services\PaymentServices\Iyzico\IyzicoThreeDPaymentService;
 use App\Services\ProfileService\BabySitterProfileService;
 use App\Services\ProfileService\ParentProfileService;
@@ -62,15 +63,11 @@ class AppServiceProvider extends ServiceProvider
         //Deposit Ends
 
         //Payment Systems
-        $this->app->bind(IPaymentService::class, IyzicoDirectPaymentService::class);
-        $this->app->bind(IPayToSubMerchantService::class, IyzicoDirectPaymentService::class);
-        $this->app->bind(IThreeDPaymentService::class, IyzicoThreeDPaymentService::class);
+        $this->app->bind(IPayment::class, IyzicoPaymentService::class);
+        $this->app->bind(IPaymentToSubMerchant::class, IyzicoPaymentService::class);
+        $this->app->bind(IThreeDPaymentInitialize::class, IyzicoThreeDPaymentService::class);
+        $this->app->bind(IThreeDPaymentToSubMerchant::class, IyzicoThreeDPaymentService::class);
         //Payment System Ends
-
-
-        //Payment System For ThreeD
-
-        //PaymentSystem For ThreeD end
 
         //LOGIN BINDINGS
         $this->app->bind(ILoginService::class, LoginService::class);

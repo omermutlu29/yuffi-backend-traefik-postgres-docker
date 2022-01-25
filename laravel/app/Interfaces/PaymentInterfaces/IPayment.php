@@ -4,7 +4,7 @@
 namespace App\Interfaces\PaymentInterfaces;
 
 
-interface IPaymentService
+interface IPayment
 {
     /**
      * @param array $cardInformation example : ['cardHolderName','cardNumber','expireMonth','expireYear','cvc']
@@ -26,6 +26,6 @@ interface IPaymentService
         string $currency,
         int $installment,
         int $conversationId
-    );
+    ) : \Iyzipay\Model\Payment;
 
 }

@@ -18,6 +18,14 @@ Route::prefix('parent')->group(function () {
         Route::post('store', [\App\Http\Controllers\API\Parent\Card\CardController::class, 'store']);
         Route::delete('delete/{cardParent}', [\App\Http\Controllers\API\Parent\Card\CardController::class, 'delete'])->name('card.delete');
     });
+
+    Route::prefix('appointment')->group(function (){
+        Route::post('pay-with-threeD',[\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class,'confirmAppointmentPayThreeD']);
+        Route::post('threeD-complete',[\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class,'completeAppointmentPayThreeD'])->name('appointment.pay.complete');
+        Route::post('pay',[\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class,'confirmAppointmentAndPay']);
+
+    });
+
     //solid ends
 
 
@@ -36,7 +44,6 @@ Route::prefix('parent')->group(function () {
 
 
 
-    //Route::get('appointments', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'index']);
 
 });
 
