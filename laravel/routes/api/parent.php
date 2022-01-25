@@ -26,16 +26,18 @@ Route::prefix('parent')->group(function () {
 
     });
 
+    Route::prefix('baby-sitter')->group(function () {
+        Route::get('show/{babySitter}', [\App\Http\Controllers\API\Parent\Filter\BabySitterController::class, 'show'])->name('baby-sitter.show');
+        Route::post('choose/{babySitter}', [\App\Http\Controllers\API\Parent\Filter\BabySitterController::class, 'choose'])->name('baby-sitter.choose');
+    });
+
     //solid ends
 
 
 
     Route::post('filter', [\App\Http\Controllers\API\Parent\Filter\FilterController::class, 'filter']);
 
-    Route::prefix('baby-sitter')->group(function () {
-        Route::get('show/{babySitter}', [\App\Http\Controllers\API\Parent\Filter\BabySitterController::class, 'show'])->name('baby-sitter.show');
-        Route::post('choose/{babySitter}', [\App\Http\Controllers\API\Parent\Filter\BabySitterController::class, 'choose'])->name('baby-sitter.choose');
-    });
+
 
     Route::prefix('message')->group(function () {
         Route::post('send/{appointment}', [\App\Http\Controllers\API\Parent\Message\MessageController::class, 'sendMessage']);

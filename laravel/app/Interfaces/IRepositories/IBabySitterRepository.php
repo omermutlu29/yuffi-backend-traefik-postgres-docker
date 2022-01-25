@@ -14,4 +14,13 @@ interface IBabySitterRepository
 
     public function getSubMerchantId($id);
 
+    /**
+     * @param array $data
+     * $data[
+     * 'location_id','child_gender_status','disabled_child','gender_id','child_count','town_id','date','times'
+     * ]
+     * @return mixed
+     */
+    public function findBabySitterForFilter(array $data);
+
 }

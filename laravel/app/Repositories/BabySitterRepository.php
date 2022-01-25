@@ -61,4 +61,22 @@ class BabySitterRepository implements IUserRepository, IBabySitterRepository
     {
         return self::getUserById($id)->sub_merchant;
     }
+
+    public function findBabySitterForFilter(array $data)
+    {
+        $babySitters = BabySitter::acceptedLocation($data['location_id'])
+            ->childGenderStatus($data['child_gender_status'])
+            ->acceptsDisabledChild($data['disabled_child'])
+            ->genderFilter($data['gender_id'])
+            ->childrenCount($data['child_count'])
+            ->depositPaid()
+            ->availableTown($data['town_id'])
+            ->dateTime($data['date'], $data['times']);
+        if (isset($data['baby_sitter_id'])) {
+            return $babySitters->where('id', $data['baby_sitter_id'])->first();
+        }
+        return $babySitters->get();
+    }
+
+
 }

@@ -76,4 +76,8 @@ class AppointmentRepository implements IAppointmentRepository
     {
         // TODO: Implement disapproveAppointment() method.
     }
+
+    public function store(array $data){
+        return Appointment::create($data);
+    }
 }
