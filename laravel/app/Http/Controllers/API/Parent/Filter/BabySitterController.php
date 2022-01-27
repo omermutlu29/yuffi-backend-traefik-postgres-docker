@@ -9,7 +9,6 @@ use App\Http\Requests\Parent\BabySitter\FindBabySitterRequest;
 use App\Http\Resources\BabySitterResource;
 use App\Models\BabySitter;
 use App\Services\Appointment\BabySitterFilterService;
-use Illuminate\Http\Request;
 
 class BabySitterController extends BaseController
 {
@@ -26,6 +25,10 @@ class BabySitterController extends BaseController
         } catch (\Exception $e) {
             return $this->sendError($e->getMessage(), null, $e->getCode());
         }
+    }
+
+    public function sendOfferToBabySitter(){
+
     }
 
     public function show(BabySitter $babySitter)

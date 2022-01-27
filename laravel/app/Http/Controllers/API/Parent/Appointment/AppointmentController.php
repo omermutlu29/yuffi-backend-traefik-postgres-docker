@@ -81,6 +81,4 @@ class AppointmentController extends BaseController
             return $this->sendError($e->getMessage(), null, $e->getCode());
         }
     }
-
-
 }

@@ -49,9 +49,6 @@ Route::prefix('baby-sitter')->group(function () {
         Route::put('approve', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'approve']);
         Route::put('disapprove', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'disapprove']);
     });
-    /*Route::prefix('message')->group(function () {
-        Route::post('send/{appointment}', [\App\Http\Controllers\API\BabySitter\Message\MessageController::class, 'sendMessage']);
-        Route::get('get/{appointment}', [\App\Http\Controllers\API\BabySitter\Message\MessageController::class, 'getMessages']);
-    });*/
+
 
 });

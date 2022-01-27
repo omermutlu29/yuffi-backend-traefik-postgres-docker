@@ -35,7 +35,6 @@ Route::prefix('parent')->group(function () {
 
 
 
-    Route::post('filter', [\App\Http\Controllers\API\Parent\Filter\FilterController::class, 'filter']);
 
 
 
