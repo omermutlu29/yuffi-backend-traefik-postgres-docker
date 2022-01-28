@@ -21,6 +21,8 @@ class LoginService implements ILoginService
     {
         try {
             $user = $userRepository->getUserByPhone($data['phone']);
+            $data["kvkk"]=true;
+
             if (!$user) {
                 $user = $userRepository->create($data);
             }
@@ -41,11 +43,15 @@ class LoginService implements ILoginService
         $return = ['status' => false];
         try {
             $user = $userRepository->getUserByPhone($data['phone']);
-            if ($user && $userRepository->get_last_sms_code($user->id, $data['code'])) {
-                $return['status'] = true;
-                $return['token'] = $user->createToken('user')->accessToken;
-                $return['user'] = $user;
+            if (!$user) {
+                throw new \Exception('User could not find!',400);
             }
+            if (!$userRepository->get_last_sms_code($user->id, $data['code'])){
+                throw new \Exception('SMS code does not match',400);
+            }
+            $return['status'] = true;
+            $return['token'] = $user->createToken('user')->accessToken;
+            $return['user'] = $user;
             return $return;
         } catch (\Exception $exception) {
             throw $exception;
