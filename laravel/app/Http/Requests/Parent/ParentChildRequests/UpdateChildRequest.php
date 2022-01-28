@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Requests\ParentChildRequests;
+namespace App\Http\Requests\Parent\ParentChildRequests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UpdateChildRequest extends FormRequest
 {
@@ -29,5 +31,14 @@ class UpdateChildRequest extends FormRequest
             "gender_id" => 'required|exists:genders,id',
             "disable" => 'required|boolean'
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'success' => false,
+            'message' => 'Validation errors',
+            'data' => $validator->errors()
+        ]));
     }
 }

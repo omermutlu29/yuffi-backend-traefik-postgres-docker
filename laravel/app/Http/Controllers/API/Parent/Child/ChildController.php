@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\API\Parent\Child;
 
 use App\Http\Controllers\API\BaseController;
-use App\Http\Requests\ParentChildRequest\DeleteChildRequest;
-use App\Http\Requests\ParentChildRequest\StoreChildrenRequest;
-use App\Http\Requests\ParentChildRequests\UpdateChildRequest;
+use App\Http\Requests\Parent\ParentChildRequests\DeleteChildRequest;
+use App\Http\Requests\Parent\ParentChildRequests\StoreChildrenRequest;
+use App\Http\Requests\Parent\ParentChildRequests\UpdateChildRequest;
 use App\Interfaces\IServices\IChildrenService;
 use App\Models\ParentChild;
 
@@ -31,7 +31,8 @@ class ChildController extends BaseController
     public function store(StoreChildrenRequest $request)
     {
         try {
-            return $this->childrenService->store(\auth()->user(), $request->only('children'));
+            $children =($request->only('children'));
+            return $this->sendResponse($this->childrenService->store(\auth()->user(),$children['children']),'Çocuklar eklendi!');
         } catch (\Exception $exception) {
             return $this->sendError($exception->getMessage(), null, $exception->getCode());
         }

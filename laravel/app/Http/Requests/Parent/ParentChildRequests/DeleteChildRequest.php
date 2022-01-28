@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Requests\ParentChildRequest;
+namespace App\Http\Requests\Parent\ParentChildRequests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class DeleteChildRequest extends FormRequest
 {
@@ -27,5 +29,14 @@ class DeleteChildRequest extends FormRequest
         return [
             //
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'success' => false,
+            'message' => 'Validation errors',
+            'data' => $validator->errors()
+        ]));
     }
 }
