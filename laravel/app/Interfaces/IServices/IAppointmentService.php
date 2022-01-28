@@ -12,4 +12,5 @@ interface IAppointmentService
     public function notApprovedAppointments(int $babySitter);
     public function approveAppointment(int $appointmentId);
     public function disapproveAppointment(int $appointmentId);
+    public function create(int $babySitterId, int $parentId, array $appointmentData);
 }

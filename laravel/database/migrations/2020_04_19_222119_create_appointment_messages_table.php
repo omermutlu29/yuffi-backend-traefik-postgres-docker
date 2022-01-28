@@ -15,13 +15,10 @@ class CreateAppointmentMessagesTable extends Migration
     {
         Schema::create('appointment_messages', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('appointment_id');
-            $table->foreign('appointment_id')->references('id')->on('appointments');
-            $table->string('phone');
-            $table->string('user_type');
+            $table->foreignId('appointment_id')->constrained();
+            $table->string('userable_id');
+            $table->string('userable_type');
             $table->text('message');
-            $table->boolean('send_status')->default(0);
-            $table->boolean('saw')->default(0);
             $table->timestamps();
         });
     }

@@ -29,4 +29,6 @@ interface IAppointmentRepository
     public function approveAppointment(int $appointmentId);
 
     public function disapproveAppointment(int $appointmentId);
+
+    public function store(array $data);
 }

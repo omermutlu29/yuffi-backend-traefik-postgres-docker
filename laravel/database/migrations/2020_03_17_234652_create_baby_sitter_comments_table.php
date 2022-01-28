@@ -15,6 +15,7 @@ class CreateBabySitterCommentsTable extends Migration
     {
         Schema::create('baby_sitter_comments', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->foreignId('parent_id')->constrained();
             $table->unsignedBigInteger('appointment_id');
             $table->foreign('appointment_id')->references('id')->on('appointments');
             $table->unsignedBigInteger('baby_sitter_id');
