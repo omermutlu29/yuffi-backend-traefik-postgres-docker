@@ -3,10 +3,13 @@
 namespace App\Http\Requests\Parent;
 
 use Carbon\Carbon;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ParentUpdateProfileRequest extends FormRequest
 {
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -32,7 +35,15 @@ class ParentUpdateProfileRequest extends FormRequest
             'birthday' => 'required|date_format:d-m-Y|before_or_equal:' . $date,
             'service_contract' => 'required',
             'gender_id' => 'required|exists:genders,id',
-            // 'photo' => 'required|file|mimes:jpeg,jpg,png'
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'success' => false,
+            'message' => 'Validation errors',
+            'data' => $validator->errors()
+        ]));
     }
 }

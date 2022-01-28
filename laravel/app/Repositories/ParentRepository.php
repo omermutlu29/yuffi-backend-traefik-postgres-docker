@@ -34,13 +34,18 @@ class ParentRepository implements IUserRepository
 
     public function update(int $id, array $data)
     {
-        return self::getUserById($id)->update($data);
+        try {
+            return $this->getUserById($id)->update($data);
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
     public function getUserById(int $id)
     {
         $user = Parents::find($id);
         if (!$user) throw new \Exception('User could not find', HttpStatuses::HTTP_BAD_REQUEST);
+        return $user;
     }
 
     public function getUserWithRelations(int $id, array $relations)
