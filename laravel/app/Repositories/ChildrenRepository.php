@@ -52,7 +52,7 @@ class ChildrenRepository implements IChildrenRepository
     public function getParentChildren(int $parentId)
     {
         try {
-            $children = ParentChild::parent($parentId)->get();
+            $children = ParentChild::byParent($parentId)->get();
             if (!$children) throw new \Exception('Children could not received', HttpStatuses::HTTP_BAD_GATEWAY);
             return $children;
         } catch (\Exception $exception) {

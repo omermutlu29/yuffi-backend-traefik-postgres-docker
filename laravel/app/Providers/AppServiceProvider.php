@@ -58,6 +58,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->when(ChildrenRepository::class)->needs(IUserRepository::class)->give(ParentRepository::class);
         //DEPOSIT
         $this->app->bind(IDepositService::class, DepositServiceService::class);
         //Deposit Ends

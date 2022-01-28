@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -28,7 +27,8 @@ class ParentChild extends Model
         return $this->belongsTo(Gender::class);
     }
 
-    public function scopeParent($query,$parentId){
-        return $query->where('parent_id',$parentId);
+    public function scopeByParent($query, $parentId)
+    {
+        return $query->where('parent_id', $parentId);
     }
 }

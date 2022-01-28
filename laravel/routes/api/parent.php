@@ -13,6 +13,7 @@ Route::prefix('parent')->group(function () {
     });//Bitti
 
     Route::resource('child', \App\Http\Controllers\API\Parent\Child\ChildController::class);//Bitti
+
     Route::prefix('card')->group(function () {
         Route::get('index', [\App\Http\Controllers\API\Parent\Card\CardController::class, 'cardList']);
         Route::post('store', [\App\Http\Controllers\API\Parent\Card\CardController::class, 'store']);

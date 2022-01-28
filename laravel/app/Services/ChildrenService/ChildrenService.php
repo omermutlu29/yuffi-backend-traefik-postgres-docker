@@ -41,7 +41,7 @@ class ChildrenService implements IChildrenService
 
     public function getChildren(Parents $parent)
     {
-        $dbResult = $this->childrenRepository->getParentsChildren($parent->id);
+        $dbResult = $this->childrenRepository->getParentChildren($parent->id);
         if (!$dbResult) throw new \Exception('Database process could not completed!', 502);
         return ChildResource::collection($dbResult);
     }

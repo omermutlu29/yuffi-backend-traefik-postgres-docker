@@ -14,18 +14,8 @@ class Parents extends Authenticatable
 
     protected $table = 'parents';
 
-    protected $fillable = [
-        'name',
-        'surname',
-        'tc',
-        'birthday',
-        'photo',
-        'phone',
-        'service_contract',
-        'gender_id',
-        'kvkk',
-        'black_list',
-        'network',
+    protected $guarded = [
+
     ];
 
     public function modelName()

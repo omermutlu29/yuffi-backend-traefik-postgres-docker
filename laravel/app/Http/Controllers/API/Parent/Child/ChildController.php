@@ -22,7 +22,7 @@ class ChildController extends BaseController
     public function index()
     {
         try {
-            return $this->sendResponse($this->childrenService->view(\auth()->user()), 'You have successfully receive the children');
+            return $this->sendResponse($this->childrenService->getChildren(\auth()->user()), 'You have successfully receive the children');
         } catch (\Exception $exception) {
             return $this->sendError($exception->getMessage(), null, $exception->getCode());
         }
