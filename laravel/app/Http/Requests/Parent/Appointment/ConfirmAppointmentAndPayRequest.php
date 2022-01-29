@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Parent\Appointment;
 
+use App\Http\Requests\CreditCardRequest;
 use App\Interfaces\IRepositories\IAppointmentRepository;
 use Illuminate\Contracts\Validation\Validator;
 
@@ -21,7 +22,7 @@ class ConfirmAppointmentAndPayRequest extends CreditCardRequest
      */
     public function authorize()
     {
-        $appointment = $this->appointmentRepository->getAppointmentById(request()->post('appointment_id'));
+        $appointment = $this->route('appointment');
         return request()->user()->can('confirmAppointmentAndPay', $appointment);
     }
 

@@ -5,8 +5,9 @@ namespace App\Http\Controllers\API\Parent\Appointment;
 
 
 use App\Http\Controllers\API\BaseController;
-use App\Http\Requests\ConfirmAppointmentAndPayRequest;
+use App\Http\Requests\Parent\Appointment\ConfirmAppointmentAndPayRequest;
 use App\Interfaces\IRepositories\IAppointmentRepository;
+use App\Models\Appointment;
 use App\Models\BabySitter;
 use App\Services\Appointment\AppointmentPaymentService;
 use App\Services\Appointment\BabySitterFilterService;
@@ -34,7 +35,10 @@ class AppointmentController extends BaseController
 
     }
 
-    public function confirmAppointmentPayThreeD(ConfirmAppointmentAndPayRequest $request, AppointmentPaymentService $appointmentPaymentService): \Illuminate\Http\Response
+    public function confirmAppointmentPayThreeD(
+        Appointment $appointment,
+        ConfirmAppointmentAndPayRequest $request,
+        AppointmentPaymentService $appointmentPaymentService): \Illuminate\Http\Response
     {
         try {
             $cardInformation = $request->only(['cardHolderName', 'cardNumber', 'expireMonth', 'expireYear', 'cvc']);

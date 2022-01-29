@@ -21,18 +21,20 @@ Route::prefix('parent')->group(function () {
     });
 
 
-
-    Route::prefix('appointment')->group(function (){
-        Route::post('pay-with-threeD',[\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class,'confirmAppointmentPayThreeD']);
-        Route::post('threeD-complete',[\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class,'completeAppointmentPayThreeD'])->name('appointment.pay.complete');
-        Route::post('pay',[\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class,'confirmAppointmentAndPay']);
+    Route::prefix('appointment')->group(function () {
+        Route::post('{appointment}/pay-with-threeD', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'confirmAppointmentPayThreeD']);
+        Route::post('{appointment}/pay', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'confirmAppointmentAndPay']);
+        //ödeme sistemi için aşağıdaki route
+        Route::post('threeD-complete', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'completeAppointmentPayThreeD'])->name('appointment.pay.complete');
+        Route::post('create/{babySitter}', [\App\Http\Controllers\API\Parent\Filter\BabySitterController::class, 'makeOfferToBabySitter'])->name('baby-sitter.choose');
     });
+
+
 
 
     //Test edilecek
     Route::prefix('baby-sitter')->group(function () {
         Route::get('show/{babySitter}', [\App\Http\Controllers\API\Parent\Filter\BabySitterController::class, 'show'])->name('baby-sitter.show');
-        Route::post('choose/{babySitter}', [\App\Http\Controllers\API\Parent\Filter\BabySitterController::class, 'makeOfferToBabySitter'])->name('baby-sitter.choose');
         Route::post('find-baby-sitter', [\App\Http\Controllers\API\Parent\Filter\BabySitterController::class, 'findBabySitter'])->name('baby-sitter.findBabySitter');
     });
 
@@ -42,14 +44,6 @@ Route::prefix('parent')->group(function () {
         Route::get('get/{appointment}', [\App\Http\Controllers\API\Parent\Message\MessageController::class, 'getMessage']);
     });
     //solid ends
-
-
-
-
-
-
-
-
 
 
 });

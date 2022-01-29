@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use App\Http\Controllers\API\BaseController;
+use Faker\Provider\Base;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
@@ -35,15 +37,14 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
+        $newBaseController = new BaseController();
         $this->reportable(function (Throwable $e) {
             //
         });
 
-        $this->renderable(function (NotFoundHttpException $e, $request) {
+        $this->renderable(function (NotFoundHttpException $e, $request) use($newBaseController){
             if ($request->is('api/*')) {
-                return response()->json([
-                    'message' => 'Record not found.'
-                ], 404);
+                return $newBaseController->sendError(false,'Aradığınız veri bulunamadı!');
             }
         });
     }
