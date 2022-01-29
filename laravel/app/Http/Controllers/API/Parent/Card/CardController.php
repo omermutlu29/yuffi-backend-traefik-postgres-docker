@@ -44,11 +44,10 @@ class CardController extends BaseController
         try {
             $cardData = $request->only('cardHolderName', 'cardNumber', 'expireMonth', 'expireYear', 'cardAlias');
             $userKey = $this->cardRepository->getUserKey(\auth()->id());
-            if ($userKey != null) {
-                $result = $this->registerCardService->createCard($userKey, $cardData);
-            } else {
-                $result = $this->registerCardService->createCardWithUser($cardData, \auth()->user()->email, \auth()->id());
+            if ($userKey){
+                throw new \Exception('Zaten kayıtlı kartınız var!');
             }
+            $result = $this->registerCardService->createCardWithUser($cardData, \auth()->user()->email, \auth()->id());
             $this->cardRepository->store(\auth()->id(), $result);
             return $this->sendResponse(true, "You have registered card successfully", 201);
         } catch (\Exception $exception) {
