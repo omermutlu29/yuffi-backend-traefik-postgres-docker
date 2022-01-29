@@ -46,8 +46,8 @@ class CardController extends BaseController
             $userKey = $this->cardRepository->getUserKey(\auth()->id());
             if ($userKey != null) {
                 $result = $this->registerCardService->createCard($userKey, $cardData);
-            }else{
-                return $this->sendError('Hata!', ['message' => ['Zaten kayıtlı kartınız mevcut']], 400);
+            } else {
+                $result = $this->registerCardService->createCardWithUser($cardData, \auth()->user()->email, \auth()->id());
             }
             $this->cardRepository->store(\auth()->id(), $result);
             return $this->sendResponse(true, "You have registered card successfully", 201);
