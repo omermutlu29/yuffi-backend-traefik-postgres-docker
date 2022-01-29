@@ -5,6 +5,7 @@ namespace App\Http\Requests\LoginRequests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 
 class LoginRequest extends FormRequest
 {
@@ -27,7 +28,16 @@ class LoginRequest extends FormRequest
     {
         return [
             'google_st'=>'required',
-            'kvkk'=>'required',
+            'kvkk'=>['required','boolean',function ($attribute, $value, $fail) {
+                if (!$value) {
+                    $fail('Uygulamayı kullanabilmeniz için KVKK sözleşmesini kabul etmeniz gerekmektedir.');
+                }
+            }],
+            'service_contract'=>['required','boolean',function ($attribute, $value, $fail) {
+                if (!$value) {
+                    $fail('Uygulamayı kullanabilmeniz için hizmet sözleşmesini kabul etmeniz gerekmektedir.');
+                }
+            }],
             'phone'=>'required',
         ];
     }

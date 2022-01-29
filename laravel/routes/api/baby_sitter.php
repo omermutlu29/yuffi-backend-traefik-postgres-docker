@@ -1,17 +1,11 @@
 <?php
 Route::prefix('baby-sitter')->group(function () {
 
-    Route::prefix('deposit')->group(function () {
-        Route::get('debt', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class, 'deposit']);//Bitti
-        Route::post('pay', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class, 'pay']);//Bitti
-        Route::post('pay-3d', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class, 'depositPay3d']);//Bitti
-        Route::post('pay-3d-complete', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class, 'threeDComplete'])->name('babysitter.deposit.callback');//Bitti Test Edilecek
-    });//Bitti
-
     Route::prefix('login')->group(function () {
         Route::post('user', [\App\Http\Controllers\API\BabySitter\Auth\LoginController::class, 'loginOne']);
         Route::post('sms-code', [\App\Http\Controllers\API\BabySitter\Auth\LoginController::class, 'loginTwo']);
     });//Bitti
+
 
     Route::prefix('profile')->group(function () {
         Route::post('store', [\App\Http\Controllers\API\BabySitter\Auth\ProfileController::class, 'storeGeneralInformation']);
@@ -49,6 +43,14 @@ Route::prefix('baby-sitter')->group(function () {
         Route::put('approve', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'approve']);
         Route::put('disapprove', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'disapprove']);
     });
+
+
+    /*Route::prefix('deposit')->group(function () {
+        Route::get('debt', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class, 'deposit']);//Bitti
+        Route::post('pay', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class, 'pay']);//Bitti
+        Route::post('pay-3d', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class, 'depositPay3d']);//Bitti
+        Route::post('pay-3d-complete', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class, 'threeDComplete'])->name('babysitter.deposit.callback');//Bitti Test Edilecek
+    });//Bitti*/
 
 
 });

@@ -34,7 +34,7 @@ class CreateBabySittersTable extends Migration
             $table->boolean('is_accepted')->default(0);
             $table->boolean('black_list')->default(0);
             $table->string('google_st')->nullable();
-            $table->string('network');
+            $table->ipAddress('network')->nullable();
             $table->decimal('deposit')->default(0);
             $table->decimal('point')->default(0);
             //That's about preferences start

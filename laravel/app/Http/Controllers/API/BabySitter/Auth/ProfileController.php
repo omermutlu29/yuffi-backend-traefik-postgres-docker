@@ -20,7 +20,7 @@ class ProfileController extends BaseController
         $this->profileService = $profileService;
     }
 
-    public function storeGeneralInformation(BabySitterStoreGeneralInformationRequest $request): \Illuminate\Http\Response
+    public function storeGeneralInformation(BabySitterStoreGeneralInformationRequest $request)
     {
         try {
             //TODO
