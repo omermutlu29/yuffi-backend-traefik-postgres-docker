@@ -3,7 +3,9 @@
 namespace App\Http\Requests\BabySitter\CreditCard;
 
 use App\Interfaces\IRepositories\ICardRepository;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class DeleteCardRequest extends FormRequest
 {
@@ -21,9 +23,7 @@ class DeleteCardRequest extends FormRequest
      */
     public function authorize()
     {
-        $card = $this->cardRepository->getUserCardByCardToken(\request()->only('cardToken'));
-        if (!$card) return false;
-        return $card->parent_id == auth()->id();
+        return true;
     }
 
     /**
@@ -36,5 +36,14 @@ class DeleteCardRequest extends FormRequest
         return [
             'cardToken' => 'required|exists:card_parents,cardtoken'
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'success' => false,
+            'message' => 'Validation errors',
+            'data' => $validator->errors()
+        ],400));
     }
 }

@@ -40,7 +40,7 @@ class CardRepository implements ICardRepository
 
     public function getUserCardByCardToken(string $cardToken)
     {
-        return CardParent::where('card_token', $cardToken)->first();
+        return CardParent::where('cardtoken', $cardToken)->first();
     }
 
 

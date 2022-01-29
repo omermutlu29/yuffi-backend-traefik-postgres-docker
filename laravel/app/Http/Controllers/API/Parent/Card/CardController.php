@@ -7,7 +7,6 @@ use App\Http\Requests\BabySitter\CreditCard\DeleteCardRequest;
 use App\Http\Requests\Parent\CreditCard\StoreCardRequest;
 use App\Interfaces\IRepositories\ICardRepository;
 use App\Interfaces\PaymentInterfaces\IRegisterCardService;
-use App\Models\CardParent;
 
 class CardController extends BaseController
 {
@@ -57,9 +56,12 @@ class CardController extends BaseController
     {
         try {
             $userKey = $this->cardRepository->getUserKey(auth()->id());
-
+            $card = $this->cardRepository->getUserCardByCardToken($request->cardToken);
+            if ($card->parent_id !== auth()->id()) {
+                throw new \Exception('Bu kartı silmeye yetkiniz yok!');
+            }
             if (!$userKey) throw new \Exception('Kayıtlı kartınız bulunamadı', 400);
-            $this->registerCardService->deleteCard($userKey, $request->cardtoken);
+            $this->registerCardService->deleteCard($userKey, $request->cardToken);
             if ($this->cardRepository->delete($request->cardToken)) {
                 return $this->sendResponse(true, 'Kayıtlı kartınız başarı ile silindi!');
             }
