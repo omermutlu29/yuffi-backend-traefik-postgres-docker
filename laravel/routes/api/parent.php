@@ -15,7 +15,7 @@ Route::prefix('parent')->group(function () {
     Route::resource('child', \App\Http\Controllers\API\Parent\Child\ChildController::class);//Bitti
 
     Route::prefix('card')->group(function () {
-        Route::get('index', [\App\Http\Controllers\API\Parent\Card\CardController::class, 'cardList']);
+        Route::get('index', [\App\Http\Controllers\API\Parent\Card\CardController::class, 'index']);
         Route::post('store', [\App\Http\Controllers\API\Parent\Card\CardController::class, 'store']);
         Route::delete('delete/{cardParent}', [\App\Http\Controllers\API\Parent\Card\CardController::class, 'delete'])->name('card.delete');
     });

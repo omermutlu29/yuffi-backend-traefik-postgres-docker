@@ -12,9 +12,7 @@ abstract class IyzicoBaseService
     protected string $baseUrl;
     protected Options $options;
 
-    public function __construct(
-        Options $options,
-    )
+    public function __construct(Options $options)
     {
         $this->apiKey = env('IYZICO_API_KEY');
         $this->secretKey = env('IYZICO_SECRET_KEY');

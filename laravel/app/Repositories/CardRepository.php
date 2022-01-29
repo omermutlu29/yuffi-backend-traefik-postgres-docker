@@ -33,7 +33,7 @@ class CardRepository implements ICardRepository
         return true;
     }
 
-    private function getUserCards(int $userId): bool
+    private function getUserCards(int $userId)
     {
         return CardParent::where('parent_id', $userId)->get();
     }

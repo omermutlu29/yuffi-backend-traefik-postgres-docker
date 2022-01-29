@@ -9,14 +9,12 @@ use JetBrains\PhpStorm\ArrayShape;
 
 class IyzicoRegisterCardService extends IyzicoBaseService implements IRegisterCardService
 {
-    public function __construct()
-    {
-        $this->setOptions();
-    }
+
 
     #[ArrayShape(['carduserkey' => "", 'cardtoken' => "", "cardalias" => ""])]
     public function createCard(string $cardUserKey, array $cardData): array
     {
+        self::setOptions();
         $request = new \Iyzipay\Request\CreateCardRequest();
         $request->setLocale(\Iyzipay\Model\Locale::TR);
         $request->setCardUserKey($cardUserKey);
@@ -30,9 +28,10 @@ class IyzicoRegisterCardService extends IyzicoBaseService implements IRegisterCa
 
     }
 
-    #[ArrayShape(['carduserKey' => "", 'cardtoken' => "", "cardalias" => ""])]
+    #[ArrayShape(['carduserkey' => "", 'cardtoken' => "", "cardalias" => ""])]
     public function createCardWithUser(array $cardData, string $email, string $externalId): array
     {
+        self::setOptions();
         $request = new \Iyzipay\Request\CreateCardRequest();
         $request->setLocale(\Iyzipay\Model\Locale::TR);
         $request->setEmail($email);
@@ -40,15 +39,19 @@ class IyzicoRegisterCardService extends IyzicoBaseService implements IRegisterCa
         $cardInformation = self::prepareCardInformation($cardData);
         $request->setCard($cardInformation);
         $card = \Iyzipay\Model\Card::create($request, $this->options);
-        return $card->getStatus() != "success" ? throw new \Exception($card->getErrorMessage(), $card->getErrorCode()) :
-            ['carduserKey' => $card->getCardUserKey(), 'cardtoken' => $card->getCardToken(), 'cardalias' => $card->getCardAlias()];
+        if ($card->getStatus() != "success") throw new \Exception($card->getErrorMessage(), $card->getErrorCode());
+        return [
+            'carduserkey' => $card->getCardUserKey(),
+            'cardtoken' => $card->getCardToken(),
+            'cardalias' => $card->getCardAlias()
+        ];
     }
 
 
-    #[
-        ArrayShape(['rawResult' => ""])]
+    #[ArrayShape(['rawResult' => ""])]
     public function getCardList(string $cardUserKey): array
     {
+        self::setOptions();
         $request = new \Iyzipay\Request\RetrieveCardListRequest();
         $request->setLocale(\Iyzipay\Model\Locale::TR);
         $request->setCardUserKey($cardUserKey);
@@ -63,6 +66,7 @@ class IyzicoRegisterCardService extends IyzicoBaseService implements IRegisterCa
 
     public function deleteCard(string $cardUserKey, string $cardToken): bool
     {
+        self::setOptions();
         $request = new \Iyzipay\Request\DeleteCardRequest();
         $request->setLocale(\Iyzipay\Model\Locale::TR);
         $request->setCardToken($cardToken);
@@ -75,16 +79,14 @@ class IyzicoRegisterCardService extends IyzicoBaseService implements IRegisterCa
     }
 
 
-    private static function prepareCardInformation(array $cardInformation): \Iyzipay\Model\CardInformation
+    private static function prepareCardInformation(array $cardInformationParam): \Iyzipay\Model\CardInformation
     {
         $cardInformation = new \Iyzipay\Model\CardInformation();
-        $cardInformation->setCardAlias($cardInformation['cardAlias']);
-        $cardInformation->setCardHolderName($cardInformation['cardHolderName']);
-        $cardInformation->setCardNumber($cardInformation['cardNumber']);
-        $cardInformation->setExpireMonth($cardInformation['expireMonth']);
-        $cardInformation->setExpireYear($cardInformation['expireYear']);
+        $cardInformation->setCardAlias($cardInformationParam['cardAlias']);
+        $cardInformation->setCardHolderName($cardInformationParam['cardHolderName']);
+        $cardInformation->setCardNumber($cardInformationParam['cardNumber']);
+        $cardInformation->setExpireMonth($cardInformationParam['expireMonth']);
+        $cardInformation->setExpireYear($cardInformationParam['expireYear']);
         return $cardInformation;
     }
-
-
 }

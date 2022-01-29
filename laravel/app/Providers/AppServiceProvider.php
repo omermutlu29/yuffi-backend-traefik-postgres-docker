@@ -10,6 +10,7 @@ use App\Interfaces\DepositService\IDepositService;
 use App\Interfaces\IRepositories\IAppointmentRepository;
 use App\Interfaces\IRepositories\IBabySitterCalendarRepository;
 use App\Interfaces\IRepositories\IBabySitterRepository;
+use App\Interfaces\IRepositories\ICardRepository;
 use App\Interfaces\IRepositories\IChildrenRepository;
 use App\Interfaces\IRepositories\IUserRepository;
 use App\Interfaces\IServices\IAppointmentService;
@@ -20,11 +21,13 @@ use App\Interfaces\IServices\IProfileService;
 use App\Interfaces\NotificationInterfaces\INotification;
 use App\Interfaces\PaymentInterfaces\IPayment;
 use App\Interfaces\PaymentInterfaces\IPaymentToSubMerchant;
+use App\Interfaces\PaymentInterfaces\IRegisterCardService;
 use App\Interfaces\PaymentInterfaces\IThreeDPaymentToSubMerchant;
 use App\Interfaces\PaymentInterfaces\IThreeDPaymentInitialize;
 use App\Repositories\AppointmentRepository;
 use App\Repositories\BabySitterRepository;
 use App\Repositories\CalendarRepository;
+use App\Repositories\CardRepository;
 use App\Repositories\ChildrenRepository;
 use App\Repositories\ParentRepository;
 use App\Services\Appointment\AppointmentService;
@@ -34,6 +37,7 @@ use App\Services\DepositService\DepositServiceService;
 use App\Services\LoginService\LoginService;
 use App\Services\NotificationServices\NetGSMSmsNotification;
 use App\Services\PaymentServices\Iyzico\IyzicoPaymentService;
+use App\Services\PaymentServices\Iyzico\IyzicoRegisterCardService;
 use App\Services\PaymentServices\Iyzico\IyzicoThreeDPaymentService;
 use App\Services\ProfileService\BabySitterProfileService;
 use App\Services\ProfileService\ParentProfileService;
@@ -58,6 +62,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->when(CardRepository::class)->needs(IUserRepository::class)->give(ParentRepository::class);
+
+        $this->app->bind(ICardRepository::class,CardRepository::class);
+        $this->app->bind(IRegisterCardService::class,IyzicoRegisterCardService::class);
         $this->app->when(ChildrenRepository::class)->needs(IUserRepository::class)->give(ParentRepository::class);
         //DEPOSIT
         $this->app->bind(IDepositService::class, DepositServiceService::class);

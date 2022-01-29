@@ -44,7 +44,7 @@ class ParentRepository implements IUserRepository
     public function getUserById(int $id)
     {
         $user = Parents::find($id);
-        if (!$user) throw new \Exception('User could not find', HttpStatuses::HTTP_BAD_REQUEST);
+        if (!$user) throw new \Exception('User could not find', 400);
         return $user;
     }
 

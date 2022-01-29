@@ -26,9 +26,15 @@ class CardController extends BaseController
         try {
             $userKey = $this->cardRepository->getUserKey(auth()->id());
             if (!$userKey) throw new \Exception('You have no card in our database', 400);
-            return $this->registerCardService->getCardList($userKey);
+            $response = $this->registerCardService->getCardList($userKey);
+            if (isset($response['rawResult'])) {
+                $response = json_decode($response['rawResult']);
+                $cardDetails = $response->cardDetails;
+                return $this->sendResponse($cardDetails, 'Kayıtlı kartlar getirildi');
+            }
+            throw new \Exception('Kredi kartı servisi yanıt vermiyor');
         } catch (\Exception $exception) {
-            return $this->sendError($exception->getMessage(), [], $exception->getCode());
+            return $this->sendError($exception->getMessage(), $exception->getCode(), 400);
         }
     }
 
@@ -37,13 +43,15 @@ class CardController extends BaseController
         try {
             $cardData = $request->only('cardHolderName', 'cardNumber', 'expireMonth', 'expireYear', 'cardAlias');
             $userKey = $this->cardRepository->getUserKey(\auth()->id());
-            $result = $userKey ?
-                $this->registerCardService->createCard($userKey, $cardData) :
-                $this->registerCardService->createCardWithUser($cardData, \auth()->user()->email, \auth()->user()->id());
+            if ($userKey != null) {
+                $result = $this->registerCardService->createCard($userKey, $cardData);
+            } else {
+                $result = $this->registerCardService->createCardWithUser($cardData, \auth()->user()->email, \auth()->id());
+            }
             $this->cardRepository->store(\auth()->id(), $result);
             return $this->sendResponse(true, "You have registered card successfully", 401);
         } catch (\Exception $exception) {
-            return $this->sendError($exception->getMessage(), null, $exception->getCode());
+            return $this->sendError($exception->getMessage(), $exception->getCode(), 400);
         }
     }
 
@@ -51,9 +59,12 @@ class CardController extends BaseController
     {
         try {
             $userKey = $this->cardRepository->getUserKey(auth()->id());
-            if (!$userKey) throw new \Exception('You have no card in our database', 400);
+            if (!$userKey) throw new \Exception('Kayıtlı kartınız bulunamadı', 400);
             $this->registerCardService->deleteCard($userKey, $cardParent->cardtoken);
-            $this->cardRepository->delete($cardParent->id);
+            if ($this->cardRepository->delete($cardParent->id)) {
+                return $this->sendResponse(true, 'Kayıtlı kartınız başarı ile silindi!');
+            }
+            throw new \Exception('Kayıtlı kartınız silinemedi');
         } catch (\Exception $exception) {
             return $this->sendError($exception->getMessage(), [], $exception->getCode());
         }
