@@ -50,7 +50,7 @@ class CardController extends BaseController
                 $result = $this->registerCardService->createCardWithUser($cardData, \auth()->user()->email, \auth()->id());
             }
             $this->cardRepository->store(\auth()->id(), $result);
-            return $this->sendResponse(true, "You have registered card successfully", 401);
+            return $this->sendResponse(true, "You have registered card successfully", 201);
         } catch (\Exception $exception) {
             return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
         }
