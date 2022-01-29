@@ -29,8 +29,8 @@ class BabySitterController extends BaseController
             return $this->sendResponse(
                 $babySitterFilterService->findBabySitterForAppointment(\auth()->user(), $filterData),
                 'Bakıcı listesi');
-        } catch (\Exception $e) {
-            return $this->sendError($e->getMessage(), $e->getCode(),400 );
+        } catch (\Exception $exception) {
+            return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
         }
     }
 
@@ -43,8 +43,9 @@ class BabySitterController extends BaseController
             if ($isAvailable) {
                 return $this->sendResponse($appointmentService->create($babySitterId, auth()->id(), $filterData),'Appointment created');
             }
-        } catch (\Exception $e) {
-            return $this->sendError($e->getMessage(), null, $e->getCode());
+        } catch (\Exception $exception) {
+            return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
+
         }
     }
 

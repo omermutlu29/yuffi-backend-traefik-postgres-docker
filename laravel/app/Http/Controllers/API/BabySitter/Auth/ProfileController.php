@@ -26,14 +26,21 @@ class ProfileController extends BaseController
             //TODO
             $result = $this->profileService->updateBasicInformation(\auth()->user(), $request);
             return $this->sendResponse($result['status'], $result['message']);
-        } catch (\Exception $e) {
-            throw $e;
+        } catch (\Exception $exception) {
+            return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
+
         }
     }
 
-    public function getProfile(): \Illuminate\Http\Response
+    public function getProfile()
     {
-        $success['baby_sitter'] = $this->profileService->getProfile(\auth()->id());
-        return $this->sendResponse($success, 'Veri Başarı ile Getirildi!');
+        try {
+            $success['baby_sitter'] = $this->profileService->getProfile(\auth()->id());
+            return $this->sendResponse($success, 'Veri Başarı ile Getirildi!');
+        }catch (\Exception $exception){
+            return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
+
+        }
+
     }
 }

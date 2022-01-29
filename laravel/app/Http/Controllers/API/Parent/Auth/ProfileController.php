@@ -26,9 +26,9 @@ class ProfileController extends BaseController
                 \auth()->id(),
                 $request->only('name', 'surname', 'tc', 'birthday', 'service_contract', 'gender_id', 'photo')
             ) ? $this->sendResponse(true, 'Profiliniz güncellendi') :
-                $this->sendError('Bir hata ile karşılaşıldı', null, 400);
-        } catch (\Exception $e) {
-            return $this->sendError($e->getMessage(), null, $e->getCode());
+                $this->sendError('Bir hata ile karşılaşıldı', 400);
+        } catch (\Exception $exception) {
+            return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
         }
     }
 
@@ -37,7 +37,7 @@ class ProfileController extends BaseController
         try {
             return $this->sendResponse($this->parentProfileService->getProfile(\auth()->id()), 'Profil bilgileri getirildi');
         } catch (\Exception $exception) {
-            return $this->sendError($exception->getMessage(), null, $exception->getCode());
+            return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
         }
     }
 

@@ -24,7 +24,7 @@ class ChildController extends BaseController
         try {
             return $this->sendResponse($this->childrenService->getChildren(\auth()->user()), 'You have successfully receive the children');
         } catch (\Exception $exception) {
-            return $this->sendError($exception->getMessage(), null, $exception->getCode());
+            return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
         }
     }
 
@@ -34,7 +34,7 @@ class ChildController extends BaseController
             $children =($request->only('children'));
             return $this->sendResponse($this->childrenService->store(\auth()->user(),$children['children']),'Çocuklar eklendi!');
         } catch (\Exception $exception) {
-            return $this->sendError($exception->getMessage(), null, $exception->getCode());
+            return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
         }
 
     }
@@ -43,9 +43,9 @@ class ChildController extends BaseController
     {
         try {
             $data = $request->only('child_year_id', 'gender_id', 'disable');
-            return $this->childrenService->update($child, $data);
+            return $this->sendResponse($this->childrenService->update($child, $data),'Başarı ile güncellendi!');
         } catch (\Exception $exception) {
-            throw $exception;
+            return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
         }
     }
 
@@ -54,7 +54,8 @@ class ChildController extends BaseController
         try {
             return $this->sendResponse($this->childrenService->delete($child),'Ekli çocuk silindi!');
         } catch (\Exception $exception) {
-            return $this->sendError($exception->getMessage(),null,$exception->getCode()) ;
+            return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
+
         }
     }
 }

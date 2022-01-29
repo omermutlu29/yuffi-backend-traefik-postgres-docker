@@ -25,7 +25,8 @@ class MessageController extends BaseController
             $sent = $this->messageService->sendMessage(\auth()->user(), $appointment, $request->text);
             return $this->sendResponse($sent, 'Message sent');
         } catch (\Exception $exception) {
-            return $this->sendError($exception->getMessage(), null, $exception->getCode());
+            return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
+
         }
     }
 
@@ -34,7 +35,7 @@ class MessageController extends BaseController
         try {
             return $this->sendResponse($this->messageService->getMessages($appointment), 'Messages received');
         } catch (\Exception $exception) {
-            return $this->sendError($exception->getMessage(), null, $exception->getCode());
+            return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
         }
     }
 }

@@ -30,9 +30,10 @@ class LoginController extends BaseController
                 $success['result'] = 'Telefonunuza SMS Gönderildi';
                 return $this->sendResponse($success, 'Telefonunuza SMS Gönderildi');
             }
-            return $this->sendError(false, ['Birşeyler ters gitti!']);
+            return $this->sendError('Hata!', ['message'=>'Birşeyler ters gitti!'],400);
         } catch (\Exception $exception) {
-            throw $exception;
+            return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
+
         }
     }
 
@@ -47,7 +48,7 @@ class LoginController extends BaseController
                 return $this->sendResponse($success, 'Başarılı bir şekilde giriş yapıldı');
             }
         } catch (\Exception $exception) {
-            throw $exception;
+            return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
         }
     }
 

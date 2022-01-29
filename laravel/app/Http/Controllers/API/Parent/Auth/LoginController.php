@@ -24,13 +24,13 @@ class LoginController extends BaseController
     public function loginOne(LoginRequest $request)
     {
         try {
-            if ($this->loginService->login($request->only('phone','kvkk','google_st'), $this->userRepository)) {
+            if ($this->loginService->login($request->only('phone', 'kvkk', 'google_st'), $this->userRepository)) {
                 $success['result'] = 'Telefonunuza SMS Gönderildi';
                 return $this->sendResponse($success, 'Telefonunuza SMS Gönderildi');
             }
             return $this->sendError(false, ['Birşeyler ters gitti!']);
         } catch (\Exception $exception) {
-            throw $exception;
+            return $this->sendError($exception->getMessage(), ['message' => [$exception->getMessage()]], 400);
         }
     }
 
@@ -46,7 +46,7 @@ class LoginController extends BaseController
                 return $this->sendResponse($success, 'Başarılı bir şekilde giriş yapıldı');
             }
         } catch (\Exception $exception) {
-            return $this->sendError($exception->getMessage(),['message'=>[$exception->getMessage()]],$exception->getCode());
+            return $this->sendError($exception->getMessage(), ['message' => [$exception->getMessage()]], $exception->getCode());
         }
     }
 

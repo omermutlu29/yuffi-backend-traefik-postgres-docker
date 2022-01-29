@@ -34,7 +34,8 @@ class CardController extends BaseController
             }
             throw new \Exception('Kredi kartı servisi yanıt vermiyor');
         } catch (\Exception $exception) {
-            return $this->sendError($exception->getMessage(), $exception->getCode(), 400);
+            return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
+
         }
     }
 
@@ -51,7 +52,7 @@ class CardController extends BaseController
             $this->cardRepository->store(\auth()->id(), $result);
             return $this->sendResponse(true, "You have registered card successfully", 401);
         } catch (\Exception $exception) {
-            return $this->sendError($exception->getMessage(), $exception->getCode(), 400);
+            return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
         }
     }
 
@@ -66,7 +67,7 @@ class CardController extends BaseController
             }
             throw new \Exception('Kayıtlı kartınız silinemedi');
         } catch (\Exception $exception) {
-            return $this->sendError($exception->getMessage(), [], $exception->getCode());
+            return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
         }
     }
 }
