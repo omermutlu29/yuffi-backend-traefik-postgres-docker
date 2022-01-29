@@ -24,10 +24,13 @@ class BabySitterController extends BaseController
     public function findBabySitter(FindBabySitterRequest $request, BabySitterFilterService $babySitterFilterService)
     {
         $filterData = $request->only('search_param');
+        $filterData=($filterData["search_param"]);
         try {
-            return $babySitterFilterService->findBabySitterForAppointment(\auth()->user(), $filterData);
+            return $this->sendResponse(
+                $babySitterFilterService->findBabySitterForAppointment(\auth()->user(), $filterData),
+                'Bakıcı listesi');
         } catch (\Exception $e) {
-            return $this->sendError($e->getMessage(), null, $e->getCode());
+            return $this->sendError($e->getMessage(), $e->getCode(),400 );
         }
     }
 

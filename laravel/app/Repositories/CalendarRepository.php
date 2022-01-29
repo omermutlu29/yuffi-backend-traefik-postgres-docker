@@ -18,7 +18,7 @@ class CalendarRepository implements IBabySitterCalendarRepository
         $this->babySitterRepository = $babySitterRepository;
     }
 
-    public function getMyNextFifteenDays($babySitterId): \Illuminate\Database\Eloquent\Collection|\Exception
+    public function getMyNextFifteenDays($babySitterId)
     {
         try {
             return $this->babySitterRepository->getUserById($babySitterId)->baby_sitter_available_dates()->nextFifteenDays()->get();

@@ -37,7 +37,7 @@ class BabySitterRepository implements IUserRepository, IBabySitterRepository
         return BabySitter::find($id)->update($data);
     }
 
-    public function getUserWithRelations(int $id, array $relations): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Builder|array|null
+    public function getUserWithRelations(int $id, array $relations)
     {
         return BabySitter::with($relations)->findOrFail($id);
     }
@@ -67,7 +67,7 @@ class BabySitterRepository implements IUserRepository, IBabySitterRepository
         $babySitters = BabySitter::acceptedLocation($data['location_id'])
             ->childGenderStatus($data['child_gender_status'])
             ->acceptsDisabledChild($data['disabled_child'])
-            ->genderFilter($data['gender_id'])
+            ->gender($data['gender_id'])
             ->childrenCount($data['child_count'])
             ->depositPaid()
             ->availableTown($data['town_id'])

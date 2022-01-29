@@ -17,11 +17,14 @@ use App\Interfaces\IServices\IAppointmentService;
 use App\Interfaces\IServices\IBabySitterCalendarService;
 use App\Interfaces\IServices\IChildrenService;
 use App\Interfaces\IServices\ILoginService;
+use App\Interfaces\IServices\IMessagingService;
 use App\Interfaces\IServices\IProfileService;
 use App\Interfaces\NotificationInterfaces\INotification;
+use App\Interfaces\PaymentInterfaces\ICompleteThreeDPayment;
 use App\Interfaces\PaymentInterfaces\IPayment;
 use App\Interfaces\PaymentInterfaces\IPaymentToSubMerchant;
 use App\Interfaces\PaymentInterfaces\IRegisterCardService;
+use App\Interfaces\PaymentInterfaces\ISubMerchantService;
 use App\Interfaces\PaymentInterfaces\IThreeDPaymentToSubMerchant;
 use App\Interfaces\PaymentInterfaces\IThreeDPaymentInitialize;
 use App\Repositories\AppointmentRepository;
@@ -35,9 +38,11 @@ use App\Services\Calendar\BabySitterCalendarService;
 use App\Services\ChildrenService\ChildrenService;
 use App\Services\DepositService\DepositServiceService;
 use App\Services\LoginService\LoginService;
+use App\Services\Messaging\MessagingService;
 use App\Services\NotificationServices\NetGSMSmsNotification;
 use App\Services\PaymentServices\Iyzico\IyzicoPaymentService;
 use App\Services\PaymentServices\Iyzico\IyzicoRegisterCardService;
+use App\Services\PaymentServices\Iyzico\IyzicoSubMerchantService;
 use App\Services\PaymentServices\Iyzico\IyzicoThreeDPaymentService;
 use App\Services\ProfileService\BabySitterProfileService;
 use App\Services\ProfileService\ParentProfileService;
@@ -62,6 +67,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->bind(ISubMerchantService::class,IyzicoSubMerchantService::class);
+        $this->app->bind(ICompleteThreeDPayment::class,IyzicoThreeDPaymentService::class);
+        $this->app->bind(IMessagingService::class,MessagingService::class);
         $this->app->when(CardRepository::class)->needs(IUserRepository::class)->give(ParentRepository::class);
 
         $this->app->bind(ICardRepository::class,CardRepository::class);
@@ -91,6 +99,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->when(BabySitterProfileController::class)->needs(IProfileService::class)->give(BabySitterProfileService::class);
         $this->app->when(BabySitterProfileService::class)->needs(IBabySitterRepository::class)->give(BabySitterRepository::class);
         $this->app->when(BabySitterProfileService::class)->needs(IUserRepository::class)->give(BabySitterRepository::class);
+        $this->app->bind(IBabySitterRepository::class,BabySitterRepository::class);
         //BabySitter Profile Ends
 
         //ParentIP

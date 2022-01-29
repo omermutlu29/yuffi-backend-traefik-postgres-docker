@@ -16,6 +16,5 @@ interface IPaymentToSubMerchant
         int $installment,
         int $conversationId,
         string $subMerchant,
-        float $subMerchantPrice,
-    ): \Iyzipay\Model\Payment;
+        float $subMerchantPrice);
 }

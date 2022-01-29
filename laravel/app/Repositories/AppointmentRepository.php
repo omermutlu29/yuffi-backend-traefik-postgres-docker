@@ -15,7 +15,7 @@ class AppointmentRepository implements IAppointmentRepository
         return Appointment::find($id);
     }
 
-    public function getAppointmentStatuses(): array|\Illuminate\Database\Eloquent\Collection
+    public function getAppointmentStatuses()
     {
         return AppointmentStatus::all();
     }
@@ -77,7 +77,8 @@ class AppointmentRepository implements IAppointmentRepository
         // TODO: Implement disapproveAppointment() method.
     }
 
-    public function store(array $data){
+    public function store(array $data)
+    {
         return Appointment::create($data);
     }
 }
