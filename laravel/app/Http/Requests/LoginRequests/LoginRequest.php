@@ -38,7 +38,7 @@ class LoginRequest extends FormRequest
                     $fail('Uygulamayı kullanabilmeniz için hizmet sözleşmesini kabul etmeniz gerekmektedir.');
                 }
             }],
-            'phone'=>'required',
+            'phone'=>'required|digits:10',
         ];
     }
 
