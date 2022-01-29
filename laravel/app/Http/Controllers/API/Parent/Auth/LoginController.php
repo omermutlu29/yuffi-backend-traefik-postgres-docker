@@ -46,7 +46,7 @@ class LoginController extends BaseController
                 return $this->sendResponse($success, 'Başarılı bir şekilde giriş yapıldı');
             }
         } catch (\Exception $exception) {
-            return $this->sendError($exception->getMessage(),null,$exception->getCode());
+            return $this->sendError($exception->getMessage(),$exception->getMessage(),$exception->getCode());
         }
     }
 
