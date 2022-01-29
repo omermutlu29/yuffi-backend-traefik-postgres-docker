@@ -44,9 +44,7 @@ class CardController extends BaseController
         try {
             $cardData = $request->only('cardHolderName', 'cardNumber', 'expireMonth', 'expireYear', 'cardAlias');
             $userKey = $this->cardRepository->getUserKey(\auth()->id());
-            if ($userKey){
-                throw new \Exception('Zaten kayıtlı kartınız var!');
-            }
+            if ($userKey) throw new \Exception('Zaten kayıtlı kartınız var!');
             $result = $this->registerCardService->createCardWithUser($cardData, \auth()->user()->email, \auth()->id());
             $this->cardRepository->store(\auth()->id(), $result);
             return $this->sendResponse(true, "You have registered card successfully", 201);
@@ -55,13 +53,14 @@ class CardController extends BaseController
         }
     }
 
-    public function delete(DeleteCardRequest $request, CardParent $cardParent)
+    public function delete(DeleteCardRequest $request)
     {
         try {
             $userKey = $this->cardRepository->getUserKey(auth()->id());
+
             if (!$userKey) throw new \Exception('Kayıtlı kartınız bulunamadı', 400);
-            $this->registerCardService->deleteCard($userKey, $cardParent->cardtoken);
-            if ($this->cardRepository->delete($cardParent->id)) {
+            $this->registerCardService->deleteCard($userKey, $request->cardtoken);
+            if ($this->cardRepository->delete($request->cardToken)) {
                 return $this->sendResponse(true, 'Kayıtlı kartınız başarı ile silindi!');
             }
             throw new \Exception('Kayıtlı kartınız silinemedi');

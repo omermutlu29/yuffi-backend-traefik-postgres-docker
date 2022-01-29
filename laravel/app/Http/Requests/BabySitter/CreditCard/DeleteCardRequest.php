@@ -2,10 +2,18 @@
 
 namespace App\Http\Requests\BabySitter\CreditCard;
 
+use App\Interfaces\IRepositories\ICardRepository;
 use Illuminate\Foundation\Http\FormRequest;
 
 class DeleteCardRequest extends FormRequest
 {
+    private $cardRepository;
+
+    public function __construct(ICardRepository $cardRepository)
+    {
+        $this->cardRepository = $cardRepository;
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -13,7 +21,9 @@ class DeleteCardRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->route('cardParent')->parent_id == auth()->id();
+        $card = $this->cardRepository->getUserCardByCardToken(\request()->only('cardToken'));
+        if (!$card) return false;
+        return $card->parent_id == auth()->id();
     }
 
     /**
@@ -24,7 +34,7 @@ class DeleteCardRequest extends FormRequest
     public function rules()
     {
         return [
-
+            'cardToken' => 'required|exists:card_parents,cardtoken'
         ];
     }
 }

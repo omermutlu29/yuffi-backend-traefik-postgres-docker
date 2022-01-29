@@ -17,7 +17,7 @@ Route::prefix('parent')->group(function () {
     Route::prefix('card')->group(function () {
         Route::get('index', [\App\Http\Controllers\API\Parent\Card\CardController::class, 'index']);
         Route::post('store', [\App\Http\Controllers\API\Parent\Card\CardController::class, 'store']);
-        Route::delete('delete/{cardParent}', [\App\Http\Controllers\API\Parent\Card\CardController::class, 'delete'])->name('card.delete');
+        Route::delete('delete', [\App\Http\Controllers\API\Parent\Card\CardController::class, 'delete'])->name('card.delete');
     });
 
 

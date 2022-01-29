@@ -26,9 +26,9 @@ class CardRepository implements ICardRepository
         return $card;
     }
 
-    public function delete(int $cardId): bool
+    public function delete(string $cardToken): bool
     {
-        $deleted = CardParent::where('id', $cardId)->delete();
+        $deleted = CardParent::where('cardtoken', $cardToken)->delete();
         if (!$deleted) throw new \Exception('Card data could not inserted to db', HttpStatuses::HTTP_BAD_GATEWAY);
         return true;
     }
@@ -36,6 +36,11 @@ class CardRepository implements ICardRepository
     private function getUserCards(int $userId)
     {
         return CardParent::where('parent_id', $userId)->get();
+    }
+
+    public function getUserCardByCardToken(string $cardToken)
+    {
+        return CardParent::where('card_token', $cardToken)->first();
     }
 
 
