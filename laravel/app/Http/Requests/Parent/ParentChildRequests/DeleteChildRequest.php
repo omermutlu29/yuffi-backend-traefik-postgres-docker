@@ -16,7 +16,7 @@ class DeleteChildRequest extends FormRequest
     public function authorize()
     {
         $child=($this->route('child'));
-        return (auth()->user()->can('delete',$child));
+        return (request()->user()->can('delete',$child));
     }
 
     /**

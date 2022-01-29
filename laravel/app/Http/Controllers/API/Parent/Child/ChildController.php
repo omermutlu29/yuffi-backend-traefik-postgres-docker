@@ -52,9 +52,9 @@ class ChildController extends BaseController
     public function destroy(DeleteChildRequest $request, ParentChild $child)
     {
         try {
-            return $this->childrenService->delete($child);
+            return $this->sendResponse($this->childrenService->delete($child),'Ekli çocuk silindi!');
         } catch (\Exception $exception) {
-            throw $exception;
+            return $this->sendError($exception->getMessage(),null,$exception->getCode()) ;
         }
     }
 }

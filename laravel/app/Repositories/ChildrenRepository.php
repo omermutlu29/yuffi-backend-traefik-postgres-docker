@@ -44,6 +44,7 @@ class ChildrenRepository implements IChildrenRepository
             $child = self::getById($id);
             $deleted = $child->delete();
             if (!$deleted) throw new \Exception('Children could not deleted', HttpStatuses::HTTP_BAD_GATEWAY);
+            return $deleted;
         } catch (\Exception $exception) {
             throw $exception;
         }

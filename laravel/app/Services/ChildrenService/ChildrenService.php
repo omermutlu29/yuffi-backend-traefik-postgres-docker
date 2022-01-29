@@ -22,7 +22,7 @@ class ChildrenService implements IChildrenService
     {
         $dbResult = $this->childrenRepository->storeMany($parent->id, $data);
         if (!$dbResult) throw new \Exception('Database process could not completed!', 502);
-        return $dbResult;
+        return ChildResource::collection($dbResult);;
     }
 
     public function update(ParentChild $parentChild, array $data)
@@ -43,6 +43,7 @@ class ChildrenService implements IChildrenService
     {
         $dbResult = $this->childrenRepository->getParentChildren($parent->id);
         if (!$dbResult) throw new \Exception('Database process could not completed!', 502);
+        return $dbResult;
         return ChildResource::collection($dbResult);
     }
 }

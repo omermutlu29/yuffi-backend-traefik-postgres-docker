@@ -5,11 +5,12 @@ namespace App\Policies;
 use App\Models\ParentChild;
 use App\Models\Parents;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use JetBrains\PhpStorm\NoReturn;
 
-class ChildPolicy
+class ParentChildPolicy
 {
     use HandlesAuthorization;
+
+
 
     private static function parentControl(Parents $parent, ParentChild $parentChild): bool
     {
@@ -24,10 +25,6 @@ class ChildPolicy
 
     public function delete(Parents $parent, ParentChild $parentChild)
     {
-        return true;
+        return self::parentControl($parent,$parentChild);
     }
-
-
-
-
 }
