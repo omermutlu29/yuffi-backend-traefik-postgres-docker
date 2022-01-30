@@ -48,7 +48,8 @@ class Parents extends Authenticatable
         return $this->hasMany(Appointment::class, 'parent_id')->with("baby_sitter:id,name,surname,photo,point");
     }
 
-    public function scopePhone($query,$phone){
-        return $query->where('phone',$phone);
+    public function scopePhone($query, $phone)
+    {
+        return $query->where('phone', $phone);
     }
 }
