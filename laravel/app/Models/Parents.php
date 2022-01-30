@@ -13,7 +13,7 @@ class Parents extends Authenticatable
     use  HasApiTokens, Notifiable, SoftDeletes;
 
     protected $table = 'parents';
-    protected $attributes=['has_registered_card'];
+    protected $appends = ['has_registered_card'];
 
     protected $guarded = [
 
@@ -54,7 +54,8 @@ class Parents extends Authenticatable
         return $query->where('phone', $phone);
     }
 
-    public function getHasRegisteredCardAttribute(){
+    public function getHasRegisteredCardAttribute()
+    {
         return count($this->card_parents) > 0;
     }
 }
