@@ -47,22 +47,18 @@ class FillController extends BaseController
 
     public function getNextDays()
     {
-        $days = $this->variablesService->getNextDays();
+        $days = $this->variablesService->calculateDays();
         return $this->sendResponse($days, null);
     }
 
-    private function calculateDays()
-    {
-        return $this->variablesService->calculateDays();
-    }
-
-    private function calculateTimes()
+    public function getTimes()
     {
         return $this->variablesService->calculateTimes();
     }
 
-    private function hours()
+    public function getHours()
     {
         return $this->variablesService->hours();
     }
+
 }
