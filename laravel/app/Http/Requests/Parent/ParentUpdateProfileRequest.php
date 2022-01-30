@@ -27,8 +27,7 @@ class ParentUpdateProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'surname' => 'required',
-            'photo' => 'required|image|mimes:jpg,png,jpeg|max:2048',
+            'photo' => 'image|mimes:jpg,png,jpeg|max:2048',
         ];
     }
 
