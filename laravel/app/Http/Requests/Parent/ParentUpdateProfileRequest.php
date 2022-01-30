@@ -35,6 +35,7 @@ class ParentUpdateProfileRequest extends FormRequest
             'birthday' => 'required|date_format:d-m-Y|before_or_equal:' . $date,
             'service_contract' => 'required',
             'gender_id' => 'required|exists:genders,id',
+            'photo' => 'required|image|mimes:jpg,png,jpeg|max:2048',
         ];
     }
 

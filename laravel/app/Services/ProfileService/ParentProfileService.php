@@ -13,14 +13,23 @@ class ParentProfileService implements IProfileService
 
     public function __construct(IUserRepository $parentRepository)
     {
-        $this->parentRepository=$parentRepository;
+        $this->parentRepository = $parentRepository;
     }
 
-    public function update(int $id,array $data){
-        return $this->parentRepository->update($id,$data);
+    public function update(int $id, array $data)
+    {
+        $data['photo'] = self::saveProfilePhoto($data['photo']);
+        return $this->parentRepository->update($id, $data);
     }
 
-    public function getProfile($id){
-        return $this->parentRepository->getUserWithRelations($id,['parent_children']);
+    public function getProfile($id)
+    {
+        return $this->parentRepository->getUserWithRelations($id, ['parent_children']);
+    }
+
+    private function saveProfilePhoto($photo): string
+    {
+        $fileName = time() . '_' . $photo->getClientOriginalName();
+        return '/storage/' . $photo->storeAs('uploads', $fileName, 'public');
     }
 }

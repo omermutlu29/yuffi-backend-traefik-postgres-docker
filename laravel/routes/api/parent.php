@@ -8,7 +8,7 @@ Route::prefix('parent')->group(function () {
 
 
     Route::prefix('profile')->group(function () {
-        Route::put('update', [\App\Http\Controllers\API\Parent\Auth\ProfileController::class, 'updateProfile']);
+        Route::post('update', [\App\Http\Controllers\API\Parent\Auth\ProfileController::class, 'updateProfile']);
         Route::get('get-profile', [\App\Http\Controllers\API\Parent\Auth\ProfileController::class, 'getProfile']);
     });//Bitti
 

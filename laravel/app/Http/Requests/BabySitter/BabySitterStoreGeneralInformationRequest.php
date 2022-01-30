@@ -32,10 +32,10 @@ class BabySitterStoreGeneralInformationRequest extends FormRequest
             'tc' => 'required',
             'gender_id' => 'required',
             'birthday' => 'required',
-            'criminal_record' => 'required|file',
+            'criminal_record' => 'required|file|mimes:pdf|max:2048',
             'address' => 'required',
             'email' => 'required',
-            'photo' => 'required|file',
+            'photo' => 'required|image|mimes:jpg,png,jpeg|max:2048',
             'iban' => ['required', new IBANRule()]
         ];
     }
