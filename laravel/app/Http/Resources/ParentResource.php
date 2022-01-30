@@ -19,6 +19,7 @@ class ParentResource extends JsonResource
             'surname'=>$this->surname,
             'phone'=>$this->phone,
             'photo'=>$this->photo,
+            'has_registered_card'=>$this->has_registered_card,
             'tc'=>$this->tc,
             'birthday'=>$this->birthday,
             'service_contract'=>$this->service_contract,

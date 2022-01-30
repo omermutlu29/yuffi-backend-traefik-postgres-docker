@@ -52,4 +52,8 @@ class Parents extends Authenticatable
     {
         return $query->where('phone', $phone);
     }
+
+    public function getHasRegisteredCardAttribute(){
+        return count($this->card_parents) > 0;
+    }
 }
