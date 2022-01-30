@@ -31,7 +31,7 @@ class ParentStoreProfileRequest extends FormRequest
             'name' => 'required',
             'surname' => 'required',
             'tc' => 'required|max:11|min:11',
-            'birthday' => 'required|date_format:d-m-Y|before_or_equal:' . $date,
+            'birthday' => 'required|date_format:d/m/Y|before_or_equal:' . $date,
             //'service_contract' => 'required',
             'gender_id' => 'required|exists:genders,id',
             'photo' => 'required|image|mimes:jpg,png,jpeg|max:2048',
