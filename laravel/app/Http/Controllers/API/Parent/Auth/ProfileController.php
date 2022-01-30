@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\Parent\Auth;
 
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\Requests\Parent\ParentStoreProfileRequest;
 use App\Http\Requests\Parent\ParentUpdateProfileRequest;
 use App\Interfaces\IServices\IProfileService;
 
@@ -18,13 +19,25 @@ class ProfileController extends BaseController
         $this->parentProfileService = $profileService;
     }
 
+    public function storeProfile(ParentStoreProfileRequest $request)
+    {
+        try {
+            return $this->parentProfileService->update(
+                \auth()->id(),
+                $request->only('name', 'surname', 'tc', 'birthday', 'service_contract', 'gender_id', 'photo')
+            ) ? $this->sendResponse(true, 'Profiliniz kaydedildi') :
+                $this->sendError('Bir hata ile karşılaşıldı', 400);
+        } catch (\Exception $exception) {
+            return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
+        }
+    }
 
     public function updateProfile(ParentUpdateProfileRequest $request)
     {
         try {
             return $this->parentProfileService->update(
                 \auth()->id(),
-                $request->only('name', 'surname', 'tc', 'birthday', 'service_contract', 'gender_id', 'photo')
+                $request->only('surname', 'photo')
             ) ? $this->sendResponse(true, 'Profiliniz güncellendi') :
                 $this->sendError('Bir hata ile karşılaşıldı', 400);
         } catch (\Exception $exception) {

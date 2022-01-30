@@ -18,7 +18,9 @@ class ParentProfileService implements IProfileService
 
     public function update(int $id, array $data)
     {
-        $data['photo'] = self::saveProfilePhoto($data['photo']);
+        if (isset($data['photo'])) {
+            $data['photo'] = self::saveProfilePhoto($data['photo']);
+        }
         return $this->parentRepository->update($id, $data);
     }
 
