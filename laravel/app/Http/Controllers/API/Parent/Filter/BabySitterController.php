@@ -24,10 +24,10 @@ class BabySitterController extends BaseController
     public function findBabySitter(FindBabySitterRequest $request, BabySitterFilterService $babySitterFilterService)
     {
         $filterData = $request->only('search_param');
-        $filterData=($filterData["search_param"]);
+        $filterData = ($filterData["search_param"]);
         try {
             return $this->sendResponse(
-                $babySitterFilterService->findBabySitterForAppointment(\auth()->user(), $filterData),
+                $babySitterFilterService->findBabySitterForAppointment($filterData),
                 'Bakıcı listesi');
         } catch (\Exception $exception) {
             return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
@@ -39,9 +39,9 @@ class BabySitterController extends BaseController
         try {
             $filterData = $request->only('search_param');
             $babySitterId = $request->baby_sitter_id;
-            $isAvailable = $babySitterFilterService->isBabySitterStillAvailable(auth()->user(), $filterData, $babySitterId);
+            $isAvailable = $babySitterFilterService->isBabySitterStillAvailable($filterData, $babySitterId);
             if ($isAvailable) {
-                return $this->sendResponse($appointmentService->create($babySitterId, auth()->id(), $filterData),'Appointment created');
+                return $this->sendResponse($appointmentService->create($babySitterId, auth()->id(), $filterData), 'Appointment created');
             }
         } catch (\Exception $exception) {
             return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);

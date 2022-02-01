@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Services\Appointment;
 
 use App\Interfaces\IRepositories\IBabySitterRepository;
-use App\Models\Parents;
 use JetBrains\PhpStorm\ArrayShape;
 
 class BabySitterFilterService
@@ -14,32 +14,36 @@ class BabySitterFilterService
         $this->babySitterRepository = $babySitterRepository;
     }
 
-    public function findBabySitterForAppointment(Parents $parents, array $data)
+    public function findBabySitterForAppointment(array $data)
     {
         try {
-            $childGenderStatus = self::getChildGenderStatus($parents);
-            $disabledChild = self::areThereDisableChild($parents);
-            $childCount = $parents->parent_children()->count();
+            $childGenderStatus = $this->getChildGenderStatus($data['children']);
+            $disabledChild = $this->areThereDisableChild($data['children']);
+            $childCount = count($data['children']);
+
+
             $times = self::generateTimes($data['time'], $data['hour']);
-            $data = self::prepareDataForQuery($childGenderStatus,$disabledChild,$childCount,$times,$data);
+            $data = self::prepareDataForQuery($childGenderStatus, $disabledChild, $childCount, $times, $data);
             unset($childGenderStatus, $disabledChild, $childCount, $times);
             return $this->babySitterRepository->findBabySitterForFilter($data);
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             throw $exception;
         }
     }
 
-    public function isBabySitterStillAvailable(Parents $parents, array $data,int $babySitterId){
+    public function isBabySitterStillAvailable(array $data, int $babySitterId)
+    {
         try {
-            $childGenderStatus = self::getChildGenderStatus($parents);
-            $disabledChild = self::areThereDisableChild($parents);
-            $childCount = $parents->parent_children()->count();
-            $times = self::generateTimes($data['time'], $data['hour']);
-            $data = self::prepareDataForQuery($childGenderStatus,$disabledChild,$childCount,$times,$data);
-            $data['baby_sitter_id']=$babySitterId;
+            $childGenderStatus = $this->getChildGenderStatus($data['children']);
+            $disabledChild = $this->areThereDisableChild($data['children']);
+            $childCount = count($data['children']);
+
+            $times = $this->generateTimes($data['time'], $data['hour']);
+            $data = $this->prepareDataForQuery($childGenderStatus, $disabledChild, $childCount, $times, $data);
+            $data['baby_sitter_id'] = $babySitterId;
             unset($childGenderStatus, $disabledChild, $childCount, $times);
             return $this->babySitterRepository->findBabySitterForFilter($data);
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             throw $exception;
         }
     }
@@ -59,12 +63,12 @@ class BabySitterFilterService
         ];
     }
 
-    private static function getChildGenderStatus($parent): int
+    private static function getChildGenderStatus($children): int
     {
         $child_gender_male = false;
         $child_gender_female = false;
 
-        foreach ($parent->parent_children as $child) {
+        foreach ($children as $child) {
             if ($child->gender_id == 1) {
                 $child_gender_male = true;
             } else {
@@ -80,10 +84,10 @@ class BabySitterFilterService
         }
     }
 
-    private function areThereDisableChild($parent): bool
+    private function areThereDisableChild(array $children): bool
     {
-        foreach ($parent->parent_children as $child) {
-            if ($child->disable == 1) {
+        foreach ($children as $child) {
+            if ($child->disable) {
                 return true;
             }
         }

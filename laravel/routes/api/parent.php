@@ -13,7 +13,7 @@ Route::prefix('parent')->group(function () {
         Route::get('get-profile', [\App\Http\Controllers\API\Parent\Auth\ProfileController::class, 'getProfile']);
     });//Bitti
 
-    Route::resource('child', \App\Http\Controllers\API\Parent\Child\ChildController::class);//Bitti
+    //Route::resource('child', \App\Http\Controllers\API\Parent\Child\ChildController::class);//Bitti
 
     Route::prefix('card')->group(function () {
         Route::get('index', [\App\Http\Controllers\API\Parent\Card\CardController::class, 'index']);
