@@ -39,10 +39,7 @@ class Parents extends Authenticatable
         return $this->belongsTo(Gender::class);
     }
 
-    public function parent_children()
-    {
-        return $this->hasMany(ParentChild::class, 'parent_id');
-    }
+
 
     public function appointments()
     {

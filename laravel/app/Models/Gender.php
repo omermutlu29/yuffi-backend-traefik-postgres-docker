@@ -13,9 +13,6 @@ class Gender extends Model
         return $this->hasMany(Parents::class);
     }
 
-    public function parent_children(){
-        return $this->hasMany(ParentChild::class);
-    }
 
     public function baby_sitters(){
         return $this->hasMany(BabySitter::class);
