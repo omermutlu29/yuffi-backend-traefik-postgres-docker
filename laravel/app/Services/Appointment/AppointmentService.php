@@ -6,24 +6,20 @@ namespace App\Services\Appointment;
 
 use App\Interfaces\IRepositories\IAppointmentRepository;
 use App\Interfaces\IRepositories\IBabySitterRepository;
-use App\Interfaces\IRepositories\IChildrenRepository;
 use App\Interfaces\IServices\IAppointmentService;
 
 class AppointmentService implements IAppointmentService
 {
     private IAppointmentRepository $appointmentRepository;
     private IBabySitterRepository $babySitterRepository;
-    private IChildrenRepository $childrenRepository;
 
     public function __construct(
         IAppointmentRepository $appointmentRepository,
-        IBabySitterRepository $babySitterRepository,
-        IChildrenRepository $childrenRepository
+        IBabySitterRepository $babySitterRepository
     )
     {
         $this->babySitterRepository = $babySitterRepository;
         $this->appointmentRepository = $appointmentRepository;
-        $this->childrenRepository = $childrenRepository;
     }
 
     public function pendingApproveAppointments($babySitterId)
@@ -57,7 +53,7 @@ class AppointmentService implements IAppointmentService
     }
 
 
-    public function create(int $babySitterId, int $parentId, array $appointmentData)
+    public function create(int $babySitterId, int $parentId, array $appointmentData, array $children)
     {
         $babySitter = $this->babySitterRepository->getUserById($babySitterId);
         if (!$babySitter) {
@@ -79,9 +75,8 @@ class AppointmentService implements IAppointmentService
         if (!$appointment) {
             throw new \Exception('Appointment could not created', 401);
         }
-        $children = $this->childrenRepository->getParentChildren($parentId);
         foreach ($children as $child) {
-            $appointment->registered_children()->attach($child->id);
+            $appointment->registered_children()->create($child);
         }
         return $appointment;
 

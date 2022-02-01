@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class AppointmentChild extends Model
 {
-    //
+    protected $guarded=[];
 }

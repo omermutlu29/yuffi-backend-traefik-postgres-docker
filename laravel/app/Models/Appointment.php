@@ -26,7 +26,7 @@ class Appointment extends Model
     }
 
     public function registered_children(){
-        return $this->belongsToMany(ParentChild::class,'appointment_children','appointment_id');
+        return $this->hasMany(AppointmentChild::class);
     }
 
     public function appointment_status(){

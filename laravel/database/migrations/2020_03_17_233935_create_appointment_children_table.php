@@ -15,10 +15,10 @@ class CreateAppointmentChildrenTable extends Migration
     {
         Schema::create('appointment_children', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('appointment_id');
-            $table->foreign('appointment_id')->references('id')->on('appointments');
-            $table->unsignedBigInteger('parent_child_id');
-            $table->foreign('parent_child_id')->references('id')->on('parent_children');
+            $table->foreignId('appointment_id')->constrained();
+            $table->foreignId('gender_id')->constrained();
+            $table->foreignId('child_year_id')->constrained();
+            $table->boolean('disable')->default(false);
             $table->timestamps();
         });
     }
