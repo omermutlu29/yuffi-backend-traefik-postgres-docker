@@ -69,7 +69,7 @@ class BabySitterFilterService
         $child_gender_female = false;
 
         foreach ($children as $child) {
-            if ($child->gender_id == 1) {
+            if ($child['gender_id'] == 1) {
                 $child_gender_male = true;
             } else {
                 $child_gender_female = true;
@@ -87,7 +87,7 @@ class BabySitterFilterService
     private function areThereDisableChild(array $children): bool
     {
         foreach ($children as $child) {
-            if ($child->disable) {
+            if ($child['disable']) {
                 return true;
             }
         }

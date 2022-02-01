@@ -38,10 +38,10 @@ class FindBabySitterRequest extends FormRequest
             'search_param.hour'=>'required|numeric|max:10|min:1',
             'search_param.gender_id'=>'required|exists:genders,id',
             'search_param.location_id'=>'required|exists:appointment_locations,id',
-            'search_params.children'=>'required|array',
-            'search_params.children.*.gender_id'=>'required|exists:genders,id',
-            'search_params.children.*.disabled'=>'required|boolean',
-            'search_params.children.*.child_year_id'=>'required|exists:child_years,id',
+            'search_param.children'=>'required|array',
+            'search_param.children.*.gender_id'=>'required|exists:genders,id',
+            'search_param.children.*.disable'=>'required|boolean',
+            'search_param.children.*.child_year_id'=>'required|exists:child_years,id',
         ];
     }
 
