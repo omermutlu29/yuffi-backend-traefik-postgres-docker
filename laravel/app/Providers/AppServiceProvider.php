@@ -31,11 +31,9 @@ use App\Repositories\AppointmentRepository;
 use App\Repositories\BabySitterRepository;
 use App\Repositories\CalendarRepository;
 use App\Repositories\CardRepository;
-use App\Repositories\ChildrenRepository;
 use App\Repositories\ParentRepository;
 use App\Services\Appointment\AppointmentService;
 use App\Services\Calendar\BabySitterCalendarService;
-use App\Services\ChildrenService\ChildrenService;
 use App\Services\DepositService\DepositServiceService;
 use App\Services\LoginService\LoginService;
 use App\Services\Messaging\MessagingService;
@@ -74,7 +72,6 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(ICardRepository::class,CardRepository::class);
         $this->app->bind(IRegisterCardService::class,IyzicoRegisterCardService::class);
-        $this->app->when(ChildrenRepository::class)->needs(IUserRepository::class)->give(ParentRepository::class);
         //DEPOSIT
         $this->app->bind(IDepositService::class, DepositServiceService::class);
         //Deposit Ends
@@ -117,7 +114,5 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(IAppointmentService::class, AppointmentService::class);
 
         //Children
-        $this->app->bind(IChildrenRepository::class, ChildrenRepository::class);
-        $this->app->bind(IChildrenService::class, ChildrenService::class);
     }
 }
