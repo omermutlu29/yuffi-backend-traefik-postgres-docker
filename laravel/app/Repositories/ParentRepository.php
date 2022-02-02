@@ -6,7 +6,6 @@ namespace App\Repositories;
 
 use App\Interfaces\IRepositories\IUserRepository;
 use App\Models\Parents;
-use App\Services\HttpStatuses\HttpStatuses;
 
 class ParentRepository implements IUserRepository
 {
@@ -50,6 +49,6 @@ class ParentRepository implements IUserRepository
 
     public function getUserWithRelations(int $id, array $relations)
     {
-        return Parents::with($relations)->find($id);
+        return (Parents::with($relations)->find($id));
     }
 }

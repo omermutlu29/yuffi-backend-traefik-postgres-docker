@@ -14,10 +14,9 @@ class Parents extends Authenticatable
 
     protected $table = 'parents';
     protected $appends = ['has_registered_card'];
+    protected $hidden=['card_parents'];
 
-    protected $guarded = [
-
-    ];
+    protected $guarded = [];
 
     public function modelName()
     {
@@ -38,8 +37,6 @@ class Parents extends Authenticatable
     {
         return $this->belongsTo(Gender::class);
     }
-
-
 
     public function appointments()
     {
