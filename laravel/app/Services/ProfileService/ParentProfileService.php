@@ -26,7 +26,7 @@ class ParentProfileService implements IProfileService
 
     public function getProfile($id)
     {
-        return $this->parentRepository->getUserWithRelations($id, ['parent_children']);
+        return $this->parentRepository->getUserWithRelations($id);
     }
 
     private function saveProfilePhoto($photo): string
