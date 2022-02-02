@@ -69,7 +69,7 @@ class BabySitterRepository implements IUserRepository, IBabySitterRepository
             ->acceptsDisabledChild($data['disabled_child'])
             ->gender($data['gender_id'])
             ->childrenCount($data['child_count'])
-            ->depositPaid()
+            //->depositPaid()
             ->availableTown($data['town_id'])
             ->dateTime($data['date'], $data['times']);
         if (isset($data['baby_sitter_id'])) {
