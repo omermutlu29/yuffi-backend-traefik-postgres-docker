@@ -65,6 +65,7 @@ class BabySitterRepository implements IUserRepository, IBabySitterRepository
     public function findBabySitterForFilter(array $data)
     {
         $babySitters = BabySitter::acceptedLocation($data['location_id'])
+            ->pricePerHour()
             ->childGenderStatus($data['child_gender_status'])
             ->acceptsDisabledChild($data['disabled_child'])
             ->gender($data['gender_id'])
