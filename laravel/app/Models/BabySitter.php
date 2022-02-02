@@ -144,7 +144,8 @@ class BabySitter extends Authenticatable
         });
     }
 
-    public function scopeDateTime($query,$date,array $times){
+    public function scopeDateTime($query, $date, array $times)
+    {
         return $query->whereHas('baby_sitter_available_dates', function ($q) use ($date, $times) {//O gün yer var mı ?
             $q->where('date', Carbon::make($date));
             foreach ($times as $time) {
@@ -155,8 +156,14 @@ class BabySitter extends Authenticatable
         });
     }
 
-    public function scopeBabySitterId($query,$id){
-        return $query->where('id',$id);
+    public function scopeBabySitterId($query, $id)
+    {
+        return $query->where('id', $id);
+    }
+
+    public function scopePricePerHour($query)
+    {
+        return $query->where('price_per_hour', '>', 0);
     }
 
 }
