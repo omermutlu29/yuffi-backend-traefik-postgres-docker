@@ -6,6 +6,7 @@ namespace App\Services\ProfileService;
 
 use App\Interfaces\IRepositories\IUserRepository;
 use App\Interfaces\IServices\IProfileService;
+use Carbon\Carbon;
 
 class ParentProfileService implements IProfileService
 {
@@ -18,6 +19,7 @@ class ParentProfileService implements IProfileService
 
     public function update(int $id, array $data)
     {
+        $data['birthday'] = Carbon::make($data['birthday'])->format('Y-m-d');
         if (isset($data['photo'])) {
             $data['photo'] = self::saveProfilePhoto($data['photo']);
         }

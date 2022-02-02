@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests\AvailableTimeRequests;
 
+use App\Http\Requests\BaseApiRequest;
 use App\Interfaces\IRepositories\IBabySitterCalendarRepository;
-use Illuminate\Foundation\Http\FormRequest;
 
-class AvailableTimeDelete extends FormRequest
+class AvailableTimeDelete extends BaseApiRequest
 {
     private IBabySitterCalendarRepository $calendarRepository;
 

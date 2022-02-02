@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests\Parent;
 
+use App\Http\Requests\BaseApiRequest;
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ParentUpdateProfileRequest extends FormRequest
+class ParentUpdateProfileRequest extends BaseApiRequest
 {
 
     /**
@@ -31,12 +31,5 @@ class ParentUpdateProfileRequest extends FormRequest
         ];
     }
 
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => 'Validation errors',
-            'data' => $validator->errors()
-        ],400));
-    }
+
 }

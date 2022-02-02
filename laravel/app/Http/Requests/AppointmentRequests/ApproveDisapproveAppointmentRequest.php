@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests\AppointmentRequests;
 
+use App\Http\Requests\BaseApiRequest;
 use App\Interfaces\IRepositories\IAppointmentRepository;
-use Illuminate\Foundation\Http\FormRequest;
 
-class ApproveDisapproveAppointmentRequest extends FormRequest
+class ApproveDisapproveAppointmentRequest extends BaseApiRequest
 {
     private $appointmentRepository;
 

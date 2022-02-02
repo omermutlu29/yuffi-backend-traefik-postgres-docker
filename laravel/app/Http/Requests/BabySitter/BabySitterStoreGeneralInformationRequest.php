@@ -2,12 +2,10 @@
 
 namespace App\Http\Requests\BabySitter;
 
+use App\Http\Requests\BaseApiRequest;
 use App\Rules\IBANRule;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
-class BabySitterStoreGeneralInformationRequest extends FormRequest
+class BabySitterStoreGeneralInformationRequest extends BaseApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -40,12 +38,5 @@ class BabySitterStoreGeneralInformationRequest extends FormRequest
         ];
     }
 
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => 'Validation errors',
-            'data' => $validator->errors()
-        ]));
-    }
+
 }

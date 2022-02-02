@@ -2,12 +2,10 @@
 
 namespace App\Http\Requests\LoginRequests;
 
+use App\Http\Requests\BaseApiRequest;
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Validation\Rule;
 
-class LoginRequest extends FormRequest
+class LoginRequest extends BaseApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -40,14 +38,5 @@ class LoginRequest extends FormRequest
             }],
             'phone'=>'required|digits:10',
         ];
-    }
-
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => 'Validation errors',
-            'data' => $validator->errors()
-        ]));
     }
 }

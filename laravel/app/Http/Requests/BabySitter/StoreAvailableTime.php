@@ -2,12 +2,10 @@
 
 namespace App\Http\Requests\BabySitter;
 
+use App\Http\Requests\BaseApiRequest;
 use Carbon\Carbon;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
-class StoreAvailableTime extends FormRequest
+class StoreAvailableTime extends BaseApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -39,12 +37,5 @@ class StoreAvailableTime extends FormRequest
         ];
     }
 
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => 'Validation errors',
-            'data' => $validator->errors()
-        ]));
-    }
+
 }

@@ -2,12 +2,10 @@
 
 namespace App\Http\Requests\BabySitter\CreditCard;
 
+use App\Http\Requests\BaseApiRequest;
 use App\Interfaces\IRepositories\ICardRepository;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
-class DeleteCardRequest extends FormRequest
+class DeleteCardRequest extends BaseApiRequest
 {
     private $cardRepository;
 
@@ -38,12 +36,5 @@ class DeleteCardRequest extends FormRequest
         ];
     }
 
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'message' => 'Validation errors',
-            'data' => $validator->errors()
-        ],400));
-    }
+
 }
