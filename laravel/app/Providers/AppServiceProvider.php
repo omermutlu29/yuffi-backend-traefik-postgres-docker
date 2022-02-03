@@ -11,6 +11,7 @@ use App\Interfaces\IRepositories\IAppointmentRepository;
 use App\Interfaces\IRepositories\IBabySitterCalendarRepository;
 use App\Interfaces\IRepositories\IBabySitterRepository;
 use App\Interfaces\IRepositories\ICardRepository;
+use App\Interfaces\IRepositories\ICommentRepository;
 use App\Interfaces\IRepositories\IUserRepository;
 use App\Interfaces\IServices\IAppointmentService;
 use App\Interfaces\IServices\IBabySitterCalendarService;
@@ -29,6 +30,7 @@ use App\Repositories\AppointmentRepository;
 use App\Repositories\BabySitterRepository;
 use App\Repositories\CalendarRepository;
 use App\Repositories\CardRepository;
+use App\Repositories\CommentRepository;
 use App\Repositories\ParentRepository;
 use App\Services\Appointment\AppointmentService;
 use App\Services\Calendar\BabySitterCalendarService;
@@ -63,13 +65,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->bind(ISubMerchantService::class,IyzicoSubMerchantService::class);
-        $this->app->bind(ICompleteThreeDPayment::class,IyzicoThreeDPaymentService::class);
-        $this->app->bind(IMessagingService::class,MessagingService::class);
+        $this->app->bind(ISubMerchantService::class, IyzicoSubMerchantService::class);
+        $this->app->bind(ICompleteThreeDPayment::class, IyzicoThreeDPaymentService::class);
+        $this->app->bind(IMessagingService::class, MessagingService::class);
         $this->app->when(CardRepository::class)->needs(IUserRepository::class)->give(ParentRepository::class);
 
-        $this->app->bind(ICardRepository::class,CardRepository::class);
-        $this->app->bind(IRegisterCardService::class,IyzicoRegisterCardService::class);
+        $this->app->bind(ICardRepository::class, CardRepository::class);
+        $this->app->bind(IRegisterCardService::class, IyzicoRegisterCardService::class);
         //DEPOSIT
         $this->app->bind(IDepositService::class, DepositServiceService::class);
         //Deposit Ends
@@ -94,7 +96,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->when(BabySitterProfileController::class)->needs(IProfileService::class)->give(BabySitterProfileService::class);
         $this->app->when(BabySitterProfileService::class)->needs(IBabySitterRepository::class)->give(BabySitterRepository::class);
         $this->app->when(BabySitterProfileService::class)->needs(IUserRepository::class)->give(BabySitterRepository::class);
-        $this->app->bind(IBabySitterRepository::class,BabySitterRepository::class);
+        $this->app->bind(IBabySitterRepository::class, BabySitterRepository::class);
         //BabySitter Profile Ends
 
         //ParentIP
@@ -111,6 +113,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(IAppointmentRepository::class, AppointmentRepository::class);
         $this->app->bind(IAppointmentService::class, AppointmentService::class);
 
+        $this->app->bind(ICommentRepository::class, CommentRepository::class);
+
         //Children
+
     }
 }
