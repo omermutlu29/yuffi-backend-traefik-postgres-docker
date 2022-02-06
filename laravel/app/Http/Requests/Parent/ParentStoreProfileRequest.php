@@ -35,6 +35,7 @@ class ParentStoreProfileRequest extends BaseApiRequest
             //'service_contract' => 'required',
             'gender_id' => 'required|exists:genders,id',
             'photo' => 'required|image|mimes:jpg,png,jpeg|max:2048',
+            'email' => 'required|email',
         ];
     }
 

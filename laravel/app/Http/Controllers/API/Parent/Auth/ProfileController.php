@@ -25,7 +25,7 @@ class ProfileController extends BaseController
         try {
             return $this->parentProfileService->update(
                 \auth()->id(),
-                $request->only('name', 'surname', 'tc', 'birthday', 'service_contract', 'gender_id', 'photo')
+                $request->only('name', 'surname', 'tc', 'birthday', 'service_contract', 'gender_id', 'photo','email')
             ) ? $this->sendResponse(true, 'Profiliniz kaydedildi') :
                 $this->sendError('Bir hata ile karşılaşıldı', 400);
         } catch (\Exception $exception) {
@@ -38,7 +38,7 @@ class ProfileController extends BaseController
         try {
             return $this->parentProfileService->update(
                 \auth()->id(),
-                $request->only('surname', 'photo')
+                $request->only('surname', 'photo','email')
             ) ? $this->sendResponse(true, 'Profiliniz güncellendi') :
                 $this->sendError('Bir hata ile karşılaşıldı', 400);
         } catch (\Exception $exception) {

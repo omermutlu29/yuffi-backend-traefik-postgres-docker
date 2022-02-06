@@ -28,6 +28,7 @@ class ParentUpdateProfileRequest extends BaseApiRequest
     {
         return [
             'photo' => 'image|mimes:jpg,png,jpeg|max:2048',
+            'email'=>'email',
         ];
     }
 
