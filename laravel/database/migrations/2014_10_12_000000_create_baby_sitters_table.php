@@ -18,7 +18,7 @@ class CreateBabySittersTable extends Migration
             $table->string('name')->nullable();
             $table->string('surname')->nullable();
             $table->string('tc', 11)->nullable();
-            $table->timestamp('birthday')->nullable();
+            $table->date('birthday')->nullable();
             $table->string('photo')->nullable();
             $table->string('phone')->unique();
             $table->string('email')->unique()->nullable();
@@ -26,29 +26,25 @@ class CreateBabySittersTable extends Migration
             $table->string('criminal_record')->nullable();
             $table->text('about')->nullable();
             $table->boolean('service_contrct')->nullable();
-            $table->unsignedBigInteger('gender_id')->default(3);
-            $table->foreign('gender_id')->references('id')->on('genders');
-            $table->unsignedBigInteger('baby_sitter_status_id')->default(1);
-            $table->foreign('baby_sitter_status_id')->references('id')->on('baby_sitter_statuses');
+            $table->foreignId('gender_id')->nullable()->references('id')->on('genders');
+            $table->foreignId('baby_sitter_status_id')->references('id')->on('baby_sitter_statuses');
             $table->boolean('kvkk')->nullable();
             $table->boolean('is_accepted')->default(0);
             $table->boolean('black_list')->default(0);
             $table->string('google_st')->nullable();
             $table->ipAddress('network')->nullable();
-            $table->decimal('deposit')->default(0);
+            //$table->decimal('deposit')->default(0);
             $table->decimal('point')->default(0);
+            $table->string('sub_merchant')->nullable();
+            $table->string('iban')->nullable();
             //That's about preferences start
             $table->decimal('price_per_hour')->nullable();
-            $table->unsignedBigInteger('child_gender_id')->default(3);
-            $table->foreign('child_gender_id')->references('id')->on('genders');
-            $table->unsignedBigInteger('child_year_id')->default(3);
-            $table->foreign('child_year_id')->references('id')->on('child_years');
+            $table->foreignId('child_gender_id')->nullable()->references('id')->on('genders');
+            $table->foreignId('child_year_id')->nullable()->references('id')->on('child_years');
             $table->integer('child_count')->default(0);
             $table->boolean('disabled_status')->default(0);
             $table->boolean('animal_status')->default(0);
             //That's about preferences end
-            $table->string('sub_merchant')->nullable();
-            $table->string('iban')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

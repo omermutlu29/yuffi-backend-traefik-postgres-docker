@@ -19,7 +19,7 @@ class CreateParentsTable extends Migration
             $table->string('surname')->nullable();
             $table->string('email')->nullable()->unique();
             $table->string('tc', 11)->nullable();
-            $table->timestamp('birthday')->nullable();
+            $table->date('birthday')->nullable();
             $table->string('photo')->nullable();
             $table->string('phone')->unique();
             $table->boolean('service_contract')->nullable();

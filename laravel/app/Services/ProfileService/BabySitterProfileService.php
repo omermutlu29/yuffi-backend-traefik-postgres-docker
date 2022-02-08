@@ -44,8 +44,7 @@ class BabySitterProfileService implements IProfileService
                 $serviceResult = $this->subMerchantService->insertIyzicoSubMerchant($babySitter->attributesToArray());
             }
             if ($serviceResult->getStatus() == "failure") {
-                $result['status'] = false;
-                $result['message'] = $serviceResult->getErrorMessage();
+                throw new \Exception($serviceResult->getErrorMessage());
             }
             $data = ['sub_merchant' => $serviceResult->getSubMerchantKey()];
             $this->userRepository->update($babySitter->id, $data);
