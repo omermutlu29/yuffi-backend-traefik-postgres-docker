@@ -4,6 +4,7 @@ namespace App\Http\Requests\BabySitter;
 
 use App\Http\Requests\BaseApiRequest;
 use App\Rules\IBANRule;
+use Carbon\Carbon;
 
 class BabySitterStoreGeneralInformationRequest extends BaseApiRequest
 {
@@ -24,12 +25,14 @@ class BabySitterStoreGeneralInformationRequest extends BaseApiRequest
      */
     public function rules()
     {
+        $date = Carbon::make('2002-01-01')->format('d-m-Y');
+
         return [
             'name' => 'required',
             'surname' => 'required',
             'tc' => 'required',
             'gender_id' => 'required',
-            'birthday' => 'required',
+            'birthday' => 'required|date_format:d-m-Y|before_or_equal:' . $date,
             'criminal_record' => 'required|file|mimes:pdf|max:2048',
             'address' => 'required',
             'email' => 'required',
