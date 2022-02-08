@@ -9,6 +9,7 @@ use App\Interfaces\IRepositories\IUserRepository;
 use App\Interfaces\IServices\IProfileService;
 use App\Interfaces\PaymentInterfaces\ISubMerchantService;
 use App\Models\BabySitter;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use JetBrains\PhpStorm\ArrayShape;
 
@@ -31,6 +32,7 @@ class BabySitterProfileService implements IProfileService
     {
         $result = ['status' => true, 'message' => 'İşlem başarılı'];
         try {
+            $request['birthday'] = Carbon::make($request['birthday'])->format('Y-m-d');
             $criminalRecordPath = $request->file('criminal_record')->store('public/criminal-records');
             $profilePhotoPath = $request->file('photo')->store('public/profile-photo');
             $request['criminal_record'] = $criminalRecordPath;
