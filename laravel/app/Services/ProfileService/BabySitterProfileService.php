@@ -31,7 +31,7 @@ class BabySitterProfileService implements IProfileService
     {
         $result = ['status' => true, 'message' => 'İşlem başarılı'];
         try {
-            $request['birthday'] = Carbon::make($data['birthday'])->format('Y-m-d');
+            $data['birthday'] = Carbon::make($data['birthday'])->toDateString();
             $data['photo'] = self::saveProfilePhoto($data['photo']);
             $data['criminal_record'] = self::saveCriminalRecord($data['criminal_record']);
             $this->userRepository->update($babySitter->id, $data);
