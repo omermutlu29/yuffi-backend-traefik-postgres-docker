@@ -23,8 +23,8 @@ class ProfileController extends BaseController
     public function storeGeneralInformation(BabySitterStoreGeneralInformationRequest $request)
     {
         try {
-            //TODO
-            $result = $this->profileService->updateBasicInformation(\auth()->user(), $request);
+            $data = $request->only('name', 'surname', 'tc', 'gender_id', 'birthday', 'criminal_record', 'address', 'email', 'photo', 'iban');
+            $result = $this->profileService->updateBasicInformation(\auth()->user(), $data);
             return $this->sendResponse($result['status'], $result['message']);
         } catch (\Exception $exception) {
             return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
@@ -37,10 +37,11 @@ class ProfileController extends BaseController
         try {
             $success['baby_sitter'] = $this->profileService->getProfile(\auth()->id());
             return $this->sendResponse($success, 'Veri Başarı ile Getirildi!');
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
 
         }
 
     }
+
 }

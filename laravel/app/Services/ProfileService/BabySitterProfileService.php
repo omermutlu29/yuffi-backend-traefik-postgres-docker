@@ -10,7 +10,6 @@ use App\Interfaces\IServices\IProfileService;
 use App\Interfaces\PaymentInterfaces\ISubMerchantService;
 use App\Models\BabySitter;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use JetBrains\PhpStorm\ArrayShape;
 
 
@@ -28,16 +27,14 @@ class BabySitterProfileService implements IProfileService
     }
 
     #[ArrayShape(['status' => "bool", 'message' => "mixed|string"])]
-    public function updateBasicInformation(BabySitter $babySitter, Request $request): array
+    public function updateBasicInformation(BabySitter $babySitter, array $data): array
     {
         $result = ['status' => true, 'message' => 'İşlem başarılı'];
         try {
-            $request['birthday'] = Carbon::make($request['birthday'])->format('Y-m-d');
-            $criminalRecordPath = $request->file('criminal_record')->store('public/criminal-records');
-            $profilePhotoPath = $request->file('photo')->store('public/profile-photo');
-            $request['criminal_record'] = $criminalRecordPath;
-            $request['photo'] = $profilePhotoPath;
-            $this->userRepository->update($babySitter->id, $request->all());
+            $request['birthday'] = Carbon::make($data['birthday'])->format('Y-m-d');
+            $data['photo'] = self::saveProfilePhoto($data['photo']);
+            $data['criminal_record'] = self::saveCriminalRecord($data['criminal_record']);
+            $this->userRepository->update($babySitter->id, $data);
             if ($babySitter->sub_merchant != null) {
                 $serviceResult = $this->subMerchantService->updateIyzicoSubMerchant($babySitter->attributesToArray());
             } else {
@@ -78,4 +75,18 @@ class BabySitterProfileService implements IProfileService
     {
         // TODO: Implement update() method.
     }
+
+
+    private function saveProfilePhoto($photo): string
+    {
+        $fileName = time() . '_' . $photo->getClientOriginalName();
+        return '/storage/' . $photo->storeAs('uploads', $fileName, 'public');
+    }
+
+    private function saveCriminalRecord($file): string
+    {
+        $fileName = time() . '_' . $file->getClientOriginalName();
+        return '/storage/' . $file->storeAs('uploads', $fileName, 'public');
+    }
+
 }
