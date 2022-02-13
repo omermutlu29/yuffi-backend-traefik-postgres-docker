@@ -32,7 +32,6 @@
       <path value="$PROJECT_DIR$/laravel/vendor/sebastian/global-state" />
       <path value="$PROJECT_DIR$/laravel/vendor/phpseclib/phpseclib" />
       <path value="$PROJECT_DIR$/laravel/vendor/ralouphie/getallheaders" />
-      <path value="$PROJECT_DIR$/laravel/vendor/paragonie/constant_time_encoding" />
       <path value="$PROJECT_DIR$/laravel/vendor/phpoption/phpoption" />
       <path value="$PROJECT_DIR$/laravel/vendor/fruitcake/laravel-cors" />
       <path value="$PROJECT_DIR$/laravel/vendor/paragonie/random_compat" />
@@ -47,7 +46,6 @@
       <path value="$PROJECT_DIR$/laravel/vendor/doctrine/lexer" />
       <path value="$PROJECT_DIR$/laravel/vendor/symfony/polyfill-intl-grapheme" />
       <path value="$PROJECT_DIR$/laravel/vendor/theseer/tokenizer" />
-      <path value="$PROJECT_DIR$/laravel/vendor/symfony/console" />
       <path value="$PROJECT_DIR$/laravel/vendor/symfony/polyfill-mbstring" />
       <path value="$PROJECT_DIR$/laravel/vendor/symfony/error-handler" />
       <path value="$PROJECT_DIR$/laravel/vendor/symfony/process" />
@@ -65,7 +63,6 @@
       <path value="$PROJECT_DIR$/laravel/vendor/symfony/css-selector" />
       <path value="$PROJECT_DIR$/laravel/vendor/symfony/var-dumper" />
       <path value="$PROJECT_DIR$/laravel/vendor/symfony/polyfill-intl-idn" />
-      <path value="$PROJECT_DIR$/laravel/vendor/symfony/translation-contracts" />
       <path value="$PROJECT_DIR$/laravel/vendor/symfony/event-dispatcher" />
       <path value="$PROJECT_DIR$/laravel/vendor/symfony/polyfill-php72" />
       <path value="$PROJECT_DIR$/laravel/vendor/symfony/translation" />
@@ -116,7 +113,6 @@
       <path value="$PROJECT_DIR$/laravel/vendor/asm89/stack-cors" />
       <path value="$PROJECT_DIR$/laravel/vendor/brick/math" />
       <path value="$PROJECT_DIR$/laravel/vendor/opis/closure" />
-      <path value="$PROJECT_DIR$/laravel/vendor/voku/portable-ascii" />
       <path value="$PROJECT_DIR$/laravel/vendor/psy/psysh" />
       <path value="$PROJECT_DIR$/laravel/vendor/filp/whoops" />
       <path value="$PROJECT_DIR$/laravel/vendor/psr/simple-cache" />
@@ -128,9 +124,25 @@
       <path value="$PROJECT_DIR$/laravel/vendor/psr/event-dispatcher" />
       <path value="$PROJECT_DIR$/laravel/vendor/composer" />
       <path value="$PROJECT_DIR$/laravel/vendor/laravel-validation-rules/credit-card" />
+      <path value="$PROJECT_DIR$/laravel/vendor/voku/portable-ascii" />
+      <path value="$PROJECT_DIR$/laravel/vendor/symfony/console" />
+      <path value="$PROJECT_DIR$/laravel/vendor/symfony/translation-contracts" />
+      <path value="$PROJECT_DIR$/laravel/vendor/paragonie/constant_time_encoding" />
+      <path value="$PROJECT_DIR$/laravel/vendor/laravel/nova" />
+      <path value="$PROJECT_DIR$/laravel/vendor/symfony/intl" />
+      <path value="$PROJECT_DIR$/laravel/vendor/laravel/ui" />
+      <path value="$PROJECT_DIR$/laravel/vendor/moontoast/math" />
+      <path value="$PROJECT_DIR$/laravel/vendor/spatie/once" />
+      <path value="$PROJECT_DIR$/laravel/vendor/cakephp/chronos" />
+      <path value="$PROJECT_DIR$/laravel/vendor/brick/money" />
+      <path value="$PROJECT_DIR$/laravel/vendor/doctrine/cache" />
+      <path value="$PROJECT_DIR$/laravel/vendor/doctrine/deprecations" />
+      <path value="$PROJECT_DIR$/laravel/vendor/doctrine/event-manager" />
+      <path value="$PROJECT_DIR$/laravel/vendor/doctrine/dbal" />
+      <path value="$PROJECT_DIR$/laravel/vendor/phpseclib/bcmath_compat" />
     </include_path>
   </component>
-  <component name="PhpProjectSharedConfiguration" php_language_level="8.0">
+  <component name="PhpProjectSharedConfiguration" php_language_level="7.3">
     <option name="suggestChangeDefaultLanguageLevel" value="false" />
   </component>
   <component name="PhpUnit">

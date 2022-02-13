@@ -38,7 +38,6 @@
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/sebastian/global-state" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/phpseclib/phpseclib" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/ralouphie/getallheaders" />
-      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/paragonie/constant_time_encoding" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/phpoption/phpoption" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/fruitcake/laravel-cors" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/paragonie/random_compat" />
@@ -53,7 +52,6 @@
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/doctrine/lexer" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/symfony/polyfill-intl-grapheme" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/theseer/tokenizer" />
-      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/symfony/console" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/symfony/polyfill-mbstring" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/symfony/error-handler" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/symfony/process" />
@@ -71,7 +69,6 @@
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/symfony/css-selector" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/symfony/var-dumper" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/symfony/polyfill-intl-idn" />
-      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/symfony/translation-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/symfony/event-dispatcher" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/symfony/polyfill-php72" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/symfony/translation" />
@@ -122,7 +119,6 @@
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/asm89/stack-cors" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/brick/math" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/opis/closure" />
-      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/voku/portable-ascii" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/psy/psysh" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/filp/whoops" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/psr/simple-cache" />
@@ -133,6 +129,22 @@
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/psr/container" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/psr/event-dispatcher" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/voku/portable-ascii" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/symfony/console" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/symfony/translation-contracts" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/paragonie/constant_time_encoding" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/laravel/nova" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/symfony/intl" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/laravel/ui" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/moontoast/math" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/spatie/once" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/cakephp/chronos" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/brick/money" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/doctrine/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/doctrine/deprecations" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/doctrine/event-manager" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/doctrine/dbal" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/phpseclib/bcmath_compat" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
