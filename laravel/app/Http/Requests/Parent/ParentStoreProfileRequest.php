@@ -28,8 +28,8 @@ class ParentStoreProfileRequest extends BaseApiRequest
     {
         $date = Carbon::make('2002-01-01')->format('d-m-Y');
         return [
-            'name' => 'required',
-            'surname' => 'required',
+            'name' => 'required|min:3',
+            'surname' => 'required|min3',
             'tc' => 'required|max:11|min:11',
             'birthday' => 'required|date_format:d-m-Y|before_or_equal:' . $date,
             //'service_contract' => 'required',
