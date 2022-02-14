@@ -68,13 +68,13 @@ class StaticVariablesService implements IStaticVars
         for ($i = 1; $i <= 14; $i++) {
 
             if ($i==1){
-                $date=date('Y-m-d', strtotime('+1 day', strtotime($date)));
+                $date=date('d-m-Y', strtotime('+1 day', strtotime($date)));
                 $obj=new \stdClass();
                 $obj->name=$date;
                 $obj->value='Yarın';
                 $days[]=$obj;
             }else{
-                $date=date('Y-m-d', strtotime('+1 day', strtotime($date)));
+                $date=date('d-m-Y', strtotime('+1 day', strtotime($date)));
                 $obj=new \stdClass();
                 $obj->name=$date;
                 $obj->value=$date;
