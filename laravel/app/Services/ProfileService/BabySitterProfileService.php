@@ -38,9 +38,9 @@ class BabySitterProfileService implements IProfileService
             if (isset($data['criminal_record']))
                 $data['criminal_record'] = self::saveCriminalRecord($data['criminal_record']);
             $this->userRepository->update($babySitter->id, $data);
-            $babySitter = $this->userRepository->getUserById($babySitter->id);
-            if (isset($data['iban'])) {
-                if ($babySitter->sub_merchant != null && $babySitter->iban != $data['iban']) {
+            if (isset($data['iban']) && $data['iban'] !== $babySitter->iban) {
+                $babySitter = $this->userRepository->getUserById($babySitter->id);
+                if ($babySitter->sub_merchant != null) {
                     $serviceResult = $this->subMerchantService->updateIyzicoSubMerchant($babySitter->attributesToArray());
                 }
                 if ($babySitter->sub_merchant == null) {
@@ -51,6 +51,7 @@ class BabySitterProfileService implements IProfileService
                 }
                 $data = ['sub_merchant' => $serviceResult->getSubMerchantKey()];
                 $this->userRepository->update($babySitter->id, $data);
+
             }
 
 
