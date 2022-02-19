@@ -38,23 +38,7 @@ class BabySitterProfileService implements IProfileService
             if (isset($data['criminal_record']))
                 $data['criminal_record'] = self::saveCriminalRecord($data['criminal_record']);
             $this->userRepository->update($babySitter->id, $data);
-            if (isset($data['iban']) && $data['iban'] !== $babySitter->iban) {
-                $babySitter = $this->userRepository->getUserById($babySitter->id);
-                if ($babySitter->sub_merchant != null) {
-                    $serviceResult = $this->subMerchantService->updateIyzicoSubMerchant($babySitter->attributesToArray());
-                }
-                if ($babySitter->sub_merchant == null) {
-                    $serviceResult = $this->subMerchantService->insertIyzicoSubMerchant($babySitter->attributesToArray());
-                }
-                if ($serviceResult->getStatus() == "failure") {
-                    throw new \Exception($serviceResult->getErrorMessage());
-                }
-                $data = ['sub_merchant' => $serviceResult->getSubMerchantKey()];
-                $this->userRepository->update($babySitter->id, $data);
-
-            }
-
-
+            $this->updateInsertSubmerchantIban($babySitter, $data);
             return $result;
         } catch (\Exception $exception) {
             throw $exception;
@@ -84,6 +68,27 @@ class BabySitterProfileService implements IProfileService
     public function update(int $id, array $data)
     {
         // TODO: Implement update() method.
+    }
+
+    private function updateInsertSubmerchantIban($babySitter, $data)
+    {
+        if (isset($data['iban']) && $data['iban'] !== $babySitter->iban) {
+            $babySitter = $this->userRepository->getUserById($babySitter->id);
+            if ($babySitter->sub_merchant != null) {
+                $serviceResult = $this->subMerchantService->updateIyzicoSubMerchant($babySitter->attributesToArray());
+                if ($serviceResult->getStatus() == "failure") {
+                    throw new \Exception($serviceResult->getErrorMessage());
+                }
+            }
+            if ($babySitter->sub_merchant == null) {
+                $serviceResult = $this->subMerchantService->insertIyzicoSubMerchant($babySitter->attributesToArray());
+                if ($serviceResult->getStatus() == "failure") {
+                    throw new \Exception($serviceResult->getErrorMessage());
+                }
+                $data = ['sub_merchant' => $serviceResult->getSubMerchantKey()];
+                $this->userRepository->update($babySitter->id, $data);
+            }
+        }
     }
 
 
