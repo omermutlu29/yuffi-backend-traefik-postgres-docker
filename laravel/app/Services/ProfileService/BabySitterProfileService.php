@@ -39,16 +39,20 @@ class BabySitterProfileService implements IProfileService
                 $data['criminal_record'] = self::saveCriminalRecord($data['criminal_record']);
             $this->userRepository->update($babySitter->id, $data);
             $babySitter = $this->userRepository->getUserById($babySitter->id);
-            if ($babySitter->sub_merchant != null) {
-                $serviceResult = $this->subMerchantService->updateIyzicoSubMerchant($babySitter->attributesToArray());
-            } else {
-                $serviceResult = $this->subMerchantService->insertIyzicoSubMerchant($babySitter->attributesToArray());
+            if (isset($data['iban'])) {
+                if ($babySitter->sub_merchant != null) {
+                    $serviceResult = $this->subMerchantService->updateIyzicoSubMerchant($babySitter->attributesToArray());
+                } else {
+                    $serviceResult = $this->subMerchantService->insertIyzicoSubMerchant($babySitter->attributesToArray());
+                }
+                if ($serviceResult->getStatus() == "failure") {
+                    throw new \Exception($serviceResult->getErrorMessage());
+                }
+                $data = ['sub_merchant' => $serviceResult->getSubMerchantKey()];
+                $this->userRepository->update($babySitter->id, $data);
             }
-            if ($serviceResult->getStatus() == "failure") {
-                throw new \Exception($serviceResult->getErrorMessage());
-            }
-            $data = ['sub_merchant' => $serviceResult->getSubMerchantKey()];
-            $this->userRepository->update($babySitter->id, $data);
+
+
             return $result;
         } catch (\Exception $exception) {
             throw $exception;
