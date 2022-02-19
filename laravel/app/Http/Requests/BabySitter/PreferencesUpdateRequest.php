@@ -26,7 +26,7 @@ class PreferencesUpdateRequest extends BaseApiRequest
         return [
             'price_per_hour'=>'required',
             'child_gender_id'=>'required|exists:genders,id',
-            'child_year_id'=>'required|exists:genders,id',
+            'child_year_id'=>'required|exists:child_years,id',
             'child_count'=>'required|min:1',
             'disabled_status'=>'required',
             'animal_status'=>'required',
