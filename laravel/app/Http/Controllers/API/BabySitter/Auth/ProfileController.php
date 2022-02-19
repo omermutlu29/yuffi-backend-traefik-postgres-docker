@@ -6,6 +6,7 @@ namespace App\Http\Controllers\API\BabySitter\Auth;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\Requests\BabySitter\BabySitterStoreGeneralInformationRequest;
+use App\Http\Requests\BabySitter\BabySitterUpdateGeneralInformationRequest;
 use App\Interfaces\IServices\IProfileService;
 
 
@@ -28,9 +29,20 @@ class ProfileController extends BaseController
             return $this->sendResponse($result['status'], $result['message']);
         } catch (\Exception $exception) {
             return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
-
         }
     }
+
+    public function updateGeneralInformation(BabySitterUpdateGeneralInformationRequest $request)
+    {
+        try {
+            $data = $request->only('surname', 'email', 'photo', 'iban');
+            $result = $this->profileService->updateBasicInformation(\auth()->user(), $data);
+            return $this->sendResponse($result['status'], $result['message']);
+        } catch (\Exception $exception) {
+            return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
+        }
+    }
+
 
     public function getProfile()
     {

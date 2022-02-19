@@ -6,7 +6,7 @@ use App\Http\Requests\BaseApiRequest;
 use App\Rules\IBANRule;
 use Carbon\Carbon;
 
-class BabySitterStoreGeneralInformationRequest extends BaseApiRequest
+class BabySitterUpdateGeneralInformationRequest extends BaseApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,15 +28,15 @@ class BabySitterStoreGeneralInformationRequest extends BaseApiRequest
         $date = Carbon::make('2002-01-01')->format('d-m-Y');
 
         return [
-            'name' => 'required',
+            // 'name' => 'required',
             'surname' => 'required',
-            'tc' => 'required|unique:baby_sitters,tc',
-            'gender_id' => 'required',
-            'birthday' => 'required|date_format:d-m-Y|before_or_equal:' . $date,
-            'criminal_record' => 'required|file|mimes:pdf|max:2048',
-            'address' => 'required',
-            'email' => 'required|unique:baby_sitters,email',
-            'photo' => 'required|image|mimes:jpg,png,jpeg|max:2048',
+            // 'tc' => 'required',
+            // 'gender_id' => 'required',
+            // 'birthday' => 'required|date_format:d-m-Y|before_or_equal:' . $date,
+            // 'criminal_record' => 'required|file|mimes:pdf|max:2048',
+            // 'address' => '',
+            'email' => 'required',
+            'photo' => 'image|mimes:jpg,png,jpeg|max:2048',
             'iban' => ['required', new IBANRule()]
         ];
     }

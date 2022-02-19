@@ -9,6 +9,7 @@ Route::prefix('baby-sitter')->group(function () {
 
     Route::prefix('profile')->group(function () {
         Route::post('store', [\App\Http\Controllers\API\BabySitter\Auth\ProfileController::class, 'storeGeneralInformation']);
+        Route::post('update', [\App\Http\Controllers\API\BabySitter\Auth\ProfileController::class, 'updateGeneralInformation']);
         //Route::put('update-iban', [\App\Http\Controllers\API\BabySitter\Auth\ProfileController::class, 'updateIban']);
         Route::get('get-profile', [\App\Http\Controllers\API\BabySitter\Auth\ProfileController::class, 'getProfile']);
     });//Bitti
