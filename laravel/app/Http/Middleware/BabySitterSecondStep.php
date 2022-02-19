@@ -18,9 +18,16 @@ class BabySitterSecondStep
     {
         $baby_sitter = Auth::user();
         if ($baby_sitter->is_accepted != 1) {
-            $data['success'] = false;
-            $data['message'] = 'Öncelikle Yöneticilerimizden Onaylanmanız Gerekmektedir!';
-            return response()->json($data,400);
+            $response = [
+                'success' => false,
+                'message' => 'Hata!',
+            ];
+            if(!empty($errorMessages)){
+
+                $response['data'] = ['Öncelikle Yöneticilerimizden Onaylanmanız Gerekmektedir!'];
+            }
+            return response()->json($response, 400);
+
         }
         return $next($request);
     }
