@@ -19,16 +19,15 @@ class PreferenceController extends BaseController
         $this->profileService = $profileService;
     }
 
-    public function update(PreferencesUpdateRequest $request): \Illuminate\Http\Response
+    public function update(PreferencesUpdateRequest $request)
     {
         $data = [];
-        $babySitter = auth()->user();
-        $data['base_preferences'] = $request->only('price_per_hour', 'child_year_id', 'child_gender_id', 'child_count', 'disabled_status', 'animal_status', 'accepted_locations');
+        $data['base_preferences'] = $request->only('price_per_hour', 'child_year_id', 'child_gender_id', 'child_count', 'disabled_status', 'animal_status');
         $data['relational_preferences'] = $request->only('towns', 'accepted_locations');
         try {
-            $this->profileService->updatePreferences($babySitter, $data);
+            $this->profileService->updatePreferences(auth()->user(), $data);
         } catch (\Exception $e) {
-            return $this->sendError(false, 'Birşeyler ters gitti!');
+            return $this->sendError(false, $e->getMessage());
         }
         return $this->sendResponse($this->profileService->getProfile(auth()->id()), 'Bilgiler güncellendi');
     }

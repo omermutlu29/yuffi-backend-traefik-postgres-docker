@@ -49,7 +49,7 @@ class BabySitterRepository implements IUserRepository, IBabySitterRepository
 
     public function updateAvailableTowns(BabySitter $babySitter, array $availableTowns)
     {
-        $babySitter->accepted_locations()->sync($availableTowns);
+        $babySitter->available_towns()->sync($availableTowns);
     }
 
     public function getUserById(int $id)
