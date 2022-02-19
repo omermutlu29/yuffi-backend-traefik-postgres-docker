@@ -40,9 +40,10 @@ class BabySitterProfileService implements IProfileService
             $this->userRepository->update($babySitter->id, $data);
             $babySitter = $this->userRepository->getUserById($babySitter->id);
             if (isset($data['iban'])) {
-                if ($babySitter->sub_merchant != null) {
+                if ($babySitter->sub_merchant != null && $babySitter->iban != $data['iban']) {
                     $serviceResult = $this->subMerchantService->updateIyzicoSubMerchant($babySitter->attributesToArray());
-                } else {
+                }
+                if ($babySitter->sub_merchant == null) {
                     $serviceResult = $this->subMerchantService->insertIyzicoSubMerchant($babySitter->attributesToArray());
                 }
                 if ($serviceResult->getStatus() == "failure") {
