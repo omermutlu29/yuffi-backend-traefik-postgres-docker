@@ -20,7 +20,7 @@ class BabySitterSecondStep
         if ($baby_sitter->is_accepted != 1) {
             $data['success'] = false;
             $data['message'] = 'Öncelikle Yöneticilerimizden Onaylanmanız Gerekmektedir!';
-            return response()->json($data);
+            return response()->json($data,400);
         }
         return $next($request);
     }
