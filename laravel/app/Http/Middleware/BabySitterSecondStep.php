@@ -22,7 +22,7 @@ class BabySitterSecondStep
                 'success' => false,
                 'message' => 'Hata!',
             ];
-            $response['data']['message'] = 'Öncelikle Yöneticilerimizden Onaylanmanız Gerekmektedir!';
+            $response['data']['message'][] = 'Öncelikle Yöneticilerimizden Onaylanmanız Gerekmektedir!';
             return response()->json($response, 400);
 
         }
