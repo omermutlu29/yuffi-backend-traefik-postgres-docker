@@ -23,8 +23,13 @@ class CalendarController extends BaseController
 
     public function index()
     {
+
         try {
-            return $this->sendResponse(CalendarGetResource::collection($this->calendarService->getMyNextFifteenDaysCalendar(\auth()->id())), 'Verileriniz getirildi');
+            $data = [];
+            foreach ($this->calendarService->getMyNextFifteenDaysCalendar(\auth()->id()) as $date) {
+                $data[$date->date] = CalendarGetResource::prapareString($date);
+            }
+            return $this->sendResponse($data, 'Verileriniz getirildi');
         } catch (\Exception $exception) {
             return $this->sendError(false, $exception->getMessage(), 400);
 
