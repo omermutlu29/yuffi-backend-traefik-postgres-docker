@@ -40,6 +40,7 @@ class CreateBabySittersTable extends Migration
             //That's about preferences start
             $table->decimal('price_per_hour')->nullable();
             $table->foreignId('child_gender_id')->nullable()->references('id')->on('genders');
+            $table->foreignId('parent_gender_id')->nullable()->references('id')->on('genders');
             $table->foreignId('child_year_id')->nullable()->references('id')->on('child_years');
             $table->integer('child_count')->default(0);
             $table->boolean('disabled_status')->default(0);

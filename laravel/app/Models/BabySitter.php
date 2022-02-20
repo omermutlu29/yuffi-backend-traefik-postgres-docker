@@ -73,6 +73,11 @@ class BabySitter extends Authenticatable
         return $this->belongsTo(Gender::class);
     }
 
+    public function parent_gender()
+    {
+        return $this->belongsTo(Gender::class);
+    }
+
     public function child_year()
     {
         return $this->belongsTo(ChildYear::class);
