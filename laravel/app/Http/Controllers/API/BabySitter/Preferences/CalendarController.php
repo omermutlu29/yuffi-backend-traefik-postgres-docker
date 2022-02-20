@@ -16,7 +16,7 @@ class CalendarController extends BaseController
 
     public function __construct(IBabySitterCalendarService $calendarService)
     {
-        $this->middleware(['auth:baby_sitter', 'bs_first_step', 'bs_second_step', 'deposit']);
+        $this->middleware(['auth:baby_sitter', 'bs_first_step', 'bs_second_step']);
         $this->calendarService = $calendarService;
     }
 
