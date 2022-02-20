@@ -23,9 +23,10 @@ class CalendarController extends BaseController
     public function index()
     {
         try {
-            return $this->calendarService->getMyNextFifteenDaysCalendar(\auth()->id());
+            return $this->sendResponse($this->calendarService->getMyNextFifteenDaysCalendar(\auth()->id()), 'Verileriniz getirildi');
         } catch (\Exception $exception) {
-            throw $exception;
+            return $this->sendError(false, $exception->getMessage(), 400);
+
         }
     }
 
@@ -41,18 +42,19 @@ class CalendarController extends BaseController
     public function update(AvailableTimeUpdate $request)
     {
         try {
-            $this->calendarService->update(\auth()->id(), $request->only('available_time_id', 'time_status_id'));
+            return $this->sendResponse($this->calendarService->update(\auth()->id(), $request->only('available_time_id', 'time_status_id')), 'Güncelleme işlemi başarılı');
         } catch (\Exception $exception) {
-            throw $exception;
+            return $this->sendError(false, $exception->getMessage(), 400);
+
         }
     }
 
     public function delete(AvailableTimeDelete $request)
     {
         try {
-            return $this->calendarService->delete(\auth()->id(), $request->only('available_time_id'));
+            return $this->sendResponse($this->calendarService->delete(\auth()->id(), $request->only('available_time_id')), 'Silme işlemi başarılı');
         } catch (\Exception $exception) {
-            throw $exception;
+            return $this->sendError(false, $exception->getMessage(), 400);
         }
     }
 
