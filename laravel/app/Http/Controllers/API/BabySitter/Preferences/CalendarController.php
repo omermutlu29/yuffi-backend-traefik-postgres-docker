@@ -29,12 +29,12 @@ class CalendarController extends BaseController
         }
     }
 
-    public function store(StoreAvailableTime $request): \Illuminate\Http\Response
+    public function store(StoreAvailableTime $request)
     {
         try {
             return $this->calendarService->storeTime(\auth()->id(), $request->all());
         } catch (\Exception $exception) {
-            throw $exception;
+            return $this->sendError(false,$exception->getMessage(),400) ;
         }
         return $this->sendResponse($this->get(), 'Kaydetme işlemi başarılı!');
     }

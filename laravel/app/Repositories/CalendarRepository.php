@@ -48,7 +48,7 @@ class CalendarRepository implements IBabySitterCalendarRepository
     public function storeDate($babySitterId, $date)
     {
         try {
-            return BabySitterAvailableDate::firstOrCreate(['date' => $date['date'], 'baby_sitter_id' => $babySitterId]);
+            return BabySitterAvailableDate::firstOrCreate(['date' => $date, 'baby_sitter_id' => $babySitterId]);
         } catch (\Illuminate\Database\QueryException $exception) {
             throw $exception;
         }

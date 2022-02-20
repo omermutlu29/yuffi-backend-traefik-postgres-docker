@@ -7,6 +7,7 @@ namespace App\Services\Calendar;
 use App\Interfaces\IRepositories\IBabySitterCalendarRepository;
 use App\Interfaces\IRepositories\IUserRepository;
 use App\Interfaces\IServices\IBabySitterCalendarService;
+use Carbon\Carbon;
 
 class BabySitterCalendarService implements IBabySitterCalendarService
 {
@@ -21,7 +22,7 @@ class BabySitterCalendarService implements IBabySitterCalendarService
     {
         try {
             foreach ($data['available_dates'] as $date) {
-                $babySitterAvailableDate = $this->babySitterCalendarRepository->storeDate($babySitterId, $date['date']);
+                $babySitterAvailableDate = $this->babySitterCalendarRepository->storeDate($babySitterId,$date['date']);
                 foreach ($date['hours'] as $hour) {
                     $this->babySitterCalendarRepository->storeTime($babySitterAvailableDate, $hour['start'], $hour['end'], 1);
                 }
