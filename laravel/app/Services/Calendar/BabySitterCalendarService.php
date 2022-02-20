@@ -22,7 +22,7 @@ class BabySitterCalendarService implements IBabySitterCalendarService
     {
         try {
             foreach ($data['available_dates'] as $date) {
-                $babySitterAvailableDate = $this->babySitterCalendarRepository->storeDate($babySitterId,$date['date']);
+                $babySitterAvailableDate = $this->babySitterCalendarRepository->storeDate($babySitterId,Carbon::make($date['date'])->format('m-d-Y'));
                 foreach ($date['hours'] as $hour) {
                     $this->babySitterCalendarRepository->storeTime($babySitterAvailableDate, $hour['start'], $hour['end'], 1);
                 }
