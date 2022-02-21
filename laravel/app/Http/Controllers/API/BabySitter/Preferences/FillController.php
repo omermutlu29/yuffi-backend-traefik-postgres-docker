@@ -61,4 +61,9 @@ class FillController extends BaseController
         return $this->variablesService->hours();
     }
 
+    public function getChildCount()
+    {
+        return 3;
+    }
+
 }
