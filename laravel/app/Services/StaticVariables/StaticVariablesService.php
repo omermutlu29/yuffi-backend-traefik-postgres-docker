@@ -104,6 +104,10 @@ class StaticVariablesService implements IStaticVars
     }
 
     public function getChildCount(){
-        return 3;
+        $arr = [];
+        for ($i=1; $i<3;$i++){
+            $arr[] = ['label'=>$i,'value'=>$i];
+        }
+        return $arr;
     }
 }
