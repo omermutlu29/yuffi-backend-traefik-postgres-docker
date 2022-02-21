@@ -30,6 +30,7 @@ class PreferencesUpdateRequest extends BaseApiRequest
             'child_year_id'=>'required|exists:child_years,id',
             'child_count'=>'required|min:1',
             'disabled_status'=>'required',
+            'wc_status'=>'required',
             'animal_status'=>'required',
             'towns'=>'required|array|min:1',
             'towns.*'=>'required|exists:towns,id',

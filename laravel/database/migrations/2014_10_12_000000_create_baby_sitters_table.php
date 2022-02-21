@@ -45,6 +45,7 @@ class CreateBabySittersTable extends Migration
             $table->integer('child_count')->default(0);
             $table->boolean('disabled_status')->default(0);
             $table->boolean('animal_status')->default(0);
+            $table->boolean('wc_status')->default(0);
             //That's about preferences end
             $table->rememberToken();
             $table->timestamps();
