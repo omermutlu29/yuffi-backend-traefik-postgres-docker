@@ -63,7 +63,7 @@ class FillController extends BaseController
 
     public function getChildCount()
     {
-        return 3;
+        return $this->variablesService->getChildCount();
     }
 
 }

@@ -49,6 +49,7 @@ class StaticVariablesService implements IStaticVars
         $data['days']=$this->calculateDays();
         $data['times']=$this->calculateTimes();
         $data['hours']=$this->hours();
+        $data['child_count'] = $this->getChildCount();
         return $data;
     }
 
@@ -100,5 +101,9 @@ class StaticVariablesService implements IStaticVars
             $times[]=$i;
         }
         return $times;
+    }
+
+    public function getChildCount(){
+        return 3;
     }
 }
