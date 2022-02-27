@@ -4,6 +4,7 @@
 namespace App\Services\Calendar;
 
 
+use App\Http\Resources\CalendarGetResource;
 use App\Interfaces\IRepositories\IBabySitterCalendarRepository;
 use App\Interfaces\IRepositories\IUserRepository;
 use App\Interfaces\IServices\IBabySitterCalendarService;
@@ -35,7 +36,19 @@ class BabySitterCalendarService implements IBabySitterCalendarService
     public function getMyNextFifteenDaysCalendar($babySitterId)
     {
         try {
-            return $this->babySitterCalendarRepository->getMyNextFifteenDays($babySitterId);
+            $dbData =  $this->babySitterCalendarRepository->getMyNextFifteenDays($babySitterId);
+            $data = [];
+            $processableDates = [];
+            $startDate = Carbon::now();
+            $finishDate = Carbon::now()->addDays(15);
+            for ($i = $startDate; $i < $finishDate; $i->addDays(1)) {
+                $processableDates[$i->format('Y-m-d')] = [];
+            }
+            foreach ($dbData as $date) {
+                $data[$date->date] = CalendarGetResource::prapareString($date);
+            }
+            $data = array_merge($processableDates,$data);
+            return $data;
         } catch (\Exception $exception) {
             throw $exception;
         }

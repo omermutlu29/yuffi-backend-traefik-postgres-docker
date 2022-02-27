@@ -8,7 +8,6 @@ use App\Http\Controllers\API\BaseController;
 use App\Http\Requests\AvailableTimeRequests\AvailableTimeDelete;
 use App\Http\Requests\AvailableTimeRequests\AvailableTimeUpdate;
 use App\Http\Requests\BabySitter\StoreAvailableTime;
-use App\Http\Resources\CalendarGetResource;
 use App\Interfaces\IServices\IBabySitterCalendarService;
 
 class CalendarController extends BaseController
@@ -18,9 +17,9 @@ class CalendarController extends BaseController
     public function __construct(IBabySitterCalendarService $calendarService)
     {
         $this->middleware([
-            'auth:baby_sitter',
-            'bs_first_step',
-            //'bs_second_step'
+                'auth:baby_sitter',
+                'bs_first_step',
+                //'bs_second_step'
             ]
         );
         $this->calendarService = $calendarService;
@@ -28,12 +27,8 @@ class CalendarController extends BaseController
 
     public function index()
     {
-
         try {
-            $data = [];
-            foreach ($this->calendarService->getMyNextFifteenDaysCalendar(\auth()->id()) as $date) {
-                $data[$date->date] = CalendarGetResource::prapareString($date);
-            }
+            $data = $this->calendarService->getMyNextFifteenDaysCalendar(auth()->id());
             return $this->sendResponse($data, 'Verileriniz getirildi');
         } catch (\Exception $exception) {
             return $this->sendError(false, $exception->getMessage(), 400);
