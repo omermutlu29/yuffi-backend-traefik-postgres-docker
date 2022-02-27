@@ -50,7 +50,8 @@ class CalendarGetResource extends JsonResource
             unset($nonExistsTimes[$key]);
         }
 
-        return collect(array_merge($nonExistsTimesTemp, $existTimes))->sortBy('starts');
+        return collect(array_merge($nonExistsTimesTemp, $existTimes))->sortBy('starts')->values();
+
 
     }
 
