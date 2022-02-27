@@ -55,12 +55,8 @@ class BabySitterCalendarService implements IBabySitterCalendarService
 
     public function delete(int $babySitterId, int $availableTimeId)
     {
-        $timeWithDate = $this->babySitterCalendarRepository->getAvailableTimeByIdWithDate($availableTimeId);
-        if (\request()->user()->can('delete', $timeWithDate)) {
-            abort(403);
-        }
         try {
-            return $this->babySitterCalendarRepository->deleteAvailableTime($availableTimeId);
+            return ($this->babySitterCalendarRepository->deleteAvailableTime($availableTimeId));
         } catch (\Exception $exception) {
             throw $exception;
         }

@@ -6,7 +6,7 @@ use App\Models\BabySitter;
 use App\Models\BabySitterAvailableTime;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class CalendarPolicy
+class BabySitterAvailableTimePolicy
 {
     use HandlesAuthorization;
 

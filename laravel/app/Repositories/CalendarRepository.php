@@ -30,7 +30,7 @@ class CalendarRepository implements IBabySitterCalendarRepository
     public function deleteAvailableTime($availableTimeId)
     {
         try {
-            BabySitterAvailableTime::find($availableTimeId)->delete();
+            return (BabySitterAvailableTime::where('id', $availableTimeId)->delete());
         } catch (\Illuminate\Database\QueryException $exception) {
             throw $exception;
         }
@@ -70,7 +70,7 @@ class CalendarRepository implements IBabySitterCalendarRepository
     public function getAvailableTimeByIdWithDate(int $availableTimeId)
     {
         try {
-            BabySitterAvailableTime::with('baby_sitter_available_date')->find($availableTimeId);
+            return BabySitterAvailableTime::with('baby_sitter_available_date')->find($availableTimeId);
         } catch (\Illuminate\Database\QueryException $exception) {
             throw $exception;
         }

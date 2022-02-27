@@ -21,8 +21,8 @@ class AvailableTimeDelete extends BaseApiRequest
      */
     public function authorize()
     {
-        $availableTime = $this->calendarRepository->getAvailableTimeByIdWithDate(request()->post('available_time_id'));
-        return \request()->user()->can('delete', $availableTime);
+        $availableTime = $this->calendarRepository->getAvailableTimeByIdWithDate(\request()->get('available_time_id'));
+        return (\request()->user()->can('delete', $availableTime));
     }
 
     /**
