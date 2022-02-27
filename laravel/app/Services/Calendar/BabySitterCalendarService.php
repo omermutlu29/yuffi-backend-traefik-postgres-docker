@@ -41,7 +41,7 @@ class BabySitterCalendarService implements IBabySitterCalendarService
             $startDate = Carbon::now();
             $finishDate = Carbon::now()->addDays(15);
             for ($i = $startDate; $i < $finishDate; $i->addDays(1)) {
-                $processableDates[$i->format('Y-m-d')] = CalendarGetResource::fillTimesToNonExistDate();
+                $processableDates[$i->format('Y-m-d')] = CalendarGetResource::fillTimesToNonExistDate($i->format('Y-m-d'));
             }
             foreach ($dbData as $date) {
                 $data[$date->date] = CalendarGetResource::prapareString($date);

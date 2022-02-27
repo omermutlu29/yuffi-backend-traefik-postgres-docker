@@ -30,6 +30,7 @@ class CalendarGetResource extends JsonResource
         $nonExistsTimes = [];
         $nonExistsTimesTemp = [];
         for ($i = 10; $i < 22; $i++) {
+            $string['date'] = $date->date;
             $string['starts'] = $i . ':00:00';
             $string['end'] = $i + 1 . ':00:00';
             $string['name'] = $i . ':00:00' . ' ' . ($i + 1) . ':00:00';
@@ -41,6 +42,7 @@ class CalendarGetResource extends JsonResource
             if (isset($nonExistsTimes[$time->start])) {
                 unset($nonExistsTimes[$time->start]);
             }
+            $string['date'] = $date->date;
             $string['starts'] = $time->start;
             $string['end'] = $time->finish;
             $string['name'] = $time->start . ' ' . $time->finish; //. ' ve ' . $time->time_status->name;
@@ -57,10 +59,11 @@ class CalendarGetResource extends JsonResource
 
     }
 
-    public static function fillTimesToNonExistDate()
+    public static function fillTimesToNonExistDate($date)
     {
         $data = [];
         for ($i = 10; $i < 22; $i++) {
+            $string['date'] = $date;
             $string['starts'] = $i . ':00:00';
             $string['end'] = $i + 1 . ':00:00';
             $string['name'] = $i . ':00:00' . ' ' . ($i + 1) . ':00:00';
