@@ -39,7 +39,7 @@ class CalendarController extends BaseController
     public function store(StoreAvailableTime $request)
     {
         try {
-            return $this->sendResponse($this->calendarService->storeTime(\auth()->id(), $request->all()), 'Ajandanız başarılı bir şekilde  güncellendi');
+            return $this->sendResponse(true, $this->calendarService->storeTime(\auth()->id(), $request->all()), 'Ajandanız başarılı bir şekilde  güncellendi');
         } catch (\Exception $exception) {
             return $this->sendError(false, $exception->getMessage(), 400);
         }
