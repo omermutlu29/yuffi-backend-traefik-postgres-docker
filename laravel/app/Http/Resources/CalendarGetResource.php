@@ -45,18 +45,20 @@ class CalendarGetResource extends JsonResource
             $string['status_id'] = $time->time_status_id;
             $existTimes[] = $string;
         }
-        foreach ($nonExistsTimes as $key=>$value){
+        foreach ($nonExistsTimes as $key => $value) {
             $nonExistsTimesTemp[] = $value;
             unset($nonExistsTimes[$key]);
         }
 
-        return (array_merge($nonExistsTimesTemp, $existTimes));
+        return collect(array_merge($nonExistsTimesTemp, $existTimes))->sortBy('starts');
 
     }
 
-    public static function fillTimesToNonExistDate(){
+    public static function fillTimesToNonExistDate()
+    {
         $data = [];
         for ($i = 10; $i < 22; $i++) {
+            $string['starts'] = $i . ':00:00';
             $string['name'] = $i . ':00:00' . ' ' . ($i + 1) . ':00:00';
             $string['status_id'] = 999;//Eklenmemiş
             $data[] = $string;
