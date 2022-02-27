@@ -32,7 +32,7 @@ class CalendarGetResource extends JsonResource
         for ($i = 10; $i < 22; $i++) {
             $string['starts'] = $i . ':00:00';
             $string['name'] = $i . ':00:00' . ' ' . ($i + 1) . ':00:00';
-            $string['status'] = 1;
+            $string['status_id'] = 1;
             $nonExistsTimes[$i . ':00:00'] = $string;
         }
 
@@ -42,7 +42,7 @@ class CalendarGetResource extends JsonResource
             }
             $string['starts'] = $time->start;
             $string['name'] = $time->start . ' ' . $time->finish; //. ' ve ' . $time->time_status->name;
-            $string['status'] = $time->time_status_id;
+            $string['status_id'] = $time->time_status_id;
             $existTimes[] = $string;
         }
         foreach ($nonExistsTimes as $key=>$value){
