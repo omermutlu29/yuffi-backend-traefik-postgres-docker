@@ -26,10 +26,39 @@ class CalendarGetResource extends JsonResource
 
     public static function prapareString($date)
     {
-        $data = [];
+        $existTimes = [];
+        $nonExistsTimes = [];
+        $nonExistsTimesTemp = [];
+        for ($i = 10; $i < 22; $i++) {
+            $string['starts'] = $i . ':00:00';
+            $string['name'] = $i . ':00:00' . ' ' . ($i + 1) . ':00:00';
+            $string['status'] = 1;
+            $nonExistsTimes[$i . ':00:00'] = $string;
+        }
+
         foreach ($date->times as $time) {
+            if (isset($nonExistsTimes[$time->start])) {
+                unset($nonExistsTimes[$time->start]);
+            }
+            $string['starts'] = $time->start;
             $string['name'] = $time->start . ' ' . $time->finish; //. ' ve ' . $time->time_status->name;
-            $string['status'] = $time->time_status->name;
+            $string['status'] = $time->time_status_id;
+            $existTimes[] = $string;
+        }
+        foreach ($nonExistsTimes as $key=>$value){
+            $nonExistsTimesTemp[] = $value;
+            unset($nonExistsTimes[$key]);
+        }
+
+        return (array_merge($nonExistsTimesTemp, $existTimes));
+
+    }
+
+    public static function fillTimesToNonExistDate(){
+        $data = [];
+        for ($i = 10; $i < 22; $i++) {
+            $string['name'] = $i . ':00:00' . ' ' . ($i + 1) . ':00:00';
+            $string['status_id'] = 1;//Müsait
             $data[] = $string;
         }
         return $data;

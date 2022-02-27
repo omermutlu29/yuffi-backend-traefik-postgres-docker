@@ -6,7 +6,6 @@ namespace App\Services\Calendar;
 
 use App\Http\Resources\CalendarGetResource;
 use App\Interfaces\IRepositories\IBabySitterCalendarRepository;
-use App\Interfaces\IRepositories\IUserRepository;
 use App\Interfaces\IServices\IBabySitterCalendarService;
 use Carbon\Carbon;
 
@@ -23,7 +22,7 @@ class BabySitterCalendarService implements IBabySitterCalendarService
     {
         try {
             foreach ($data['available_dates'] as $date) {
-                $babySitterAvailableDate = $this->babySitterCalendarRepository->storeDate($babySitterId,Carbon::make($date['date'])->format('m-d-Y'));
+                $babySitterAvailableDate = $this->babySitterCalendarRepository->storeDate($babySitterId, Carbon::make($date['date'])->format('m-d-Y'));
                 foreach ($date['hours'] as $hour) {
                     $this->babySitterCalendarRepository->storeTime($babySitterAvailableDate, $hour['start'], $hour['end'], 1);
                 }
@@ -36,18 +35,18 @@ class BabySitterCalendarService implements IBabySitterCalendarService
     public function getMyNextFifteenDaysCalendar($babySitterId)
     {
         try {
-            $dbData =  $this->babySitterCalendarRepository->getMyNextFifteenDays($babySitterId);
+            $dbData = $this->babySitterCalendarRepository->getMyNextFifteenDays($babySitterId);
             $data = [];
             $processableDates = [];
             $startDate = Carbon::now();
             $finishDate = Carbon::now()->addDays(15);
             for ($i = $startDate; $i < $finishDate; $i->addDays(1)) {
-                $processableDates[$i->format('Y-m-d')] = [];
+                $processableDates[$i->format('Y-m-d')] = CalendarGetResource::fillTimesToNonExistDate();
             }
             foreach ($dbData as $date) {
                 $data[$date->date] = CalendarGetResource::prapareString($date);
             }
-            $data = array_merge($processableDates,$data);
+            $data = array_merge($processableDates, $data);
             return $data;
         } catch (\Exception $exception) {
             throw $exception;
@@ -79,4 +78,6 @@ class BabySitterCalendarService implements IBabySitterCalendarService
             throw $exception;
         }
     }
+
+
 }
