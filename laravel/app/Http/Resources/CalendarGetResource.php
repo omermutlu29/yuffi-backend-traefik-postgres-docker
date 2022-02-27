@@ -42,6 +42,7 @@ class CalendarGetResource extends JsonResource
             if (isset($nonExistsTimes[$time->start])) {
                 unset($nonExistsTimes[$time->start]);
             }
+            $string['id']=$time->id;
             $string['date'] = $date->date;
             $string['starts'] = $time->start;
             $string['end'] = $time->finish;
