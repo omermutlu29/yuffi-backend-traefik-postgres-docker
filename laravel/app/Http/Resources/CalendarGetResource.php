@@ -28,7 +28,8 @@ class CalendarGetResource extends JsonResource
     {
         $data = [];
         foreach ($date->times as $time) {
-            $string['name'] = $time->start . ' ' . $time->finish . ' ve ' . $time->time_status->name;
+            $string['name'] = $time->start . ' ' . $time->finish; //. ' ve ' . $time->time_status->name;
+            $string['status'] = $time->time_status->name;
             $data[] = $string;
         }
         return $data;
