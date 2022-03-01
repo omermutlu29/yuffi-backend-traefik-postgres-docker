@@ -176,7 +176,8 @@ class BabySitter extends Authenticatable
         if ($status) {
             return $query->where('wc_status', true);
         }
-        return $query->where('wc_status', false)->orWhere('wc_status', null);
+        return  $query;
+        // return $query->where('wc_status', false)->orWhere('wc_status', null);
     }
 
     public function scopeAnimalStatus($query, $status)
@@ -184,7 +185,9 @@ class BabySitter extends Authenticatable
         if ($status) {
             return $query->where('wc_status', true);
         }
-        return $query->where('wc_status', false)->orWhere('wc_status', null);
+        return  $query;
+
+        //return $query->where('wc_status', false)->orWhere('wc_status', null);
 
     }
 
