@@ -171,4 +171,14 @@ class BabySitter extends Authenticatable
         return $query->where('price_per_hour', '>', 0);
     }
 
+    public function scopeWcStatus($query)
+    {
+        return $query->where('wc_status', true);
+    }
+
+    public function scopeAnimalStatus($query)
+    {
+        return $query->where('wc_status', true);
+    }
+
 }

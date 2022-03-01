@@ -69,6 +69,8 @@ class BabySitterRepository implements IUserRepository, IBabySitterRepository
             ->childGenderStatus($data['child_gender_status'])
             ->acceptsDisabledChild($data['disabled_child'])
             ->gender($data['gender_id'])
+            ->wcStatus($data['wc_status'] ? true : false)
+            ->animalStatus($data['animal_status'] ? true : false)
             ->childrenCount($data['child_count'])
             //->depositPaid()
             ->availableTown($data['town_id'])

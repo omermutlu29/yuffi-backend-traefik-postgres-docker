@@ -40,6 +40,8 @@ class FindBabySitterRequest extends BaseApiRequest
             'search_param.children.*.gender_id'=>'required|exists:genders,id',
             'search_param.children.*.disable'=>'required|boolean',
             'search_param.children.*.child_year_id'=>'required|exists:child_years,id',
+            'search_param.animal_status'=>'required|boolean',
+            'search_param.wc_status'=>'required|boolean',
         ];
     }
 
