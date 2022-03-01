@@ -183,7 +183,7 @@ class BabySitter extends Authenticatable
     public function scopeAnimalStatus($query, $status)
     {
         if ($status) {
-            return $query->where('wc_status', true);
+            return $query->where('animal_status', true);
         }
         return  $query;
 
