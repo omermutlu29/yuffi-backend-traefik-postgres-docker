@@ -59,8 +59,8 @@ class BabySitterFilterService
             'town_id' => $data['town_id'],
             'date' => $data['date'],
             'times' => $times,
-            'animal_status'=>$data['animal_status'],
-            'wc_status'=>$data['wc_status']
+            'animal_status' => $data['animal_status'],
+            'wc_status' => $data['wc_status']
         ];
     }
 
