@@ -18,13 +18,13 @@ class BabySitterCalendarService implements IBabySitterCalendarService
         $this->babySitterCalendarRepository = $babySitterCalendarRepository;
     }
 
-    public function storeTime($babySitterId, array $data): void
+    public function storeTime($babySitterId, array $data)
     {
         try {
             foreach ($data['available_dates'] as $date) {
                 $babySitterAvailableDate = $this->babySitterCalendarRepository->storeDate($babySitterId, Carbon::make($date['date'])->format('m-d-Y'));
                 foreach ($date['hours'] as $hour) {
-                    $this->babySitterCalendarRepository->storeTime($babySitterAvailableDate, $hour['start'], $hour['end'], 1);
+                    return $this->babySitterCalendarRepository->storeTime($babySitterAvailableDate, $hour['start'], $hour['end'], 1);
                 }
             }
         } catch (\Exception $exception) {
