@@ -27,7 +27,6 @@ class PreferencesUpdateRequest extends BaseApiRequest
             'price_per_hour' => 'required|numeric|max:500|min:75',
             'child_gender_id' => 'required|exists:genders,id',
             'parent_gender_id' => 'required|exists:genders,id',
-            'child_year_id' => 'required|exists:child_years,id',
             'child_count' => 'required|min:1',
             'disabled_status' => 'required',
             'wc_status' => 'required',
