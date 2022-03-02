@@ -36,7 +36,7 @@ class PreferencesUpdateRequest extends BaseApiRequest
             'towns.*' => 'required|exists:towns,id',
             'accepted_locations' => 'required|array|min:1',
             'accepted_locations.*' => 'required|exists:appointment_locations,id',
-            'shareable_talents' => 'required|array',
+            'shareable_talents' => 'required|array|min:1',
             'shareable_talents.*' => 'exists:shareable_talents,id',
         ];
     }
