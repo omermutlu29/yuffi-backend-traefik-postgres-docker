@@ -29,7 +29,7 @@ class StaticVariablesService implements IStaticVars
 
     public function getTowns(City $city)
     {
-        return $city->towns;
+        return $city->towns()->where('is_active',true)->get();
     }
 
     public function getLocations()
