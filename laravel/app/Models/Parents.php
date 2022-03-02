@@ -13,10 +13,14 @@ class Parents extends Authenticatable
     use  HasApiTokens, Notifiable, SoftDeletes;
 
     protected $table = 'parents';
-    protected $appends = ['has_registered_card'];
-    protected $hidden=['card_parents'];
-
+    protected $appends = ['has_registered_card', 'last_name'];
+    protected $hidden = ['card_parents'];
     protected $guarded = [];
+
+    public function getLastNameAttribute()
+    {
+        return isset($this->surname) ? ucfirst($this->surname[0]) . '.' : '';
+    }
 
     public function modelName()
     {

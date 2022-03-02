@@ -14,9 +14,13 @@ class BabySitter extends Authenticatable
     use HasApiTokens, Notifiable, SoftDeletes;
 
     protected $hidden = [];
-    protected $guarded = [
+    protected $guarded = [];
+    protected $appends = ['last_name'];
 
-    ];
+    public function getLastNameAttribute()
+    {
+        return isset($this->surname) ? ucfirst($this->surname[0]) . '.' : '';
+    }
 
     public function modelName()
     {
@@ -176,7 +180,7 @@ class BabySitter extends Authenticatable
         if ($status) {
             return $query->where('wc_status', true);
         }
-        return  $query;
+        return $query;
         // return $query->where('wc_status', false)->orWhere('wc_status', null);
     }
 
@@ -185,7 +189,7 @@ class BabySitter extends Authenticatable
         if ($status) {
             return $query->where('animal_status', true);
         }
-        return  $query;
+        return $query;
 
         //return $query->where('wc_status', false)->orWhere('wc_status', null);
 
