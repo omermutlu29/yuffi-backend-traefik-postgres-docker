@@ -50,9 +50,11 @@ class BabySitterProfileService implements IProfileService
         try {
             $towns = $validatedData['relational_preferences']['towns'] ?? [];
             $acceptedLocations = $validatedData['relational_preferences']['accepted_locations'] ?? [];
+            $shareableTalents = $validatedData['relational_preferences']['shareable_talents'] ?? [];
             $babySitter->update($validatedData['base_preferences']);
             $towns ? $this->babySitterRepository->updateAvailableTowns($babySitter, $towns) : null;
             $acceptedLocations ? $this->babySitterRepository->updateAcceptedLocations($babySitter, $acceptedLocations) : null;
+            $shareableTalents ? $this->babySitterRepository->updateShareableTalents($babySitter, $shareableTalents) : null;
             $this->userRepository->update($babySitter->id, ['baby_sitter_status_id' => 5]);
         } catch (\Exception $exception) {
             throw $exception;

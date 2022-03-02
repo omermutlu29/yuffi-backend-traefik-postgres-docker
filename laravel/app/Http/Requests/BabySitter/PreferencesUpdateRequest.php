@@ -24,18 +24,20 @@ class PreferencesUpdateRequest extends BaseApiRequest
     public function rules()
     {
         return [
-            'price_per_hour'=>'required|numeric|max:500|min:75',
-            'child_gender_id'=>'required|exists:genders,id',
-            'parent_gender_id'=>'required|exists:genders,id',
-            'child_year_id'=>'required|exists:child_years,id',
-            'child_count'=>'required|min:1',
-            'disabled_status'=>'required',
-            'wc_status'=>'required',
-            'animal_status'=>'required',
-            'towns'=>'required|array|min:1',
-            'towns.*'=>'required|exists:towns,id',
-            'accepted_locations'=>'required|array|min:1',
-            'accepted_locations.*'=>'required|exists:appointment_locations,id',
+            'price_per_hour' => 'required|numeric|max:500|min:75',
+            'child_gender_id' => 'required|exists:genders,id',
+            'parent_gender_id' => 'required|exists:genders,id',
+            'child_year_id' => 'required|exists:child_years,id',
+            'child_count' => 'required|min:1',
+            'disabled_status' => 'required',
+            'wc_status' => 'required',
+            'animal_status' => 'required',
+            'towns' => 'required|array|min:1',
+            'towns.*' => 'required|exists:towns,id',
+            'accepted_locations' => 'required|array|min:1',
+            'accepted_locations.*' => 'required|exists:appointment_locations,id',
+            'shareable_talents' => 'required|array|min:1',
+            'shareable_talents.*' => 'required|exists:shareable_talents,id',
 
 
         ];

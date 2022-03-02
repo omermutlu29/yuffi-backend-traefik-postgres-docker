@@ -52,6 +52,11 @@ class BabySitterRepository implements IUserRepository, IBabySitterRepository
         $babySitter->available_towns()->sync($availableTowns);
     }
 
+    public function updateShareableTalents(BabySitter $babySitter, array $shareableTalents)
+    {
+        $babySitter->available_towns()->sync($shareableTalents);
+    }
+
     public function getUserById(int $id)
     {
         return BabySitter::find($id);
