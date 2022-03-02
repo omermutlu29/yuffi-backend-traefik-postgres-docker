@@ -62,6 +62,7 @@ class BabySitter extends Authenticatable
         return $this->belongsToMany(AppointmentLocation::class, 'baby_sitter_appointment_locations', 'baby_sitter_id', 'location_id');
     }
 
+
     public function appointments()
     {
         return $this->hasMany(Appointment::class);
@@ -87,9 +88,9 @@ class BabySitter extends Authenticatable
         return $this->belongsTo(Gender::class);
     }
 
-    public function child_year()
+    public function child_years()
     {
-        return $this->belongsTo(ChildYear::class);
+        return $this->belongsToMany(ChildYear::class, 'baby_sitter_child_years', 'baby_sitter_id', 'child_year_id');
     }
 
     public function baby_sitter_status()
@@ -205,6 +206,16 @@ class BabySitter extends Authenticatable
         if (is_array($talents) && count($talents)) {
             return $query->whereHas('shareable_talents', function ($q) use ($talents) {
                 $q->whereIn('talent_id', $talents);
+            });
+        }
+        return $query;
+    }
+
+    public function scopeChildYears($query, $childYears)
+    {
+        if (is_array($childYears) && count($childYears)) {
+            return $query->whereHas('child_years', function ($q) use ($childYears) {
+                $q->whereIn('child_year_id', $childYears);
             });
         }
         return $query;

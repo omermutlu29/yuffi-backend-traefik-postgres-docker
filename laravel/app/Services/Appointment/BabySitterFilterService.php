@@ -17,10 +17,12 @@ class BabySitterFilterService
     public function findBabySitterForAppointment(array $data)
     {
         try {
+            $childYears = $this->getChildYearsAsArray($data['children']);
+            $data['child_years'] = $childYears;
+            unset($childYears);
             $childGenderStatus = $this->getChildGenderStatus($data['children']);
             $disabledChild = $this->areThereDisableChild($data['children']);
             $childCount = count($data['children']);
-
             $times = self::generateTimes($data['time'], $data['hour']);
             $data = self::prepareDataForQuery($childGenderStatus, $disabledChild, $childCount, $times, $data);
             unset($childGenderStatus, $disabledChild, $childCount, $times);
@@ -61,7 +63,8 @@ class BabySitterFilterService
             'times' => $times,
             'animal_status' => $data['animal_status'],
             'wc_status' => $data['wc_status'],
-            'shareable_talents'=>isset($data['shareable_talents']) ? $data['shareable_talents'] : [],
+            'shareable_talents' => isset($data['shareable_talents']) ? $data['shareable_talents'] : [],
+            'child_years' => isset($data['child_years']) ? $data['child_years'] : [],
         ];
     }
 
@@ -104,5 +107,16 @@ class BabySitterFilterService
             $times[] = $time;
         }
         return $times;
+    }
+
+    private function getChildYearsAsArray(mixed $children)
+    {
+        $childYears = [];
+        foreach ($children as $child) {
+            if (array_se)
+                $childYears[] = $child['child_year_id'];
+        }
+        return array_unique($childYears);
+
     }
 }

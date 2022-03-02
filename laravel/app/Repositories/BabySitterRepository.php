@@ -57,6 +57,12 @@ class BabySitterRepository implements IUserRepository, IBabySitterRepository
         $babySitter->shareable_talents()->sync($shareableTalents);
     }
 
+    public function updateChildYears(BabySitter $babySitter, array $shareableTalents)
+    {
+        $babySitter->child_years()->sync($shareableTalents);
+
+    }
+
     public function getUserById(int $id)
     {
         return BabySitter::find($id);
@@ -78,6 +84,7 @@ class BabySitterRepository implements IUserRepository, IBabySitterRepository
             ->animalStatus($data['animal_status'] ? true : false)
             ->childrenCount($data['child_count'])
             ->shareableTalents($data['shareable_talents'])
+            ->childYears($data['child_years'])
             //->depositPaid()
             ->availableTown($data['town_id'])
             ->dateTime($data['date'], $data['times']);

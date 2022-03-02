@@ -50,11 +50,13 @@ class BabySitterProfileService implements IProfileService
         try {
             $towns = $validatedData['relational_preferences']['towns'] ?? [];
             $acceptedLocations = $validatedData['relational_preferences']['accepted_locations'] ?? [];
+            $childYears = $validatedData['relational_preferences']['child_years'] ?? [];
             $shareableTalents = $validatedData['relational_preferences']['shareable_talents'] ?? [];
             $babySitter->update($validatedData['base_preferences']);
             $towns ? $this->babySitterRepository->updateAvailableTowns($babySitter, $towns) : null;
             $acceptedLocations ? $this->babySitterRepository->updateAcceptedLocations($babySitter, $acceptedLocations) : null;
             $shareableTalents ? $this->babySitterRepository->updateShareableTalents($babySitter, $shareableTalents) : null;
+            $childYears ? $this->babySitterRepository->updateChildYears($babySitter, $childYears) : null;
             $this->userRepository->update($babySitter->id, ['baby_sitter_status_id' => 5]);
         } catch (\Exception $exception) {
             throw $exception;
@@ -63,7 +65,7 @@ class BabySitterProfileService implements IProfileService
 
     public function getProfile($id)
     {
-        $relations = ['baby_sitter_status:id,name','shareable_talents', 'child_year:id,name', 'gender:id,name', 'child_gender:id,name', 'accepted_locations', 'available_towns'];
+        $relations = ['baby_sitter_status:id,name', 'shareable_talents', 'child_year:id,name', 'gender:id,name', 'child_gender:id,name', 'accepted_locations', 'available_towns'];
         return $this->userRepository->getUserWithRelations($id, $relations);
     }
 

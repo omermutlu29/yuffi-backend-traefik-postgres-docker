@@ -25,7 +25,7 @@ class PreferenceController extends BaseController
     {
         $data = [];
         $data['base_preferences'] = $request->only('price_per_hour', 'child_year_id', 'child_gender_id', 'parent_gender_id', 'child_count', 'disabled_status', 'animal_status', 'wc_status');
-        $data['relational_preferences'] = $request->only('towns', 'accepted_locations', 'shareable_talents');
+        $data['relational_preferences'] = $request->only('towns', 'accepted_locations', 'shareable_talents','child_years');
         try {
             $this->profileService->updatePreferences(auth()->user(), $data);
         } catch (\Exception $e) {

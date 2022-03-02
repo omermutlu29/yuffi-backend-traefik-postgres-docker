@@ -38,6 +38,8 @@ class PreferencesUpdateRequest extends BaseApiRequest
             'accepted_locations.*' => 'required|exists:appointment_locations,id',
             'shareable_talents' => 'required|array|min:1',
             'shareable_talents.*' => 'required|numeric|exists:shareable_talents,id',
+            'child_years' => 'required|array|min:1',
+            'child_years.*' => 'required|numeric|exists:child_years,id',
         ];
     }
 
