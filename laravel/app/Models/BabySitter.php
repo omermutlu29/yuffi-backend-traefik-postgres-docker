@@ -44,7 +44,7 @@ class BabySitter extends Authenticatable
 
     public function shareable_talents()
     {
-        return $this->belongsToMany(ShareableTalent::class, 'baby_sitter_shareable_talents','baby_sitter_id','shareable_talent_id');
+        return $this->belongsToMany(ShareableTalent::class, 'baby_sitter_shared_talents','baby_sitter_id','shareable_talent_id');
     }
 
     public function baby_sitter_available_dates()
