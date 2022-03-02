@@ -13,7 +13,8 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libpq-dev \
     zip \
-    unzip
+    unzip \
+    vim \
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-install pdo
 RUN docker-php-ext-install pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd
