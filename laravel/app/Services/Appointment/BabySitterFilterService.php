@@ -113,8 +113,7 @@ class BabySitterFilterService
     {
         $childYears = [];
         foreach ($children as $child) {
-            if (array_se)
-                $childYears[] = $child['child_year_id'];
+            $childYears[] = $child['child_year_id'];
         }
         return array_unique($childYears);
 
