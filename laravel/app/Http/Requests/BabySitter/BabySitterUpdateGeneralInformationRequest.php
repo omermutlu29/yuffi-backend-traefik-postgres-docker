@@ -36,7 +36,7 @@ class BabySitterUpdateGeneralInformationRequest extends BaseApiRequest
             // 'criminal_record' => 'required|file|mimes:pdf|max:2048',
             // 'address' => '',
             'email' => 'required|unique:baby_sitters,email,'.auth()->id(),
-            'photo' => 'image|mimes:jpg,png,jpeg|max:2048',
+            'photo' => 'image|mimes:jpg,png,jpeg',
             'iban' => ['required', new IBANRule()],
             'introducing'=>'min:80|max:500'
         ];
