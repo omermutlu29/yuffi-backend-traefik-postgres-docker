@@ -205,7 +205,7 @@ class BabySitter extends Authenticatable
     {
         if (is_array($talents) && count($talents)) {
             return $query->whereHas('shareable_talents', function ($q) use ($talents) {
-                $q->whereIn('talent_id', $talents);
+                $q->whereIn('shareable_talent_id', $talents);
             });
         }
         return $query;
