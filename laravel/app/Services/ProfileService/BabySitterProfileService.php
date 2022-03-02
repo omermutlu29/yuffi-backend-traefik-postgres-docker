@@ -61,7 +61,7 @@ class BabySitterProfileService implements IProfileService
 
     public function getProfile($id)
     {
-        $relations = ['baby_sitter_status:id,name', 'child_year:id,name', 'gender:id,name', 'child_gender:id,name', 'accepted_locations', 'available_towns'];
+        $relations = ['baby_sitter_status:id,name','shareable_talents', 'child_year:id,name', 'gender:id,name', 'child_gender:id,name', 'accepted_locations', 'available_towns'];
         return $this->userRepository->getUserWithRelations($id, $relations);
     }
 

@@ -42,6 +42,11 @@ class BabySitter extends Authenticatable
         return $this->belongsToMany(Town::class, 'baby_sitter_regions');
     }
 
+    public function shareable_talents()
+    {
+        return $this->belongsToMany(ShareableTalent::class, 'baby_sitter_shareable_talents','baby_sitter_id','shareable_talent_id');
+    }
+
     public function baby_sitter_available_dates()
     {
         return $this->hasMany(BabySitterAvailableDate::class);

@@ -92,9 +92,12 @@ class StaticVariablesService implements IStaticVars
 
     public function calculateTimes()
     {
+        $minutes = ['00','30'];
         $times = [];
         for ($i = 10; $i < 22; $i++) {
-            $times[] = $i . ':00';
+            foreach ($minutes as $minute){
+                $times[] = $i . ':'.$minute;
+            }
         }
         return $times;
     }
