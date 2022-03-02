@@ -22,6 +22,7 @@ class CreateBabySittersTable extends Migration
             $table->string('photo')->nullable();
             $table->string('phone')->unique();
             $table->string('email')->unique()->nullable();
+            $table->text('introducing')->nullable();
             $table->text('address')->nullable();
             $table->string('criminal_record')->nullable();
             $table->text('about')->nullable();

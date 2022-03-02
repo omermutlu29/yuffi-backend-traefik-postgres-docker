@@ -37,7 +37,8 @@ class BabySitterStoreGeneralInformationRequest extends BaseApiRequest
             'address' => 'required',
             'email' => 'required|unique:baby_sitters,email',
             'photo' => 'required|image|mimes:jpg,png,jpeg|max:2048',
-            'iban' => ['required', new IBANRule()]
+            'iban' => ['required', new IBANRule()],
+            'introducing' => 'required|min:80|max:500'
         ];
     }
 
