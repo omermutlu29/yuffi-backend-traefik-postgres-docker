@@ -60,7 +60,8 @@ class BabySitterFilterService
             'date' => $data['date'],
             'times' => $times,
             'animal_status' => $data['animal_status'],
-            'wc_status' => $data['wc_status']
+            'wc_status' => $data['wc_status'],
+            'shareable_talents'=>isset($data['shareable_talents']) ? $data['shareable_talents'] : [],
         ];
     }
 

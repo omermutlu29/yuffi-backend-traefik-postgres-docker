@@ -39,12 +39,12 @@ class BabySitter extends Authenticatable
 
     public function available_towns()
     {
-        return $this->belongsToMany(Town::class, 'baby_sitter_regions')->where('is_active',true);
+        return $this->belongsToMany(Town::class, 'baby_sitter_regions')->where('is_active', true);
     }
 
     public function shareable_talents()
     {
-        return $this->belongsToMany(ShareableTalent::class, 'baby_sitter_shared_talents','baby_sitter_id','shareable_talent_id');
+        return $this->belongsToMany(ShareableTalent::class, 'baby_sitter_shared_talents', 'baby_sitter_id', 'shareable_talent_id');
     }
 
     public function baby_sitter_available_dates()
@@ -198,6 +198,16 @@ class BabySitter extends Authenticatable
 
         //return $query->where('wc_status', false)->orWhere('wc_status', null);
 
+    }
+
+    public function scopeShareableTalents($query, $talents)
+    {
+        if (is_array($talents) && count($talents)) {
+            return $query->whereHas('shareable_talents', function ($q) use ($talents) {
+                $q->whereIn('talent_id', $talents);
+            });
+        }
+        return $query;
     }
 
 }

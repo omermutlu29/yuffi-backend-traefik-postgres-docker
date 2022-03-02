@@ -77,6 +77,7 @@ class BabySitterRepository implements IUserRepository, IBabySitterRepository
             ->wcStatus($data['wc_status'] ? true : false)
             ->animalStatus($data['animal_status'] ? true : false)
             ->childrenCount($data['child_count'])
+            ->shareableTalents($data['shareable_talents'])
             //->depositPaid()
             ->availableTown($data['town_id'])
             ->dateTime($data['date'], $data['times']);
