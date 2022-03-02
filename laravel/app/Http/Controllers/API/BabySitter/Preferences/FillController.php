@@ -66,4 +66,10 @@ class FillController extends BaseController
         return $this->variablesService->getChildCount();
     }
 
+    public function getTalents()
+    {
+        return $this->variablesService->getTalents();
+    }
+
+
 }

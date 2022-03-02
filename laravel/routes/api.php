@@ -11,5 +11,6 @@ Route::prefix('fill')->group(function () {
     Route::get('hours', [\App\Http\Controllers\API\BabySitter\Preferences\FillController::class, 'getHours']);
     Route::get('times', [\App\Http\Controllers\API\BabySitter\Preferences\FillController::class, 'getTimes']);
     Route::get('child-count', [\App\Http\Controllers\API\BabySitter\Preferences\FillController::class, 'getChildCount']);
+    Route::get('talents', [\App\Http\Controllers\API\BabySitter\Preferences\FillController::class, 'getTalents']);
 });//Bitti
 
