@@ -20,7 +20,7 @@ class ParentProfileService implements IProfileService
     public function update(int $id, array $data)
     {
         if (isset($data['birthday']))
-            $data['birthday'] = Carbon::make($data['birthday'])->format('Y-m-d');
+            $data['birthday'] = Carbon::createFromFormat('d/m/Y', ($data['birthday']))->format('d/m/Y')->toDateString();
         if (isset($data['photo'])) {
             $data['photo'] = self::saveProfilePhoto($data['photo']);
         }
