@@ -32,7 +32,7 @@ class BabySitterStoreGeneralInformationRequest extends BaseApiRequest
             'surname' => 'required',
             'tc' => 'required|unique:baby_sitters,tc',
             'gender_id' => 'required',
-            'birthday' => 'required|date_format:d/m/Y|before_or_equal:' . $date,
+            'birthday' => 'required|date_format:d/m/Y|after_or_equal:' . $date,
             'criminal_record' => 'required|file|mimes:pdf|max:2048',
             'address' => 'required',
             'email' => 'required|unique:baby_sitters,email',
