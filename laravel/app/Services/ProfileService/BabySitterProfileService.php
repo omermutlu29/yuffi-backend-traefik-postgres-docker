@@ -55,7 +55,7 @@ class BabySitterProfileService implements IProfileService
             $babySitter->update($validatedData['base_preferences']);
             $towns ? $this->babySitterRepository->updateAvailableTowns($babySitter, $towns) : null;
             $acceptedLocations ? $this->babySitterRepository->updateAcceptedLocations($babySitter, $acceptedLocations) : null;
-            $shareableTalents ? $this->babySitterRepository->updateShareableTalents($babySitter, $shareableTalents) : null;
+            $shareableTalents ? $this->babySitterRepository->updateShareableTalents($babySitter, $shareableTalents) : $this->babySitterRepository->removeShareableTalents($babySitter);
             $childYears ? $this->babySitterRepository->updateChildYears($babySitter, $childYears) : null;
             $this->userRepository->update($babySitter->id, ['baby_sitter_status_id' => 5]);
         } catch (\Exception $exception) {

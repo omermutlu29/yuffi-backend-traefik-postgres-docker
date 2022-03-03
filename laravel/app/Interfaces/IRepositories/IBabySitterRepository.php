@@ -13,6 +13,7 @@ interface IBabySitterRepository
     public function updateAvailableTowns(BabySitter $babySitter, array $availableTowns);
 
     public function updateShareableTalents(BabySitter $babySitter, array $shareableTalents);
+
     public function updateChildYears(BabySitter $babySitter, array $shareableTalents);
 
     public function getSubMerchantId($id);
@@ -25,5 +26,7 @@ interface IBabySitterRepository
      * @return mixed
      */
     public function findBabySitterForFilter(array $data);
+
+    public function removeShareableTalents(BabySitter $babySitter);
 
 }
