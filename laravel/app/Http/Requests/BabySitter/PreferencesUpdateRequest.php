@@ -35,10 +35,10 @@ class PreferencesUpdateRequest extends BaseApiRequest
             'towns.*' => 'required|exists:towns,id',
             'accepted_locations' => 'required|array|min:1',
             'accepted_locations.*' => 'required|exists:appointment_locations,id',
-            'shareable_talents' => 'required|array',
-            'shareable_talents.*' => 'required|numeric|exists:shareable_talents,id',
-            'child_years' => 'array|min:1',
-            'child_years.*' => 'numeric|exists:child_years,id',
+            'shareable_talents' => 'array',
+            'shareable_talents.*' => 'numeric|exists:shareable_talents,id',
+            'child_years' => 'required|array|min:1',
+            'child_years.*' => 'required|numeric|exists:child_years,id',
         ];
     }
 
