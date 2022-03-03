@@ -32,7 +32,7 @@ class BabySitterProfileService implements IProfileService
         $result = ['status' => true, 'message' => 'İşlem başarılı'];
         try {
             if (isset($data['birthday']))
-                $data['birthday'] = Carbon::createFromFormat('d/m/Y', ($data['birthday']))->format('d/m/Y');
+                $data['birthday'] = Carbon::createFromFormat('d/m/Y', ($data['birthday']));
             if (isset($data['photo']))
                 $data['photo'] = self::saveProfilePhoto($data['photo']);
             if (isset($data['criminal_record']))
