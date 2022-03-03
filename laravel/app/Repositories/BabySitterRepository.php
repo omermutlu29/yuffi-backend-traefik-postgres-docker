@@ -54,7 +54,9 @@ class BabySitterRepository implements IUserRepository, IBabySitterRepository
 
     public function updateShareableTalents(BabySitter $babySitter, array $shareableTalents)
     {
-        $babySitter->shareable_talents()->sync($shareableTalents);
+        $shareableTalents == 0 ?
+            $babySitter->shareable_talents()->detach() :
+            $babySitter->shareable_talents()->sync($shareableTalents);
     }
 
     public function updateChildYears(BabySitter $babySitter, array $shareableTalents)
