@@ -27,26 +27,18 @@ class CalendarGetResource extends JsonResource
     public static function prapareString($date)
     {
         $existTimes = [];
-        $nonExistsTimes = [];
+        $nonExistsTimes = self::fillTimesToNonExistDate($date->date);
         $nonExistsTimesTemp = [];
-        for ($i = 10; $i < 22; $i++) {
-            $string['date'] = $date->date;
-            $string['starts'] = $i . ':00:00';
-            $string['end'] = $i + 1 . ':00:00';
-            $string['name'] = $i . ':00:00' . ' ' . ($i + 1) . ':00:00';
-            $string['status_id'] = 999;//Eklenmemiş
-            $nonExistsTimes[$i . ':00:00'] = $string;
-        }
 
         foreach ($date->times as $time) {
             if (isset($nonExistsTimes[$time->start])) {
                 unset($nonExistsTimes[$time->start]);
             }
-            $string['id']=$time->id;
+            $string['id'] = $time->id;
             $string['date'] = $date->date;
-            $string['starts'] = $time->start;
-            $string['end'] = $time->finish;
-            $string['name'] = $time->start . ' ' . $time->finish; //. ' ve ' . $time->time_status->name;
+            $string['starts'] = \Carbon\Carbon::createFromFormat('H:i:s', $time->start)->format('H:i');
+            $string['end'] = \Carbon\Carbon::createFromFormat('H:i:s', $time->finish)->format('H:i');
+            $string['name'] = $string['starts'] . ' ' . $string['end']; //. ' ve ' . $time->time_status->name;
             $string['status_id'] = $time->time_status_id;
             $existTimes[] = $string;
         }
@@ -62,14 +54,18 @@ class CalendarGetResource extends JsonResource
 
     public static function fillTimesToNonExistDate($date)
     {
+        $minutes = ['00', '30'];
         $data = [];
         for ($i = 10; $i < 22; $i++) {
-            $string['date'] = $date;
-            $string['starts'] = $i . ':00:00';
-            $string['end'] = $i + 1 . ':00:00';
-            $string['name'] = $i . ':00:00' . ' ' . ($i + 1) . ':00:00';
-            $string['status_id'] = 999;//Eklenmemiş
-            $data[] = $string;
+
+            foreach ($minutes as $minute) {
+                $string['date'] = $date;
+                $string['starts'] = $i . ':' . $minute;
+                $string['end'] = $minute == '00' ? $i . ':' . '30' : $i + 1 . ':' . '00';
+                $string['name'] = $string['starts'] . ' - ' . $string['end'];
+                $string['status_id'] = 999;//Eklenmemiş
+                $data[] = $string;
+            }
         }
         return $data;
     }
