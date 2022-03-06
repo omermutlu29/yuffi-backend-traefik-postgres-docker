@@ -9,6 +9,6 @@ Route::any('login',function (){
 })->name('login');
 
 Route::get('/',function (){
-
+    phpinfo();
 });
 
