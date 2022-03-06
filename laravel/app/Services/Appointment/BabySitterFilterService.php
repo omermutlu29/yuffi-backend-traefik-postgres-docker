@@ -2,6 +2,7 @@
 
 namespace App\Services\Appointment;
 
+use App\Http\Resources\CalendarGetResource;
 use App\Interfaces\IRepositories\IBabySitterRepository;
 use JetBrains\PhpStorm\ArrayShape;
 
@@ -38,7 +39,6 @@ class BabySitterFilterService
             $childGenderStatus = $this->getChildGenderStatus($data['children']);
             $disabledChild = $this->areThereDisableChild($data['children']);
             $childCount = count($data['children']);
-
             $times = $this->generateTimes($data['time'], $data['hour']);
             $data = $this->prepareDataForQuery($childGenderStatus, $disabledChild, $childCount, $times, $data);
             $data['baby_sitter_id'] = $babySitterId;
@@ -101,12 +101,8 @@ class BabySitterFilterService
 
     private function generateTimes($startTime, $hour): array
     {
-        $times = [];
-        for ($i = 0; $i < $hour; $i++) {
-            $time = (date('H:i', strtotime("+" . $i . " Hour " . $startTime)));
-            $times[] = $time;
-        }
-        return $times;
+        return (CalendarGetResource::generateTimesForSearching($startTime,$hour));
+
     }
 
     private function getChildYearsAsArray(mixed $children)

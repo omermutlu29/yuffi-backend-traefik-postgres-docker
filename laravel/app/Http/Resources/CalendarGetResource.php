@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CalendarGetResource extends JsonResource
@@ -68,5 +69,18 @@ class CalendarGetResource extends JsonResource
             }
         }
         return $data;
+    }
+
+    public static function generateTimesForSearching($start, $hour)
+    {
+        $times = [];
+        $loop = $hour * 2;
+        $start = Carbon::createFromFormat('H:i', $start);
+        for ($i = 0; $i < $loop; $i++) {
+            $start = $start->addMinutes(30);
+            $times[] = $start->format('H:i');
+        }
+        return $times;
+
     }
 }
