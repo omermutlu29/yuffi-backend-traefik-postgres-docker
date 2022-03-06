@@ -38,7 +38,7 @@ services:
       - postgres
     working_dir: /var/www
     volumes:
-      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./php/local.ini:/usr/local/etc/php/conf.d/php.ini
       - ./laravel/:/var/www
     networks:
       - local-bridge
