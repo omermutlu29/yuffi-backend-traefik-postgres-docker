@@ -25,7 +25,7 @@ class StaticVariablesService implements IStaticVars
 
     public function getChildYears()
     {
-        return ChildYear::all();
+        return ChildYear::orderBy('id','ASC')->get();
     }
 
     public function getTowns(City $city)
