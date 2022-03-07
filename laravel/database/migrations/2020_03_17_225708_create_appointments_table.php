@@ -28,7 +28,7 @@ class CreateAppointmentsTable extends Migration
             $table->decimal('price');
             $table->unsignedBigInteger('appointment_location_id');
             $table->foreign('appointment_location_id')->references('id')->on('appointment_locations');
-            $table->string('location');
+            $table->string('location')->nullable();
             $table->unsignedBigInteger('town_id');
             $table->foreign('town_id')->references('id')->on('towns');
             $table->decimal('point')->nullable();

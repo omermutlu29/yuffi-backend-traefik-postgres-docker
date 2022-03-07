@@ -66,7 +66,7 @@ class BabySitterController extends BaseController
         $data['clothing'] = $babySitter->points()->where('point_type_id', 1)->average('point');
         $data['timing'] = $babySitter->points()->where('point_type_id', 2)->average('point');
         $data['contact'] = $babySitter->points()->where('point_type_id', 3)->average('point');
-        $data['choose'] = route('baby-sitter.choose', $babySitter->id);
+
         return $this->sendResponse($data, 'Bilgiler başarı ile getirildi!');
     }
 
