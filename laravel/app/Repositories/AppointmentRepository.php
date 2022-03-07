@@ -12,7 +12,11 @@ class AppointmentRepository implements IAppointmentRepository
 {
     public function getAppointmentById(int $id)
     {
-        return Appointment::find($id);
+        $appointment = Appointment::find($id);
+        if (!$appointment) {
+            throw new \Exception('Appointment could not find', 400);
+        }
+        return $appointment;
     }
 
     public function getAppointmentStatuses()

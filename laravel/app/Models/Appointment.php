@@ -8,6 +8,8 @@ class Appointment extends Model
 {
     protected $hidden=['id'];
     protected $casts=['payment_raw_result'=>'object'];
+    protected $with = ['baby_sitter','appointment_location','town','registered_children'];
+    protected $guarded=[];
 
     public function baby_sitter(){
         return $this->belongsTo(BabySitter::class);

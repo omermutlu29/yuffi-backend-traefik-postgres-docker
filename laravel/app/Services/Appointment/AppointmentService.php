@@ -7,6 +7,7 @@ namespace App\Services\Appointment;
 use App\Interfaces\IRepositories\IAppointmentRepository;
 use App\Interfaces\IRepositories\IBabySitterRepository;
 use App\Interfaces\IServices\IAppointmentService;
+use Illuminate\Support\Facades\DB;
 
 class AppointmentService implements IAppointmentService
 {
@@ -53,32 +54,38 @@ class AppointmentService implements IAppointmentService
     }
 
 
-    public function create(int $babySitterId, int $parentId, array $appointmentData, array $children)
+    public function create(int $babySitterId, int $parentId, array $data)
     {
-        $babySitter = $this->babySitterRepository->getUserById($babySitterId);
-        if (!$babySitter) {
-            throw new \Exception('Babysitter could not found', 401);
+        try {
+            $babySitter = $this->babySitterRepository->getUserById($babySitterId);
+            if (!$babySitter) {
+                throw new \Exception('Babysitter could not found', 401);
+            }
+            $appointmentData = [
+                'baby_sitter_id' => $babySitterId,
+                'parent_id' => $parentId,
+                'town_id' => $data['town_id'],
+                'appointment_status_id' => 1,
+                'date' => $data['date'],
+                'hour' => $data['hour'],
+                'start' => $data['time'],
+                'finish' => (date('H:i', strtotime("+" . $data['hour'] . " Hour " . $data['time']))),
+                'price' => $data['hour'] * $babySitter->price_per_hour,
+                'appointment_location_id' => $data['location_id'],
+                'location' => $data['location']
+            ];
+            DB::transaction(function () use ($appointmentData, $data) {
+                $appointment = $this->appointmentRepository->store($appointmentData);
+                if (!$appointment) {
+                    throw new \Exception('Appointment could not created', 401);
+                }
+                foreach ($data['children'] as $child) {
+                    $appointment->registered_children()->create($child);
+                }
+            });
+            return true;
+        } catch (\Exception $exception) {
+            throw $exception;
         }
-        $appointmentData = [
-            'baby_sitter_id' => $babySitterId,
-            'parent_id' => $parentId,
-            'town_id' => $appointmentData['town_id'],
-            'appointment_status_id' => 1,
-            'hour' => $appointmentData['hour'],
-            'start' => $appointmentData['start'],
-            'finish' => (date('H:i', strtotime("+" . $appointmentData['hour'] . " Hour " . $appointmentData['time']))),
-            'price' => $appointmentData['hour'] * $babySitter->price_per_hour,
-            'appointment_location_id' => $appointmentData['appointment_location_id'],
-            'location' => $appointmentData['location']
-        ];
-        $appointment = $this->appointmentRepository->store($appointmentData);
-        if (!$appointment) {
-            throw new \Exception('Appointment could not created', 401);
-        }
-        foreach ($children as $child) {
-            $appointment->registered_children()->create($child);
-        }
-        return $appointment;
-
     }
 }
