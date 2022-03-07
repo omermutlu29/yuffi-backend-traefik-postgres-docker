@@ -35,7 +35,6 @@ class CreateAppointmentRequest extends BaseApiRequest
             'create_params.town_id' => 'required|exists:towns,id',
             'create_params.hour' => 'required|numeric|max:10|min:1',
             'create_params.location_id' => 'required|exists:appointment_locations,id',
-            'create_params.location' => 'required',
             'create_params.children.*.gender_id' => 'required|exists:genders,id',
             'create_params.children.*.disable' => 'required|boolean',
             'create_params.children.*.child_year_id' => 'required|exists:child_years,id',
