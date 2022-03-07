@@ -72,7 +72,7 @@ class AppointmentService implements IAppointmentService
                 'finish' => (date('H:i', strtotime("+" . $data['hour'] . " Hour " . $data['time']))),
                 'price' => $data['hour'] * $babySitter->price_per_hour,
                 'appointment_location_id' => $data['location_id'],
-                'location' => $data['location']
+                'location' => $data['location'] ?? null
             ];
             DB::transaction(function () use ($appointmentData, $data) {
                 $appointment = $this->appointmentRepository->store($appointmentData);
