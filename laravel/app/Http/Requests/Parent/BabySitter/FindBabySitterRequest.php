@@ -42,8 +42,8 @@ class FindBabySitterRequest extends BaseApiRequest
             'search_param.children.*.child_year_id' => 'required|exists:child_years,id',
             'search_param.animal_status' => 'required|boolean',
             'search_param.wc_status' => 'required|boolean',
-            'search_param.shareable_talents' => 'array',
-            'search_param.shareable_talents.*' => 'exists:shareable_talents,id',
+          //  'search_param.shareable_talents' => 'array',
+          //  'search_param.shareable_talents.*' => 'exists:shareable_talents,id',
         ];
     }
 
