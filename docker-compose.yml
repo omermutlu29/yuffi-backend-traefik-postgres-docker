@@ -82,6 +82,7 @@ services:
     restart: unless-stopped
 
   echo:
+    container_name: echo_server
     build:
       context: ./echo
       dockerfile: Dockerfile
