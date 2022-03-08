@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AppointmentResource extends JsonResource
@@ -15,7 +16,7 @@ class AppointmentResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'datetime'=>$this->date.' '.$this->start.' - '.$this->finish,
+            'datetime'=>Carbon::createFromFormat('Y-d-m',$this->date)->format('d/m/Y').' '.Carbon::createFromFormat('H:i:s',$this->start)->format('H:i').' - '.Carbon::createFromFormat('H:i:s',$this->finish)->format('H:i'),
             'baby_sitter'=>BabySitterResource::make($this->baby_sitter),
             'location'=>$this->appointment_location->name,
             'town'=>$this->town->name,
