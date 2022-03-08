@@ -16,7 +16,7 @@ class AppointmentResource extends JsonResource
     {
         return [
             'datetime'=>$this->date.' '.$this->start.' - '.$this->finish,
-            'location'=>$this->location->name,
+            'location'=>$this->appointment_location->name,
             'town'=>$this->town->name,
             'price'=>$this->price,
             'child_information' => AppointmentChildrenResource::collection($this->registered_children)
