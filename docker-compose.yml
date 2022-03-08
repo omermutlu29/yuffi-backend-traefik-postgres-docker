@@ -95,6 +95,15 @@ services:
       - local-bridge
       - internal
 
+        
+  redis:
+    image: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - local-bridge
+      - internal
 
 networks:
   local-bridge:
