@@ -24,17 +24,25 @@ class AppointmentController extends BaseController
         $this->appointmentRepository = $appointmentRepository;
     }
 
-    public function index()
+    public function getPastAppointments()
     {
         try {
-            return $this->sendResponse([
-                'future' => $this->appointmentRepository->getFutureAppointmentsByParentId(auth()->id()),
-                'past' => $this->appointmentRepository->getPastAppointmentsByParentId(auth()->id())
-            ], 'Randevularınız getirildi!');
+            return $this->sendResponse(
+                $this->appointmentRepository->getPastAppointmentsByParentId(auth()->id()), 'Randevularınız getirildi!');
         } catch (\Exception $exception) {
             return $this->sendError($exception->getMessage(), $exception->getMessage(), $exception->getCode());
         }
 
+    }
+
+    public function getFutureAppointments()
+    {
+        try {
+            return $this->sendResponse(
+                $this->appointmentRepository->getFutureAppointmentsByParentId(auth()->id()), 'Randevularınız getirildi!');
+        } catch (\Exception $exception) {
+            return $this->sendError($exception->getMessage(), $exception->getMessage(), $exception->getCode());
+        }
     }
 
     public function confirmAppointmentAndPay(ConfirmAppointmentAndPayRequest $request, AppointmentPaymentService $appointmentPaymentService): \Illuminate\Http\Response
