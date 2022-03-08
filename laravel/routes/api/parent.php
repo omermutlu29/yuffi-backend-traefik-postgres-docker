@@ -23,14 +23,13 @@ Route::prefix('parent')->group(function () {
 
 
     Route::prefix('appointment')->group(function () {
-        Route::post('create-appointment',[\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'createAppointment']);
+        Route::get('get', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'index']);
+        Route::post('create-appointment', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'createAppointment']);
         Route::post('{appointment}/pay-with-threeD', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'confirmAppointmentPayThreeD']);
         Route::post('{appointment}/pay', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'confirmAppointmentAndPay']);
         //ödeme sistemi için aşağıdaki route
         Route::post('threeD-complete', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'completeAppointmentPayThreeD'])->name('appointment.pay.complete');
     });
-
-
 
 
     //Test edilecek
