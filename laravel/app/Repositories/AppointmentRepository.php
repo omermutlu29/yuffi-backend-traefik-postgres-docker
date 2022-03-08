@@ -31,12 +31,12 @@ class AppointmentRepository implements IAppointmentRepository
 
     public function getPastAppointmentsByParentId(int $parentId)
     {
-        return Appointment::where('parent_id', $parentId)->past()->get();
+        return Appointment::where('parent_id', $parentId)->past()->orderBy('created_at','DESC')->get();
     }
 
     public function getFutureAppointmentsByParentId(int $parentId)
     {
-        return Appointment::where('parent_id', $parentId)->future()->get();
+        return Appointment::where('parent_id', $parentId)->future()->orderBy('created_at','DESC')->get();
     }
 
     public function getAppointmentsByBabySitterIdAndStatusId(int $babySitter, int $statusId)
