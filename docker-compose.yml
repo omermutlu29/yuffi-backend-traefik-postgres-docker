@@ -88,10 +88,10 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     tty: true
-      labels:
-        - traefik.backend=web
-        - traefik.frontend.rule=Host:channels.oymt.xyz
-        - traefik.port=6001
+    labels:
+      - traefik.backend=web
+      - traefik.frontend.rule=Host:channels.oymt.xyz
+      - traefik.port=6001
     networks:
       - local-bridge
       - internal
