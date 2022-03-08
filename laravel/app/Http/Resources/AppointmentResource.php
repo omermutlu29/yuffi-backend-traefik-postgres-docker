@@ -16,6 +16,7 @@ class AppointmentResource extends JsonResource
     {
         return [
             'datetime'=>$this->date.' '.$this->start.' - '.$this->finish,
+            'baby_sitter'=>BabySitterResource::make($this->baby_sitter),
             'location'=>$this->appointment_location->name,
             'town'=>$this->town->name,
             'price'=>$this->price,

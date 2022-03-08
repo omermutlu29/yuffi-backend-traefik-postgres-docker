@@ -21,6 +21,7 @@ class BabySitterResource extends JsonResource
             'birthday' => $this->birthday,
             'about' => $this->about,
             'phone' => $this->phone,
+            'photo'=>$this->photo
         ];
     }
 }
