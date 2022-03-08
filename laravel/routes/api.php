@@ -1,6 +1,6 @@
 <?php
 Route::get('test-chat',function (){
-   dispatch(new \App\Events\NewAppointmentMessageEvent('Selam',34));
+   new \App\Events\NewAppointmentMessageEvent('Selam',34);
 });
 Route::prefix('fill')->group(function () {
     Route::get('towns/{city}', [\App\Http\Controllers\API\BabySitter\Preferences\FillController::class, 'getTowns']);
