@@ -7,6 +7,7 @@ namespace App\Http\Controllers\API\Parent\Appointment;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Requests\AppointmentRequests\CreateAppointmentRequest;
 use App\Http\Requests\Parent\Appointment\ConfirmAppointmentAndPayRequest;
+use App\Http\Resources\AppointmentResource;
 use App\Interfaces\IRepositories\IAppointmentRepository;
 use App\Interfaces\IServices\IAppointmentService;
 use App\Models\Appointment;
@@ -28,7 +29,8 @@ class AppointmentController extends BaseController
     {
         try {
             return $this->sendResponse(
-                $this->appointmentRepository->getPastAppointmentsByParentId(auth()->id()), 'Randevularınız getirildi!');
+                AppointmentResource::collection($this->appointmentRepository->getPastAppointmentsByParentId(auth()->id())),
+                'Randevularınız getirildi!');
         } catch (\Exception $exception) {
             return $this->sendError($exception->getMessage(), $exception->getMessage(), $exception->getCode());
         }
@@ -39,7 +41,7 @@ class AppointmentController extends BaseController
     {
         try {
             return $this->sendResponse(
-                $this->appointmentRepository->getFutureAppointmentsByParentId(auth()->id()), 'Randevularınız getirildi!');
+                AppointmentResource::collection($this->appointmentRepository->getFutureAppointmentsByParentId(auth()->id())), 'Randevularınız getirildi!');
         } catch (\Exception $exception) {
             return $this->sendError($exception->getMessage(), $exception->getMessage(), $exception->getCode());
         }
