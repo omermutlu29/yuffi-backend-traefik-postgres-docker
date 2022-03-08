@@ -23,8 +23,8 @@ Route::prefix('parent')->group(function () {
 
 
     Route::prefix('appointment')->group(function () {
-        Route::get('get/future', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'index']);
-        Route::get('get/past', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'index']);
+        Route::get('get/future', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'getFutureAppointments']);
+        Route::get('get/past', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'getPastAppointments']);
         Route::post('create-appointment', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'createAppointment']);
         Route::post('{appointment}/pay-with-threeD', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'confirmAppointmentPayThreeD']);
         Route::post('{appointment}/pay', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'confirmAppointmentAndPay']);
