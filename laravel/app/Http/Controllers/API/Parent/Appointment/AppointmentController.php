@@ -32,7 +32,7 @@ class AppointmentController extends BaseController
                 AppointmentResource::collection($this->appointmentRepository->getPastAppointmentsByParentId(auth()->id())),
                 'Randevularınız getirildi!');
         } catch (\Exception $exception) {
-            return $this->sendError($exception->getMessage(), $exception->getMessage(), $exception->getCode());
+            return $this->sendError($exception->getMessage(), $exception->getMessage(),400);
         }
 
     }
@@ -43,7 +43,7 @@ class AppointmentController extends BaseController
             return $this->sendResponse(
                 AppointmentResource::collection($this->appointmentRepository->getFutureAppointmentsByParentId(auth()->id())), 'Randevularınız getirildi!');
         } catch (\Exception $exception) {
-            return $this->sendError($exception->getMessage(), $exception->getMessage(), $exception->getCode());
+            return $this->sendError($exception->getMessage(), $exception->getMessage(), 400);
         }
     }
 
