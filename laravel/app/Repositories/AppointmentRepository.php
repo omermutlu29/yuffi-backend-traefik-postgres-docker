@@ -29,6 +29,16 @@ class AppointmentRepository implements IAppointmentRepository
         return Appointment::where('baby_sitter_id', $babySitterId)->get();
     }
 
+    public function getPastAppointmentsByParentId(int $parentId)
+    {
+        return Appointment::where('parent_id', $parentId)->past()->get();
+    }
+
+    public function getFutureAppointmentsByParentId(int $parentId)
+    {
+        return Appointment::where('parent_id', $parentId)->future()->get();
+    }
+
     public function getAppointmentsByBabySitterIdAndStatusId(int $babySitter, int $statusId)
     {
         return Appointment::where(['baby_sitter_id' => $babySitter, 'appointment_status_id' => $statusId])->get();

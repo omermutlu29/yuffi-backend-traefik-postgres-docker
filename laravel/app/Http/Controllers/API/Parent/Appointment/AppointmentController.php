@@ -24,6 +24,19 @@ class AppointmentController extends BaseController
         $this->appointmentRepository = $appointmentRepository;
     }
 
+    public function index()
+    {
+        try {
+            return $this->sendResponse([
+                'future' => $this->appointmentRepository->getFutureAppointmentsByParentId(auth()->id()),
+                'past' => $this->appointmentRepository->getPastAppointmentsByParentId(auth()->id())
+            ], 'Randevularınız getirildi!');
+        } catch (\Exception $exception) {
+            return $this->sendError($exception->getMessage(), $exception->getMessage(), $exception->getCode());
+        }
+
+    }
+
     public function confirmAppointmentAndPay(ConfirmAppointmentAndPayRequest $request, AppointmentPaymentService $appointmentPaymentService): \Illuminate\Http\Response
     {
         try {
@@ -67,10 +80,10 @@ class AppointmentController extends BaseController
         $data = $data['create_params'];
         try {
             if ($appointmentFilterService->isBabySitterStillAvailable($data, $data['baby_sitter_id'])) {
-                if(!$appointmentService->create($data['baby_sitter_id'], auth()->id(), $data)){
+                if (!$appointmentService->create($data['baby_sitter_id'], auth()->id(), $data)) {
                     return $this->sendError('Hata!', 'Bir sorun oluştu lütfen tekrar deneyin!');
                 }
-                return $this->sendResponse(true,'Randevu başarı ile oluşturuldu',200);
+                return $this->sendResponse(true, 'Randevu başarı ile oluşturuldu', 200);
             } else {
                 return $this->sendError('Hata!', 'Bakıcı belirttiğiniz zaman(lar) içerisinde müsait görünmemektedir!');
             }

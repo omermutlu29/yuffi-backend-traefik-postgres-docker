@@ -4,6 +4,7 @@
 namespace App\Services\Appointment;
 
 
+use App\Http\Resources\CalendarGetResource;
 use App\Interfaces\IRepositories\IAppointmentRepository;
 use App\Interfaces\IRepositories\IBabySitterRepository;
 use App\Interfaces\IServices\IAppointmentService;
@@ -53,7 +54,6 @@ class AppointmentService implements IAppointmentService
         return $this->appointmentRepository->disapproveAppointment($appointmentId);
     }
 
-
     public function create(int $babySitterId, int $parentId, array $data)
     {
         try {
@@ -74,14 +74,19 @@ class AppointmentService implements IAppointmentService
                 'appointment_location_id' => $data['location_id'],
                 'location' => $data['location'] ?? null
             ];
+            $calculatedTimes = CalendarGetResource::generateTimesForSearching($data['time'],$data['hour']);
             DB::transaction(function () use ($appointmentData, $data) {
                 $appointment = $this->appointmentRepository->store($appointmentData);
-                if (!$appointment) {
+                if (!$appointment)
                     throw new \Exception('Appointment could not created', 401);
-                }
                 foreach ($data['children'] as $child) {
                     $appointment->registered_children()->create($child);
                 }
+
+
+
+
+
             });
             return true;
         } catch (\Exception $exception) {
