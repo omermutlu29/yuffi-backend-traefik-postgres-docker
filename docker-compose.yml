@@ -86,8 +86,11 @@ services:
       context: ./echo
       dockerfile: Dockerfile
     restart: unless-stopped
-    ports:
-      - "6001:6001"
+    tty: true
+      labels:
+        - traefik.backend=web
+        - traefik.frontend.rule=Host:channels.oymt.xyz
+        - traefik.port=6001
     networks:
       - local-bridge
       - internal
