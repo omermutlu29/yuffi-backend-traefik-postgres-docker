@@ -5,13 +5,19 @@ console.log(env.REDIS_HOST)
 console.log(env.APP_URL)
 
 require('laravel-echo-server').run({
-    authHost: env.APP_URL,
-    devMode: env.APP_DEBUG,
-    database: "redis",
-    databaseConfig: {
-        redis: {
-            host: env.REDIS_HOST,
-            port: env.REDIS_PORT,
+    "authHost": "http://nginx/",
+    "authEndpoint": "broadcasting/auth",
+    "database": "redis",
+    "databaseConfig": {
+        "redis": {
+            "host": "redis",
+            "port": "6379",
+            "db": "0"
         }
-    }
+    },
+    "devMode": true,
+    "host": null,
+    "port": "80",
+    "protocol": "http",
+    "socketio": {}
 });
