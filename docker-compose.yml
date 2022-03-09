@@ -87,6 +87,8 @@ services:
       context: ./echo
       dockerfile: Dockerfile
     restart: unless-stopped
+    volumes:
+      - ./:/usr/src/app
     labels:
       - traefik.enable=true
       - traefik.frontend.rule=Host:echo.oymt.xyz
@@ -95,7 +97,7 @@ services:
       - local-bridge
       - internal
 
-        
+
   redis:
     image: redis
     restart: unless-stopped
