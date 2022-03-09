@@ -1,5 +1,11 @@
-FROM node:lts-alpine
-WORKDIR /opt/node-server
-COPY . .
-RUN npm install
-CMD ["node", "server.js"]
+FROM node:7-alpine
+
+RUN apk add --update --no-cache bash \
+	&& apk add --update --no-cache -t .build-deps python make g++ gcc \
+	&& npm i -g laravel-echo-server \
+	&& apk del .build-deps
+
+WORKDIR /app
+
+ENTRYPOINT ["laravel-echo-server"]
+CMD ["start"]
