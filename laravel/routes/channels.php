@@ -18,6 +18,7 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('App.Models.Appointment.{id}', function ($user, $id) {
+    return true;
     $appointment = \App\Models\Appointment::find($id);
     if (!$appointment) {
         return false;
