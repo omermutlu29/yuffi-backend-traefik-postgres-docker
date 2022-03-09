@@ -26,4 +26,9 @@ class NewAppointmentMessageEvent implements ShouldBroadcastNow
     {
         return new PrivateChannel('App.Models.Appointment.' . $this->appointmentId);
     }
+
+    public function broadcastAs()
+    {
+        return 'newMessage';
+    }
 }
