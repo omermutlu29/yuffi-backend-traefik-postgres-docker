@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
@@ -24,7 +25,7 @@ class NewAppointmentMessageEvent implements ShouldBroadcastNow
 
     public function broadcastOn()
     {
-        return new PrivateChannel('App.Models.Appointment.' . $this->appointmentId);
+        return new Channel('App.Models.Appointment.' . $this->appointmentId);
     }
 
     public function broadcastAs()
