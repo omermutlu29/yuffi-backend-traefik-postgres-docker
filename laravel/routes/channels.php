@@ -21,10 +21,10 @@ Broadcast::channel('App.Models.Appointment.{id}', function ($user, $id) {
     if (!$appointment) {
         return false;
     }
-    if (typeOf($user) == \App\Models\BabySitter::class) {
+    if ($user instanceof \App\Models\BabySitter) {
         return $appointment->baby_sitter_id == $user->id;
     }
-    if (typeOf($user) == \App\Models\Parents::class) {
+    if ($user instanceof \App\Models\Parents) {
         return $appointment->parent_id == $user->id;
     }
     return false;
