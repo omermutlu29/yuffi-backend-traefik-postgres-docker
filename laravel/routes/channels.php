@@ -17,9 +17,8 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int)$user->id === (int)$id;
 });
 
-Broadcast::channel('App.Models.Appointment.34', function () {
-    return true;
-    /*$appointment = \App\Models\Appointment::find($id);
+Broadcast::channel('App.Models.Appointment.{id}', function ($user,$id) {
+    $appointment = \App\Models\Appointment::find($id);
     if (!$appointment) {
         return false;
     }
@@ -29,5 +28,5 @@ Broadcast::channel('App.Models.Appointment.34', function () {
     if (typeOf($user) == \App\Models\Parents::class) {
         return $appointment->parent_id == $user->id;
     }
-    return false;*/
+    return false;
 });

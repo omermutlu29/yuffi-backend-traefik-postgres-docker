@@ -15,17 +15,19 @@ class NewAppointmentMessageEvent implements ShouldBroadcastNow
 
     private $appointmentId;
     public $message;
+    public $sender;
 
-    public function __construct($message, $appointmentId)
+    public function __construct($sender,$message, $appointmentId)
     {
         $this->message = $message;
+        $this->sender = $sender;
         $this->appointmentId = $appointmentId;
     }
 
 
     public function broadcastOn()
     {
-        return new Channel('App.Models.Appointment.' . $this->appointmentId);
+        return new PrivateChannel('App.Models.Appointment.' . $this->appointmentId);
     }
 
     public function broadcastAs()
