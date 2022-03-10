@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Broadcast;
 | used to check if an authenticated user can listen to the channel.
 |
 */
-Broadcast::auth(['middleware'=>'baby_sitter']);
+Broadcast::routes(['middleware'=>['baby_sitter']]);
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int)$user->id === (int)$id;
 });
