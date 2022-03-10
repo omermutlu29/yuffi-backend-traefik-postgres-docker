@@ -18,7 +18,6 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('App.Models.Appointment.{id}', function ($user,$id) {
-    dd($user);
     $appointment = \App\Models\Appointment::find($id);
     if (!$appointment) {
         return false;
