@@ -3,6 +3,7 @@
 namespace App\Models;
 
 
+use App\Http\Resources\ChatUserResource;
 use Illuminate\Database\Eloquent\Model;
 
 class AppointmentMessage extends Model
@@ -17,7 +18,7 @@ class AppointmentMessage extends Model
         static::created(function ($appointmentMessage) {
             event(
                 new \App\Events\NewAppointmentMessageEvent(
-                    $appointmentMessage->userable,
+                    ChatUserResource::make($appointmentMessage->userable),
                     $appointmentMessage->message,
                     $appointmentMessage->appointment
                 )
