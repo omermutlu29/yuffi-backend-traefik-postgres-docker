@@ -11,13 +11,13 @@ class MessagingService implements IMessagingService
 {
     public function sendMessage($user, Appointment $appointment, $text = ''): \Illuminate\Database\Eloquent\Model
     {
-        $messageSent =  $appointment->appointment_messages()->create([
+        $messageSent = $appointment->appointment_messages()->create([
             'userable_type' => get_class($user),
             'userable_id' => $user->id,
             'text' => $text
         ]);
-        if (!$messageSent){
-            throw new \Exception('Message could not sent',401);
+        if (!$messageSent) {
+            throw new \Exception('Message could not sent', 401);
         }
         return $messageSent;
     }
@@ -25,8 +25,8 @@ class MessagingService implements IMessagingService
     public function getMessages(Appointment $appointment): \Illuminate\Database\Eloquent\Collection
     {
         $messages = $appointment->appointment_messages()->get();
-        if (!$messages){
-            throw  new \Exception('Message could not find',401);
+        if (!$messages) {
+            throw  new \Exception('Message could not find', 401);
         }
         return $messages;
     }
