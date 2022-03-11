@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Http\Resources\ChatUserResource;
 use App\Models\AppointmentMessage;
 use Carbon\Carbon;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -37,7 +38,8 @@ class NewAppointmentMessageEvent implements ShouldBroadcastNow
 
     public function broadcastWith()
     {
-        return [
+        return ChatUserResource::make($this->appointmentMessage);
+        /*[
             '_id' => $this->appointmentMessage->id,
             'text' => $this->appointmentMessage->message,
             'createdAt' => $this->appointmentMessage->created_at->format('d/m/Y H:i:s'),
@@ -46,6 +48,6 @@ class NewAppointmentMessageEvent implements ShouldBroadcastNow
                 'name' => $this->appointmentMessage->userable->name . ' ' . $this->appointmentMessage->userable->last_name,
                 'avatar' => $this->appointmentMessage->userable->photo,
             ]
-        ];
+        ];*/
     }
 }
