@@ -1,6 +1,6 @@
 <?php
 Route::get('test-chat', function (\Illuminate\Http\Request $request) {
-    event(new \App\Events\NewAppointmentMessageEvent(\App\Models\AppointmentMessage::find(34)->load('appointment','userable')));
+    (new \App\Services\Messaging\MessagingService())->sendMessage(\App\Models\Parents::find(224), \App\Models\Appointment::find(14), 'Selam');
 });
 Route::prefix('fill')->group(function () {
     Route::get('towns/{city}', [\App\Http\Controllers\API\BabySitter\Preferences\FillController::class, 'getTowns']);
