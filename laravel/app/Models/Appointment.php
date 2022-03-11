@@ -88,7 +88,7 @@ class Appointment extends Model
 
     public function scopeFuture($query)
     {
-        $nowDate = now()->format('Y-d-m');
+        $nowDate = now()->format('Y-m-d');
         $nowHour = now()->format('H:i');
         return $query->where('date', '>', $nowDate)->orWhere(function ($query) use ($nowDate, $nowHour) {
             $query->where('date', $nowDate)->where('start', '>', $nowHour);
