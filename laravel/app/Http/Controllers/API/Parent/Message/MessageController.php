@@ -21,13 +21,13 @@ class MessageController extends BaseController
 
     public function sendMessage(Appointment $appointment, SendMessageRequest $request)
     {
-        //try {
+        try {
             $sent = $this->messageService->sendMessage(\auth()->user(), $appointment, $request->message);
             return $this->sendResponse($sent, 'Message sent');
-        /*} catch (\Exception $exception) {
+        } catch (\Exception $exception) {
             return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
 
-        }*/
+        }
     }
 
     public function getMessages(Appointment $appointment)
