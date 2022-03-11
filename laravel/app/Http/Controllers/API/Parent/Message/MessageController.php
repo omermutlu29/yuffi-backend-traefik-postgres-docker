@@ -19,7 +19,7 @@ class MessageController extends BaseController
         $this->messageService = $messageService;
     }
 
-    public function sendMessage(Appointment $appointment, SendMessageRequest $request): \Illuminate\Http\Response
+    public function sendMessage(Appointment $appointment, SendMessageRequest $request)
     {
         try {
             $sent = $this->messageService->sendMessage(\auth()->user(), $appointment, $request->message);
