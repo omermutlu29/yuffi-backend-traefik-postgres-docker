@@ -14,7 +14,7 @@ class MessagingService implements IMessagingService
         $messageSent = $appointment->appointment_messages()->create([
             'userable_type' => get_class($user),
             'userable_id' => $user->id,
-            'text' => $text
+            'message' => $text
         ]);
         if (!$messageSent) {
             throw new \Exception('Message could not sent', 401);
