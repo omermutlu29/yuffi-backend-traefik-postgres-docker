@@ -16,7 +16,7 @@ class AppointmentMessage extends Model
     {
         parent::boot();
         static::created(function ($appointmentMessage) {
-            event(new \App\Events\NewAppointmentMessageEvent($appointmentMessage));
+            event(new \App\Events\NewAppointmentMessageEvent($appointmentMessage->load('appointment','userable')));
         });
     }
 
