@@ -24,7 +24,7 @@ class MessagingService implements IMessagingService
 
     public function getMessages(Appointment $appointment): \Illuminate\Database\Eloquent\Collection
     {
-        $messages = $appointment->appointment_messages()->orderBy('created_at', 'ASC')->get();
+        $messages = $appointment->appointment_messages()->orderBy('created_at', 'DESC')->get();
         if (!$messages) {
             throw  new \Exception('Message could not find', 401);
         }
