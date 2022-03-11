@@ -9,9 +9,14 @@ class ChatUserResource extends JsonResource
     public function toArray($request)
     {
         return [
-            '_id'=>$this->id,
-            'full_name' => $this->name.' '.$this->last_name,
-            'photo'=>$this->photo,
+            '_id' => $this->id,
+            'text' => $this->message,
+            'createdAt' => $this->created_at->format('d/m/Y'),
+            'user' => [
+                '_id' => $this->userable_id,
+                'name' => $this->userable->name . ' ' . $this->userable->last_name,
+                'avatar' => $this->userable->photo,
+            ]
         ];
     }
 }
