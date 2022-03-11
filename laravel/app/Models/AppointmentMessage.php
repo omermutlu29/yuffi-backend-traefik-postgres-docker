@@ -16,13 +16,7 @@ class AppointmentMessage extends Model
     {
         parent::boot();
         static::created(function ($appointmentMessage) {
-            event(
-                new \App\Events\NewAppointmentMessageEvent(
-                    ChatUserResource::make($appointmentMessage->userable),
-                    $appointmentMessage->message,
-                    $appointmentMessage->appointment
-                )
-            );
+            event(new \App\Events\NewAppointmentMessageEvent($appointmentMessage));
         });
     }
 
