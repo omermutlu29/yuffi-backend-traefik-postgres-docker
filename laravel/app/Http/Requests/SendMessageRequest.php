@@ -26,7 +26,7 @@ class SendMessageRequest extends BaseApiRequest
     public function rules()
     {
         return [
-            'text'=>'required'
+            'message'=>'required'
         ];
     }
 
