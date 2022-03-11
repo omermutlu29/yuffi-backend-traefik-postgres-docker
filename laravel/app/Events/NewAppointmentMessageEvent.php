@@ -38,8 +38,7 @@ class NewAppointmentMessageEvent implements ShouldBroadcastNow
 
     public function broadcastWith()
     {
-        return ChatUserResource::make($this->appointmentMessage);
-        /*[
+        return [
             '_id' => $this->appointmentMessage->id,
             'text' => $this->appointmentMessage->message,
             'createdAt' => $this->appointmentMessage->created_at->format('d/m/Y H:i:s'),
@@ -48,6 +47,6 @@ class NewAppointmentMessageEvent implements ShouldBroadcastNow
                 'name' => $this->appointmentMessage->userable->name . ' ' . $this->appointmentMessage->userable->last_name,
                 'avatar' => $this->appointmentMessage->userable->photo,
             ]
-        ];*/
+        ];
     }
 }
