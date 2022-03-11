@@ -40,7 +40,7 @@ class NewAppointmentMessageEvent implements ShouldBroadcastNow
         return [
             '_id' => $this->appointmentMessage->id,
             'text' => $this->appointmentMessage->message,
-            'createdAt' => Carbon::createFromFormat('Y-m-d', $this->appointmentMessage->created_at)->format('d/m/Y'),
+            'createdAt' => $this->appointmentMessage->created_at->format('d/m/Y'),
             'user' => [
                 '_id' => $this->appointmentMessage->userable_id,
                 'name' => $this->appointmentMessage->userable->name . ' ' . $this->appointmentMessage->userable->last_name,
