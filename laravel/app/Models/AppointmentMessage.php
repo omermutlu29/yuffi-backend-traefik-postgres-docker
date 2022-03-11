@@ -20,7 +20,7 @@ class AppointmentMessage extends Model
                 new \App\Events\NewAppointmentMessageEvent(
                     ChatUserResource::make($appointmentMessage->user),
                     $appointmentMessage->message,
-                    $appointmentMessage->appointment->id
+                    $appointmentMessage->appointment
                 )
             );
         });
