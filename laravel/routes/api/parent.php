@@ -42,7 +42,7 @@ Route::prefix('parent')->group(function () {
     //Test edilecek
     Route::prefix('message')->group(function () {
         Route::post('send/{appointment}', [\App\Http\Controllers\API\Parent\Message\MessageController::class, 'sendMessage']);
-        Route::get('get/{appointment}', [\App\Http\Controllers\API\Parent\Message\MessageController::class, 'getMessage']);
+        Route::get('get/{appointment}', [\App\Http\Controllers\API\Parent\Message\MessageController::class, 'getMessages']);
     });
     //solid ends
 
