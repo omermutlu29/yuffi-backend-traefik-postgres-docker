@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\NewAppointmentMessageEvent;
 use App\Interfaces\NotificationInterfaces\INotification;
+use Illuminate\Support\Facades\Log;
 
 class NewAppointmentMessageListener
 {
@@ -22,6 +23,9 @@ class NewAppointmentMessageListener
      */
     public function handle(NewAppointmentMessageEvent $event)
     {
-        $this->notification->notify(['appointment_id'=>$event->getAppointmentId()],'Yeni Mesaj', $event->getMessage(), $event->getReceiver()->google_st);
+        Log::info($event->getReceiver()->google_st);
+        if ($event->getReceiver()->google_st){
+            $this->notification->notify(['appointment_id'=>$event->getAppointmentId()],'Yeni Mesaj', $event->getMessage(), $event->getReceiver()->google_st);
+        }
     }
 }
