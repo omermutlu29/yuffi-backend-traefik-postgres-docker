@@ -28,7 +28,6 @@ class PushNotificationService implements INotification
                     "icon" => "ic_launcher"
                 ],
                 "data" => $data,
-                'soundName' => 'default'
             ];
 
             return $this->sendDataToGoogleAPI($data, $to);
