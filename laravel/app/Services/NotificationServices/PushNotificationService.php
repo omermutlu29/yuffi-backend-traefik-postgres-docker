@@ -60,8 +60,11 @@ class PushNotificationService implements INotification
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         $result = curl_exec($ch);
         if ($result === FALSE) {
+            return false;;
             die('Oops! FCM Send Error: ' . curl_error($ch));
         }
         curl_close($ch);
+
+        return true;
     }
 }
