@@ -24,8 +24,9 @@ use App\Interfaces\PaymentInterfaces\IPayment;
 use App\Interfaces\PaymentInterfaces\IPaymentToSubMerchant;
 use App\Interfaces\PaymentInterfaces\IRegisterCardService;
 use App\Interfaces\PaymentInterfaces\ISubMerchantService;
-use App\Interfaces\PaymentInterfaces\IThreeDPaymentToSubMerchant;
 use App\Interfaces\PaymentInterfaces\IThreeDPaymentInitialize;
+use App\Interfaces\PaymentInterfaces\IThreeDPaymentToSubMerchant;
+use App\Listeners\NewAppointmentMessageListener;
 use App\Repositories\AppointmentRepository;
 use App\Repositories\BabySitterRepository;
 use App\Repositories\CalendarRepository;
@@ -38,6 +39,7 @@ use App\Services\DepositService\DepositServiceService;
 use App\Services\LoginService\LoginService;
 use App\Services\Messaging\MessagingService;
 use App\Services\NotificationServices\NetGSMSmsNotification;
+use App\Services\NotificationServices\PushNotificationService;
 use App\Services\PaymentServices\Iyzico\IyzicoPaymentService;
 use App\Services\PaymentServices\Iyzico\IyzicoRegisterCardService;
 use App\Services\PaymentServices\Iyzico\IyzicoSubMerchantService;
@@ -65,6 +67,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->when( NewAppointmentMessageListener::class)->needs(INotification::class)->give(PushNotificationService::class);
         $this->app->bind(ISubMerchantService::class, IyzicoSubMerchantService::class);
         $this->app->bind(ICompleteThreeDPayment::class, IyzicoThreeDPaymentService::class);
         $this->app->bind(IMessagingService::class, MessagingService::class);
