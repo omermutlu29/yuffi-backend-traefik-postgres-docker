@@ -14,12 +14,21 @@ class NewAppointmentMessageEvent implements ShouldBroadcastNow
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     private $appointmentMessage;
-    public $message;
+    private $receiver;
 
-    public function __construct(AppointmentMessage $appointmentMessage)
+    public function __construct(AppointmentMessage $appointmentMessage,$receiver)
     {
         $this->appointmentMessage = $appointmentMessage;
         $this->message = $this->manipulateData();
+        $this->receiver = $receiver;
+    }
+
+    public function getReceiver(){
+        return $this->receiver;
+    }
+
+    public function getMessage(){
+        return $this->appointmentMessage->message;
     }
 
 
