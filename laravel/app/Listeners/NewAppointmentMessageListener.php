@@ -22,6 +22,6 @@ class NewAppointmentMessageListener
      */
     public function handle(NewAppointmentMessageEvent $event)
     {
-        $this->notification->notify($event->getAppointmentId(),'Yeni Mesaj', $event->getMessage(), $event->getReceiver()->google_st);
+        $this->notification->notify(['appointment_id'=>$event->getAppointmentId()],'Yeni Mesaj', $event->getMessage(), $event->getReceiver()->google_st);
     }
 }
