@@ -37,7 +37,7 @@ class PushNotificationService implements INotification
 
     }
 
-    private function sendDataToGoogleAPI($data): bool|string
+    private function sendDataToGoogleAPI($data)
     {
         $data = json_encode($data);
 //FCM API end-point
