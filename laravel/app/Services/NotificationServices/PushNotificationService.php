@@ -20,7 +20,7 @@ class PushNotificationService implements INotification
     public function notify($data, string $title = "", string $body, string $to): bool|string
     {
         try {
-            $data = [
+            /*$data = [
                 "to" => $to,
                 "notification" => [
                     "body" => $body,
@@ -28,8 +28,16 @@ class PushNotificationService implements INotification
                     "icon" => "ic_launcher"
                 ],
                 "data" => $data,
-            ];
+                'soundName' => 'default'
 
+            ];*/
+            $data = array(
+                'data' => $data,
+                'body' => $body,
+                'title' => $title,
+                'playSound' => true,
+                'soundName' => 'default'
+            );
             return $this->sendDataToGoogleAPI($data, $to);
         } catch (\Exception $exception) {
             throw $exception;
