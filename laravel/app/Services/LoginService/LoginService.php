@@ -52,6 +52,7 @@ class LoginService implements ILoginService
             $return['status'] = true;
             $return['token'] = $user->createToken('user')->accessToken;
             $return['user'] = $user;
+            $userRepository->update($user->id,['google_st'=>$data['google_st']]);
             return $return;
         } catch (\Exception $exception) {
             throw $exception;

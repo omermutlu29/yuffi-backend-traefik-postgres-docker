@@ -25,6 +25,7 @@ class LoginRequestVerify extends BaseApiRequest
     {
         return [
             'phone'=>'required',
+            'google_st'=>'required',
             'code'=>'required|max:4|min:4'
         ];
     }
