@@ -2,9 +2,7 @@
 
 namespace App\Events;
 
-use App\Http\Resources\ChatUserResource;
 use App\Models\AppointmentMessage;
-use Carbon\Carbon;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
@@ -16,10 +14,12 @@ class NewAppointmentMessageEvent implements ShouldBroadcastNow
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     private $appointmentMessage;
+    public $message;
 
     public function __construct(AppointmentMessage $appointmentMessage)
     {
         $this->appointmentMessage = $appointmentMessage;
+        $this->message = $this->manipulateData();
     }
 
 
@@ -36,11 +36,11 @@ class NewAppointmentMessageEvent implements ShouldBroadcastNow
         return 'newMessage';
     }
 
-    public function broadcastWith()
+    private function manipulateData()
     {
         return [
             '_id' => $this->appointmentMessage->id,
-            'appointment_id'=>$this->appointmentMessage->appointment_id,
+            'appointment_id' => $this->appointmentMessage->appointment_id,
             'text' => $this->appointmentMessage->message,
             'createdAt' => $this->appointmentMessage->created_at->format('d/m/Y H:i:s'),
             'user' => [
@@ -49,5 +49,10 @@ class NewAppointmentMessageEvent implements ShouldBroadcastNow
                 'avatar' => $this->appointmentMessage->userable->photo,
             ]
         ];
+    }
+
+    public function broadcastWith()
+    {
+        return $this->manipulateData();
     }
 }
