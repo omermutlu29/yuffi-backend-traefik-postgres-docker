@@ -20,7 +20,7 @@ class NetGSMSmsNotification implements INotification
         }
     }
 
-    public function notify(string $title = "", string $body, string $to): bool
+    public function notify($data=null,string $title = "", string $body, string $to): bool
     {
         $url = "https://api.netgsm.com.tr/sms/send/get/?usercode=" . $this->userName . "&password=" . $this->password . "&gsmno=" . $to . "&message=" . $body . "&msgheader=" . $title;
         $ch = curl_init($url);

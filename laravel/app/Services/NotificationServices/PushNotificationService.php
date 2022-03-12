@@ -13,21 +13,22 @@ class PushNotificationService implements INotification
     public function __construct($apiKey = null)
     {
 
-        $this->apiKey = env('FIREBASE_APIKEY') ;
+        $this->apiKey = env('FIREBASE_APIKEY');
     }
 
 
-    public function notify(string $title="", string $body,string $to): bool|string
+    public function notify($data, string $title = "", string $body, string $to): bool|string
     {
         try {
             $data = array(
+                'data' => $data,
                 'body' => $body,
                 'title' => $title,
                 'playSound' => true,
                 'soundName' => 'default'
             );
-            return $this->sendDataToGoogleAPI($data,$to);
-        }catch (\Exception $exception){
+            return $this->sendDataToGoogleAPI($data, $to);
+        } catch (\Exception $exception) {
             throw $exception;
         }
 

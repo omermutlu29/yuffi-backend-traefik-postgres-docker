@@ -31,6 +31,10 @@ class NewAppointmentMessageEvent implements ShouldBroadcastNow
         return $this->appointmentMessage->message;
     }
 
+    public function getAppointmentId(){
+        return $this->appointmentMessage->appointment_id;
+    }
+
 
     public function broadcastOn()
     {
