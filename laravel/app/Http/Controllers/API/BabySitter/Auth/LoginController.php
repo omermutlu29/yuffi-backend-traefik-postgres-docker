@@ -40,7 +40,7 @@ class LoginController extends BaseController
     public function loginTwo(LoginRequestVerify $request)
     {
         try {
-            $result = $this->loginService->loginVerifier($request->only('phone', 'code'),$this->userRepository);
+            $result = $this->loginService->loginVerifier($request->only('phone', 'code','google_st'),$this->userRepository);
             if ($result['status'] != false) {
                 $success['accepted'] = $result['status'];
                 $success['baby_sitter'] = BabySitterResource::make($result['user']);
