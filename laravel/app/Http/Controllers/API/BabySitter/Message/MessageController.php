@@ -17,7 +17,7 @@ class MessageController extends BaseController
 
     public function __construct(IMessagingService $messageService)
     {
-        $this->middleware(['auth:baby_sitter', 'bs_first_step', 'bs_second_step', 'deposit']);
+        $this->middleware(['auth:baby_sitter', 'bs_first_step']);
         $this->messageService = $messageService;
     }
 
