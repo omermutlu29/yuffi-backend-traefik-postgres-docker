@@ -6,6 +6,7 @@ namespace App\Http\Controllers\API\BabySitter\Appointment;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\Requests\AppointmentRequests\ApproveDisapproveAppointmentRequest;
+use App\Http\Requests\GetAppointmentDetailRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Interfaces\IRepositories\IAppointmentRepository;
 use App\Interfaces\IServices\IAppointmentService;
@@ -16,11 +17,22 @@ class AppointmentController extends BaseController
     private IAppointmentRepository $appointmentRepository;
 
 
-    public function __construct(IAppointmentService $appointmentService,IAppointmentRepository $appointmentRepository)
+    public function __construct(IAppointmentService $appointmentService, IAppointmentRepository $appointmentRepository)
     {
         $this->middleware('auth:baby_sitter');
         $this->appointmentService = $appointmentService;
         $this->appointmentRepository = $appointmentRepository;
+    }
+
+    public function getAppointmentDetail(GetAppointmentDetailRequest $request)
+    {
+        try {
+            return $this->sendResponse(
+                AppointmentResource::make($this->appointmentRepository->getAppointmentById($request->appointment_id)),
+            'Randevularınız getirildi!');
+        } catch (\Exception $exception) {
+            return $this->sendError($exception->getMessage(), $exception->getMessage(), 400);
+        }
     }
 
     public function getPastAppointments()
