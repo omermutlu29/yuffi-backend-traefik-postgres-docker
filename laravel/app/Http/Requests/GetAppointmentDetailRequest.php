@@ -49,7 +49,6 @@ class GetAppointmentDetailRequest extends BaseApiRequest
     public function rules()
     {
         return [
-            'appointment_id' => 'required|exists:appointments,id'
         ];
     }
 }
