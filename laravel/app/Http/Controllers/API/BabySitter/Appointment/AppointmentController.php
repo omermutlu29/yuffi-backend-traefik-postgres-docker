@@ -16,10 +16,11 @@ class AppointmentController extends BaseController
     private IAppointmentRepository $appointmentRepository;
 
 
-    public function __construct(IAppointmentService $appointmentService)
+    public function __construct(IAppointmentService $appointmentService,IAppointmentRepository $appointmentRepository)
     {
         $this->middleware('auth:baby_sitter');
         $this->appointmentService = $appointmentService;
+        $this->appointmentRepository = $appointmentRepository;
     }
 
     public function getPastAppointments()
