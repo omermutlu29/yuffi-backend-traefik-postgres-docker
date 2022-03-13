@@ -22,14 +22,21 @@ class GetAppointmentDetailRequest extends BaseApiRequest
      */
     public function authorize()
     {
-        $appointment = $this->appointmentRepository->getAppointmentById(\request()->get('appointment_id'));
-        if (\request()->user() instanceof BabySitter) {
-            return $appointment->baby_sitter_id === \request()->user()->id;
+        try {
+            $appointment_id = (int)\request()->get('appointment_id');
+            $appointment = $this->appointmentRepository->getAppointmentById($appointment_id);
+            if (\request()->user() instanceof BabySitter) {
+                return $appointment->baby_sitter_id === \request()->user()->id;
+            }
+
+            if (\request()->user() instanceof Parents) {
+                return $appointment->parent_id === \request()->user()->id;
+            }
+
+        } catch (\Exception $exception) {
+            return new \Exception('Hatalı veri girişi', 400);
         }
 
-        if (\request()->user() instanceof Parents) {
-            return $appointment->parent_id === \request()->user()->id;
-        }
 
         return false;
     }
