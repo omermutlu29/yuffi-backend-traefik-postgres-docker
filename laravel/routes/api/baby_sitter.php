@@ -25,13 +25,15 @@ Route::prefix('baby-sitter')->group(function () {
         Route::get('index', [\App\Http\Controllers\API\BabySitter\Preferences\CalendarController::class, 'index']);
     });//Bitti
 
-    Route::prefix('appointments')->group(function () {
-        Route::get('my-approved-appointments', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'myApprovedAppointments']);
-        Route::get('my-not-approved-appointments', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'myNotApprovedAppointments']);
-        Route::get('my-paid-appointments', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'myPaidAppointments']);
-        Route::get('my-pending-appointments', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'myPendingPaymentAppointments']);
-        Route::put('approve', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'approve']);
+    Route::prefix('appointment')->group(function () {
+        Route::get('get/future', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'getFutureAppointments']);
+        Route::get('get/past', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'getPastAppointments']);
         Route::put('disapprove', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'disapprove']);
+        //Route::get('my-approved-appointments', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'myApprovedAppointments']);
+        //Route::get('my-not-approved-appointments', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'myNotApprovedAppointments']);
+        //Route::get('my-paid-appointments', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'myPaidAppointments']);
+        //Route::get('my-pending-appointments', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'myPendingPaymentAppointments']);
+        //Route::put('approve', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'approve']);
     });
 
 

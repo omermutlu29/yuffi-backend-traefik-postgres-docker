@@ -95,4 +95,14 @@ class AppointmentRepository implements IAppointmentRepository
     {
         return Appointment::create($data);
     }
+
+    public function getPastAppointmentsByBabySitterId(int $babySitterId)
+    {
+        return Appointment::where('baby_sitter_id', $babySitterId)->past()->orderBy('created_at','DESC')->get();
+    }
+
+    public function getFutureAppointmentsByBabySitterId(int $babySitterId)
+    {
+        return Appointment::where('baby_sitter_id', $babySitterId)->past()->orderBy('created_at','DESC')->get();
+    }
 }
