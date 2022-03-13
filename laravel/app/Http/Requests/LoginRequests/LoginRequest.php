@@ -25,7 +25,6 @@ class LoginRequest extends BaseApiRequest
     public function rules()
     {
         return [
-            'google_st'=>'required',
             'kvkk'=>['required','boolean',function ($attribute, $value, $fail) {
                 if (!$value) {
                     $fail('Uygulamayı kullanabilmeniz için KVKK sözleşmesini kabul etmeniz gerekmektedir.');
