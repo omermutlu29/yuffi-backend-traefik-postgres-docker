@@ -10,6 +10,7 @@ use App\Http\Requests\GetAppointmentDetailRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Interfaces\IRepositories\IAppointmentRepository;
 use App\Interfaces\IServices\IAppointmentService;
+use App\Models\Appointment;
 
 class AppointmentController extends BaseController
 {
@@ -24,11 +25,10 @@ class AppointmentController extends BaseController
         $this->appointmentRepository = $appointmentRepository;
     }
 
-    public function getAppointmentDetail(GetAppointmentDetailRequest $request)
+    public function getAppointmentDetail(GetAppointmentDetailRequest $request, Appointment $appointment)
     {
         try {
-            return $this->sendResponse(
-                AppointmentResource::make($this->appointmentRepository->getAppointmentById($request->route('appointment_id'))),
+            return $this->sendResponse(AppointmentResource::make($appointment),
             'Randevularınız getirildi!');
         } catch (\Exception $exception) {
             return $this->sendError($exception->getMessage(), $exception->getMessage(), 400);

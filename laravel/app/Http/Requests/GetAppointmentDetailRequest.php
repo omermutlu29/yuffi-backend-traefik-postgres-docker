@@ -23,7 +23,8 @@ class GetAppointmentDetailRequest extends BaseApiRequest
     public function authorize()
     {
         try {
-            $appointment=$this->appointmentRepository->getAppointmentById(\request()->route('appointment_id'));
+            $appointment = \request()->route('appointment');
+
             if (\request()->user() instanceof BabySitter) {
                 return $appointment->baby_sitter_id === \request()->user()->id;
             }

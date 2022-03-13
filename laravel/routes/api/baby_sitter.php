@@ -26,7 +26,7 @@ Route::prefix('baby-sitter')->group(function () {
     });//Bitti
 
     Route::prefix('appointment')->group(function () {
-        Route::get('detail/{appointment_id}', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'getAppointmentDetail']);
+        Route::get('detail/{appointment}', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'getAppointmentDetail']);
         Route::get('get/future', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'getFutureAppointments']);
         Route::get('get/past', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'getPastAppointments']);
         Route::put('disapprove', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'disapprove']);
