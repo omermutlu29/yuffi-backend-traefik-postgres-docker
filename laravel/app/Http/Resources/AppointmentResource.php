@@ -19,6 +19,7 @@ class AppointmentResource extends JsonResource
             'id'=>$this->id,
             'datetime'=>Carbon::createFromFormat('Y-m-d',$this->date)->format('d/m/Y').' '.Carbon::createFromFormat('H:i:s',$this->start)->format('H:i').' - '.Carbon::createFromFormat('H:i:s',$this->finish)->format('H:i'),
             'baby_sitter'=>BabySitterResource::make($this->baby_sitter),
+            'parent'=>ParentResource::make($this->parent),
             'location'=>$this->appointment_location->name,
             'town'=>$this->town->name,
             'price'=>$this->price,
