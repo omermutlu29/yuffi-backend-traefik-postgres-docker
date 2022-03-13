@@ -26,9 +26,10 @@ class AppointmentController extends BaseController
 
     public function getAppointmentDetail(GetAppointmentDetailRequest $request)
     {
+        $request->get('appointment_id');
         try {
             return $this->sendResponse(
-                AppointmentResource::make($this->appointmentRepository->getAppointmentById($request->appointment_id)),
+                AppointmentResource::make($this->appointmentRepository->getAppointmentById($request->get('appointment_id'))),
             'Randevularınız getirildi!');
         } catch (\Exception $exception) {
             return $this->sendError($exception->getMessage(), $exception->getMessage(), 400);
