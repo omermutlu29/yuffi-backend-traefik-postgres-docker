@@ -37,6 +37,12 @@ Route::prefix('baby-sitter')->group(function () {
         //Route::put('approve', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'approve']);
     });
 
+    //Test edilecek
+    Route::prefix('message')->group(function () {
+        Route::post('send/{appointment}', [\App\Http\Controllers\API\BabySitter\Message\MessageController::class, 'sendMessage']);
+        Route::get('get/{appointment}', [\App\Http\Controllers\API\BabySitter\Message\MessageController::class, 'getMessages']);
+    });
+
 
     /*Route::prefix('deposit')->group(function () {
         Route::get('debt', [\App\Http\Controllers\API\BabySitter\Deposit\DepositController::class, 'deposit']);//Bitti
