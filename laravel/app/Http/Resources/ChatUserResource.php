@@ -11,7 +11,7 @@ class ChatUserResource extends JsonResource
         return [
             '_id' => (int)$this->id,
             'text' => $this->message,
-            'createdAt' => $this->created_at->format('Y/m/d H:i:s'),
+            'createdAt' => $this->created_at,
             'user' => [
                 '_id' => (int)$this->userable_id,
                 'name' => $this->userable->name . ' ' . $this->userable->last_name,
