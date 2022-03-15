@@ -21,7 +21,7 @@ class Parents extends Authenticatable
     public function getLastNameAttribute()
     {
         try {
-            return Str::ucfirst($this->surname[0]).'.';
+            return mb_strtoupper($this->surname[0]).'.';
         }catch (\Exception $exception){
             return '';
         }
