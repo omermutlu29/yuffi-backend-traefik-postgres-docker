@@ -13,7 +13,7 @@ class Parents extends Authenticatable
     use  HasApiTokens, Notifiable, SoftDeletes;
 
     protected $table = 'parents';
-    protected $appends = ['has_registered_card', 'last_name'];
+    protected $appends = [/*'has_registered_card', 'last_name'*/];
     protected $hidden = ['card_parents'];
     protected $guarded = [];
 
