@@ -20,7 +20,11 @@ class BabySitter extends Authenticatable
 
     public function getLastNameAttribute()
     {
-        return isset($this->surname) ? ucfirst($this->surname[0]) . '.' : '';
+        try {
+            return mb_strtoupper($this->surname[0]) . '.';
+        } catch (\Exception $exception) {
+            return '';
+        }
     }
 
     public function modelName()
