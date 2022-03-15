@@ -42,7 +42,7 @@ class LoginController extends BaseController
             dump($result);
             if ($result['status'] != false) {
                 $success['accepted'] = $result['status'];
-                $success['user'] = ParentResource::make($result['user']);
+              //  $success['user'] = ParentResource::make($result['user']);
                 $success['token'] = $result['token'];
                 dump($success);
                 return $this->sendResponse($success, 'Başarılı bir şekilde giriş yapıldı');
