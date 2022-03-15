@@ -45,7 +45,7 @@ class LoginController extends BaseController
                 $success['token'] = $result['token'];
 
 
-                return $success;
+                return $result['user'];;
             }
         /*} catch (\Exception $exception) {
             return $this->sendError($exception->getMessage(), ['message' => [$exception->getMessage()]], 400);
