@@ -28,7 +28,6 @@ class ParentResource extends JsonResource
             'google_st'=>$this->google_st,
             'network'=>$this->network,
             'last_name'=>$this->last_name,
-
         ];
     }
 }
