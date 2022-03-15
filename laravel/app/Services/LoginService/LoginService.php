@@ -43,6 +43,7 @@ class LoginService implements ILoginService
         $return = ['status' => false];
         try {
             $user = $userRepository->getUserByPhone($data['phone']);
+            dd($user);
             if (!$user) {
                 throw new \Exception('User could not find!',400);
             }
