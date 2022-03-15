@@ -19,7 +19,11 @@ class Parents extends Authenticatable
 
     public function getLastNameAttribute()
     {
-        return 'Bundan kaynaklı';//isset($this->surname) ? ucfirst($this->surname[0]) . '.' : '';
+        try {
+            return ucfirst($this->surname[0]).'.';
+        }catch (\Exception $exception){
+            return '';
+        }
     }
 
     public function modelName()
