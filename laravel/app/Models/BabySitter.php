@@ -15,7 +15,8 @@ class BabySitter extends Authenticatable
 
     protected $hidden = [];
     protected $guarded = [];
-    protected $appends = ['last_name'];
+    protected $appends = ['last_name', 'has_calendar_for_future'];
+
 
     public function getLastNameAttribute()
     {
@@ -219,6 +220,14 @@ class BabySitter extends Authenticatable
             });
         }
         return $query;
+    }
+
+    public function getHasCalendarForFutureAttribute()
+    {
+        return $this
+                ->baby_sitter_available_dates()
+                ->whereBetween('date', [now(), now()->addDays(15)])
+                ->count() > 0;
     }
 
 }
