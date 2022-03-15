@@ -41,7 +41,7 @@ class LoginController extends BaseController
             $result = $this->loginService->loginVerifier($request->only('phone', 'code','google_st'), $this->userRepository);
             if ($result['status'] != false) {
                 $success['accepted'] = $result['status'];
-                $success['user'] = (ParentResource::make($result['user']));
+                $success['user'] = $result['user'];
                 $success['token'] = $result['token'];
 
 
