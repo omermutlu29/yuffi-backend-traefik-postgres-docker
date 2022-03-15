@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Support\Str;
 
 class Parents extends Authenticatable
 {
@@ -20,7 +21,7 @@ class Parents extends Authenticatable
     public function getLastNameAttribute()
     {
         try {
-            return ucfirst($this->surname[0]).'.';
+            return Str::ucfirst($this->surname[0]).'.';
         }catch (\Exception $exception){
             return '';
         }
