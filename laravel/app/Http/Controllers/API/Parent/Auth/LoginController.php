@@ -37,7 +37,7 @@ class LoginController extends BaseController
 
     public function loginTwo(LoginRequestVerify $request)
     {
-        try {
+        //try {
             $result = $this->loginService->loginVerifier($request->only('phone', 'code','google_st'), $this->userRepository);
             if ($result['status'] != false) {
                 $success['accepted'] = $result['status'];
@@ -45,9 +45,9 @@ class LoginController extends BaseController
                 $success['token'] = $result['token'];
                 return $this->sendResponse($success, 'Başarılı bir şekilde giriş yapıldı');
             }
-        } catch (\Exception $exception) {
-            return $this->sendError($exception->getMessage(), ['message' => [$exception->getMessage()]], $exception->getCode());
-        }
+        /*} catch (\Exception $exception) {
+            return $this->sendError($exception->getMessage(), ['message' => [$exception->getMessage()]], 400);
+        }*/
     }
 
 
