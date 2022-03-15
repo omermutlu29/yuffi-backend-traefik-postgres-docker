@@ -43,7 +43,9 @@ class LoginController extends BaseController
                 $success['accepted'] = $result['status'];
                 $success['user'] = (ParentResource::make($result['user']));
                 $success['token'] = $result['token'];
-                return $this->sendResponse($success, 'Başarılı bir şekilde giriş yapıldı');
+
+
+                return $success;
             }
         /*} catch (\Exception $exception) {
             return $this->sendError($exception->getMessage(), ['message' => [$exception->getMessage()]], 400);
