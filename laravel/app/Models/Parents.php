@@ -21,7 +21,7 @@ class Parents extends Authenticatable
     public function getLastNameAttribute()
     {
         try {
-            return mb_strtoupper($this->surname[0]).'.';
+            return mb_strtoupper($this->surname[0], 'UTF-8').'.';
         }catch (\Exception $exception){
             return '';
         }
