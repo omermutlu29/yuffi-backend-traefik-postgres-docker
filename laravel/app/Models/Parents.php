@@ -18,10 +18,19 @@ class Parents extends Authenticatable
     protected $hidden = ['card_parents'];
     protected $guarded = [];
 
+
+    private function mb_ucfirst($string, $encoding)
+    {
+        $firstChar = mb_substr($string, 0, 1, $encoding);
+        $then = mb_substr($string, 1, null, $encoding);
+        return mb_strtoupper($firstChar, $encoding) . $then;
+    }
+
+
     public function getLastNameAttribute()
     {
         try {
-            return mb_strtoupper($this->surname[0], 'UTF-8').'.';
+            return mb_strtoupper($this->surname[0]).'.';
         }catch (\Exception $exception){
             return '';
         }
