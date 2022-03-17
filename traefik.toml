@@ -26,6 +26,6 @@ onHostRule = true
 entryPoint = "http"
 
 [docker]
-domain = "oymt.xyz"
+domain = "yuffi.co"
 watch = true
 network = "web"

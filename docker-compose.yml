@@ -12,7 +12,7 @@ services:
       - 443:443
     labels:
       - traefik.backend=traefik
-      - traefik.frontend.rule=Host:monitor.oymt.xyz
+      - traefik.frontend.rule=Host:monitor.yuffi.co
       - traefik.port=8080
     networks:
       - proxy
@@ -50,7 +50,7 @@ services:
     tty: true
     labels:
       - traefik.backend=web
-      - traefik.frontend.rule=Host:api.oymt.xyz
+      - traefik.frontend.rule=Host:api.yuffi.co
       - traefik.port=80
     depends_on:
       - postgres
@@ -91,7 +91,7 @@ services:
       - ./:/usr/src/app
     labels:
       - traefik.enable=true
-      - traefik.frontend.rule=Host:echo.oymt.xyz
+      - traefik.frontend.rule=Host:echo.yuffi.co
       - traefik.port=80
     networks:
       - local-bridge
