@@ -1,5 +1,6 @@
 defaultEntryPoints = ["http", "https"]
-
+[accessLog]
+filePath = "/var/log/traefik/access.log"
 [entryPoints]
 [entryPoints.dashboard]
 address = ":8080"
