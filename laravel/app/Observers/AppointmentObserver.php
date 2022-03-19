@@ -22,8 +22,8 @@ class AppointmentObserver
      */
     public function created(Appointment $appointment)
     {
-        $this->notificationService->notify(['appointment_id' => $appointment->id,'type'=>'notification'], 'Yeni Randevu!', 'Yeni bir randevu oluştu, 30 dakika içerisinde iptal etmezsen kabul etmiş sayılacaksın', $appointment->baby_sitter->google_st);
-        $this->notificationService->notify(['appointment_id' => $appointment->id,'type'=>'notification'], 'Yeni Randevu!', 'Yeni randevu oluştu, bakıcı 30 dakika içerisinde iptal etmezse kartınızdan ödeme alınacaktır!', $appointment->parent->google_st);
+        $this->notificationService->notify(['appointment_id' => $appointment->id,'type'=>'appointment_list'], 'Yeni Randevu!', 'Yeni bir randevu oluştu, 30 dakika içerisinde iptal etmezsen kabul etmiş sayılacaksın', $appointment->baby_sitter->google_st);
+        $this->notificationService->notify(['appointment_id' => $appointment->id,'type'=>'appointment_list'], 'Yeni Randevu!', 'Yeni randevu oluştu, bakıcı 30 dakika içerisinde iptal etmezse kartınızdan ödeme alınacaktır!', $appointment->parent->google_st);
     }
 
     /**
