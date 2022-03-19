@@ -8,12 +8,6 @@ use App\Models\BabySitter;
 
 class AppointmentMessageObserver
 {
-    private INotification $notificationService;
-
-    public function __construct(INotification $notification)
-    {
-        $this->notificationService = $notification;
-    }
 
     /**
      * Handle the AppointmentMessage "created" event.
