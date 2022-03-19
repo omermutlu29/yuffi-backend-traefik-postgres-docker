@@ -8,6 +8,8 @@ use App\Http\Resources\CalendarGetResource;
 use App\Interfaces\IRepositories\IAppointmentRepository;
 use App\Interfaces\IRepositories\IBabySitterRepository;
 use App\Interfaces\IServices\IAppointmentService;
+use App\Models\BabySitter;
+use App\Models\Parents;
 use Illuminate\Support\Facades\DB;
 
 class AppointmentService implements IAppointmentService
@@ -74,7 +76,7 @@ class AppointmentService implements IAppointmentService
                 'appointment_location_id' => $data['location_id'],
                 'location' => $data['location'] ?? null
             ];
-            $calculatedTimes = CalendarGetResource::generateTimesForSearching($data['time'],$data['hour']);
+            $calculatedTimes = CalendarGetResource::generateTimesForSearching($data['time'], $data['hour']);
             DB::transaction(function () use ($appointmentData, $data) {
                 $appointment = $this->appointmentRepository->store($appointmentData);
                 if (!$appointment)
@@ -84,13 +86,25 @@ class AppointmentService implements IAppointmentService
                 }
 
 
-
-
-
             });
             return true;
         } catch (\Exception $exception) {
             throw $exception;
         }
+    }
+
+    public function cancelAppointment(int $appointmentId, $user)
+    {
+        try {
+            if ($user instanceof BabySitter) {
+                $this->appointmentRepository->updateAppointment($appointmentId, ['appointment_status_id', 5]);
+            }
+            if ($user instanceof Parents) {
+                $this->appointmentRepository->updateAppointment($appointmentId, ['appointment_status_id', 2]);
+            }
+        } catch (\Exception $exception) {
+            throw new \Exception('Randevu iptal edilemedi', 400);
+        }
+
     }
 }
