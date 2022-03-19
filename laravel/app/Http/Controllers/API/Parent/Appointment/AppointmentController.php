@@ -100,17 +100,14 @@ class AppointmentController extends BaseController
     {
         $data = $request->only('create_params');
         $data = $data['create_params'];
-        try {
-            if ($appointmentFilterService->isBabySitterStillAvailable($data, $data['baby_sitter_id'])) {
-                if (!$appointmentService->create($data['baby_sitter_id'], auth()->id(), $data)) {
-                    return $this->sendError('Hata!', 'Bir sorun oluştu lütfen tekrar deneyin!');
-                }
-                return $this->sendResponse(true, 'Randevu başarı ile oluşturuldu', 200);
-            } else {
-                return $this->sendError('Hata!', 'Bakıcı belirttiğiniz zaman(lar) içerisinde müsait görünmemektedir!');
+        if ($appointmentFilterService->isBabySitterStillAvailable($data, $data['baby_sitter_id'])) {
+            if (!$appointmentService->create($data['baby_sitter_id'], auth()->id(), $data)) {
+                return $this->sendError('Hata!', 'Bir sorun oluştu lütfen tekrar deneyin!');
             }
-        } catch (\Exception $e) {
-            return $this->sendError($e->getFile() . $e->getLine(), $e->getFile() . $e->getLine(), 400);
+            return $this->sendResponse(true, 'Randevu başarı ile oluşturuldu', 200);
+        } else {
+            return $this->sendError('Hata!', 'Bakıcı belirttiğiniz zaman(lar) içerisinde müsait görünmemektedir!');
         }
+
     }
 }
