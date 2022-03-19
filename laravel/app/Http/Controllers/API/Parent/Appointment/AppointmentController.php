@@ -73,7 +73,7 @@ class AppointmentController extends BaseController
                 return $this->sendError('Hata!', 'Bakıcı belirttiğiniz zaman(lar) içerisinde müsait görünmemektedir!');
             }
         } catch (\Exception $exception) {
-            return $this->sendError('Hata', null, 400);
+            return $this->sendError('Hata', $exception->getMessage(), 400);
         }
     }
 
