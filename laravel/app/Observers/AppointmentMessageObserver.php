@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Interfaces\NotificationInterfaces\INotification;
 use App\Models\AppointmentMessage;
 use App\Models\BabySitter;
+use App\Models\Parents;
 
 class AppointmentMessageObserver
 {
