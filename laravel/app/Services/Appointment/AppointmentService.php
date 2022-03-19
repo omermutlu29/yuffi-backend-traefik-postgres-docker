@@ -97,10 +97,10 @@ class AppointmentService implements IAppointmentService
     {
         //try {
             if ($user instanceof BabySitter) {
-                $this->appointmentRepository->updateAppointment($appointmentId, ['appointment_status_id', 5]);
+                $this->appointmentRepository->updateAppointment($appointmentId, ['appointment_status_id'=> 5]);
             }
             if ($user instanceof Parents) {
-                $this->appointmentRepository->updateAppointment($appointmentId, ['appointment_status_id', 2]);
+                $this->appointmentRepository->updateAppointment($appointmentId, ['appointment_status_id'=> 2]);
             }
         /*} catch (\Exception $exception) {
             throw new \Exception('Randevu iptal edilemedi', 400);
