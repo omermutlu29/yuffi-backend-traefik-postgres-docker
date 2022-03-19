@@ -16,22 +16,25 @@ class NewAppointmentMessageEvent implements ShouldBroadcastNow
     private $appointmentMessage;
     private $receiver;
 
-    public function __construct(AppointmentMessage $appointmentMessage,$receiver)
+    public function __construct(AppointmentMessage $appointmentMessage, $receiver)
     {
         $this->appointmentMessage = $appointmentMessage;
         $this->message = $this->manipulateData();
         $this->receiver = $receiver;
     }
 
-    public function getReceiver(){
+    public function getReceiver()
+    {
         return $this->receiver;
     }
 
-    public function getMessage(){
+    public function getMessage()
+    {
         return $this->appointmentMessage->message;
     }
 
-    public function getAppointmentId(){
+    public function getAppointmentId()
+    {
         return $this->appointmentMessage->appointment_id;
     }
 
@@ -46,7 +49,7 @@ class NewAppointmentMessageEvent implements ShouldBroadcastNow
 
     public function broadcastAs()
     {
-        return 'newMessage';
+        return 'newMessage.' . $this->appointmentMessage->appointment->id;
     }
 
     private function manipulateData()
