@@ -27,6 +27,7 @@ use App\Interfaces\PaymentInterfaces\ISubMerchantService;
 use App\Interfaces\PaymentInterfaces\IThreeDPaymentInitialize;
 use App\Interfaces\PaymentInterfaces\IThreeDPaymentToSubMerchant;
 use App\Listeners\NewAppointmentMessageListener;
+use App\Observers\AppointmentObserver;
 use App\Repositories\AppointmentRepository;
 use App\Repositories\BabySitterRepository;
 use App\Repositories\CalendarRepository;
@@ -67,6 +68,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->when(AppointmentObserver::class)->needs(INotification::class)->give(PushNotificationService::class);
         $this->app->when( NewAppointmentMessageListener::class)->needs(INotification::class)->give(PushNotificationService::class);
         $this->app->bind(ISubMerchantService::class, IyzicoSubMerchantService::class);
         $this->app->bind(ICompleteThreeDPayment::class, IyzicoThreeDPaymentService::class);
