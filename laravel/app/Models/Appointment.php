@@ -84,6 +84,7 @@ class Appointment extends Model
 
     public function scopePast($query)
     {
+        $query->notCanceled();
         $nowDate = now()->format('Y-m-d');
         $nowHour = now()->format('H:i');
         return $query->where('date', '<', $nowDate)->orWhere(function ($query) use ($nowDate, $nowHour) {
@@ -91,8 +92,13 @@ class Appointment extends Model
         });
     }
 
+    public function scopeNotCanceled($query){
+        return $query->whereNotIn('appointment_status_id',[2,5]);
+    }
+
     public function scopeFuture($query)
     {
+        $query->notCanceled();
         $nowDate = now()->format('Y-m-d');
         $futureDate = now()->addDays(14)->format('Y-m-d');
         $nowHour = now()->format('H:i');
