@@ -14,6 +14,7 @@ use App\Interfaces\IServices\IAppointmentService;
 use App\Models\Appointment;
 use App\Services\Appointment\AppointmentPaymentService;
 use App\Services\Appointment\BabySitterFilterService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AppointmentController extends BaseController
@@ -100,6 +101,7 @@ class AppointmentController extends BaseController
     {
         $data = $request->only('create_params');
         $data = $data['create_params'];
+        $data['date'] = Carbon::createFromFormat('d-m-Y',$data['date']);
         if ($appointmentFilterService->isBabySitterStillAvailable($data, $data['baby_sitter_id'])) {
             if (!$appointmentService->create($data['baby_sitter_id'], auth()->id(), $data)) {
                 return $this->sendError('Hata!', 'Bir sorun oluştu lütfen tekrar deneyin!');
