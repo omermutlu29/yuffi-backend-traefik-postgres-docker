@@ -12,23 +12,6 @@ class AppointmentMessage extends Model
 
     protected $with = ['userable'];
 
-    public static function boot()
-    {
-        parent::boot();
-        static::created(function ($appointmentMessage) {
-            if ($appointmentMessage->userable instanceof BabySitter){
-                $receiver = $appointmentMessage->appointment->parent;
-
-            }
-            if ($appointmentMessage->userable instanceof Parents){
-                $receiver = $appointmentMessage->appointment->baby_sitter;
-
-            }
-            event(new \App\Events\NewAppointmentMessageEvent($appointmentMessage->load('appointment','userable'),$receiver));
-
-        });
-    }
-
     public function appointment(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Appointment::class);

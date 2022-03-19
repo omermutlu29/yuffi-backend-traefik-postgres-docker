@@ -4,6 +4,10 @@ namespace App\Providers;
 
 use App\Events\NewAppointmentMessageEvent;
 use App\Listeners\NewAppointmentMessageListener;
+use App\Models\Appointment;
+use App\Models\AppointmentMessage;
+use App\Observers\AppointmentMessageObserver;
+use App\Observers\AppointmentObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -32,6 +36,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        AppointmentMessage::observe(AppointmentMessageObserver::class);
+        Appointment::observe(AppointmentObserver::class);
     }
 }

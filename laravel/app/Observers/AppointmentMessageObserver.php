@@ -23,13 +23,15 @@ class AppointmentMessageObserver
      */
     public function created(AppointmentMessage $appointmentMessage)
     {
-        $appointment = $appointmentMessage->appointment;
-        if ($appointmentMessage->user instanceof BabySitter) {
-            $to = $appointment->parent->google_st;
-        } else {
-            $to = $appointment->baby_sitter->google_st;
+        if ($appointmentMessage->userable instanceof BabySitter){
+            $receiver = $appointmentMessage->appointment->parent;
+            event(new \App\Events\NewAppointmentMessageEvent($appointmentMessage->load('appointment','userable'),$receiver));
         }
-        $this->notificationService->notify('Yeni mesaj', $appointmentMessage->text, $to);
+
+        if ($appointmentMessage->userable instanceof Parents){
+            $receiver = $appointmentMessage->appointment->baby_sitter;
+            event(new \App\Events\NewAppointmentMessageEvent($appointmentMessage->load('appointment','userable'),$receiver));
+        }
 
     }
 
