@@ -95,16 +95,16 @@ class AppointmentService implements IAppointmentService
 
     public function cancelAppointment(int $appointmentId, $user)
     {
-        try {
+        //try {
             if ($user instanceof BabySitter) {
                 $this->appointmentRepository->updateAppointment($appointmentId, ['appointment_status_id', 5]);
             }
             if ($user instanceof Parents) {
                 $this->appointmentRepository->updateAppointment($appointmentId, ['appointment_status_id', 2]);
             }
-        } catch (\Exception $exception) {
+        /*} catch (\Exception $exception) {
             throw new \Exception('Randevu iptal edilemedi', 400);
-        }
+        }*/
 
     }
 }
