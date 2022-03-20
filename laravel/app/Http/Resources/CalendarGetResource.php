@@ -41,14 +41,6 @@ class CalendarGetResource extends JsonResource
 
 
         }
-        foreach ($nonExistsTimes as $key => $nonExistsTime) {
-            foreach ($existTimes as $existTime) {
-                if (($existTime['name'] == $nonExistsTimes['name'])) {
-                    unset($nonExistsTimes[$key]);
-                }
-            }
-        }
-
 
         return collect(array_merge($nonExistsTimes, $existTimes))->sortBy('starts')->values();
 
