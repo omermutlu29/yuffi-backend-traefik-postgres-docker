@@ -14,12 +14,14 @@ use App\Interfaces\IServices\IProfileService;
 class ProfileController extends BaseController
 {
     private IProfileService $profileService;
+    private IChangableActiveStatus $changeActiveStatusService;
 
-    public function __construct(IProfileService $profileService)
+    public function __construct(IProfileService $profileService,IChangableActiveStatus $changableActiveStatus)
     {
         $this->middleware('auth:baby_sitter');
         $this->middleware('bs_first_step', ['except' => ['storeGeneralInformation', 'getProfile']]);
         $this->profileService = $profileService;
+        $this->changeActiveStatusService = $changableActiveStatus;
     }
 
     public function storeGeneralInformation(BabySitterStoreGeneralInformationRequest $request)
@@ -56,11 +58,11 @@ class ProfileController extends BaseController
         }
     }
 
-    public function changeActiveStatus(IChangableActiveStatus $changableActiveStatus)
+    public function changeActiveStatus()
     {
         try {
             return $this->sendResponse(
-                $changableActiveStatus->changeActiveStatus(auth()->id()),
+                $this->changeActiveStatusService->changeActiveStatus(auth()->id()),
                 'Durumunuz başarılı bir şekilde güncellendi'
             );
         } catch (\Exception $exception) {

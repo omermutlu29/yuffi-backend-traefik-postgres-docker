@@ -96,17 +96,6 @@ class BabySitterProfileService implements IProfileService, IChangableActiveStatu
         }
     }
 
-    public function changeActiveStatus(int $userId){
-        try {
-            $user = $this->userRepository->getUserById(auth()->id());
-            return $this->userRepository->update($userId,['is_active',!$user->is_active]);
-        }catch (\Exception $exception){
-            throw new \Exception('Durum değiştirilemedi',400);
-        }
-
-    }
-
-
     private function saveProfilePhoto($photo): string
     {
         $fileName = time() . '_' . $photo->getClientOriginalName();
@@ -119,6 +108,13 @@ class BabySitterProfileService implements IProfileService, IChangableActiveStatu
         return '/storage/' . $file->storeAs('uploads', $fileName, 'public');
     }
 
-
-
+    public function changeActiveStatus(int $userId)
+    {
+        try {
+            $user = $this->userRepository->getUserById(auth()->id());
+            return $this->userRepository->update($userId, ['is_active', !$user->is_active]);
+        } catch (\Exception $exception) {
+            throw new \Exception('Durum değiştirilemedi', 400);
+        }
+    }
 }

@@ -70,7 +70,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->when(ProfileController::class)->needs(IChangableActiveStatus::class)->give(BabySitterProfileService::class);
         $this->app->when(AppointmentObserver::class)->needs(INotification::class)->give(PushNotificationService::class);
         $this->app->when(NewAppointmentMessageListener::class)->needs(INotification::class)->give(PushNotificationService::class);
         $this->app->bind(ISubMerchantService::class, IyzicoSubMerchantService::class);
@@ -124,6 +123,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ICommentRepository::class, CommentRepository::class);
 
         //Children
+
+        $this->app->when(ProfileController::class)->needs(IChangableActiveStatus::class)->give(BabySitterProfileService::class);
+
 
     }
 }
