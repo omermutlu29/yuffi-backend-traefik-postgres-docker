@@ -2,8 +2,7 @@
 
 namespace App\Models;
 
-use App\Interfaces\NotificationInterfaces\INotification;
-use App\Services\NotificationServices\PushNotificationService;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Appointment extends Model
@@ -12,8 +11,19 @@ class Appointment extends Model
     protected $casts = ['payment_raw_result' => 'object'];
     protected $with = ['baby_sitter', 'appointment_location', 'town', 'registered_children'];
     protected $guarded = [];
+    protected $appends = ['is_cancelable_by_baby_sitter','is_cancelable_by_parent'];
 
 
+    public function getIsCancelableByBabySitterAttribute()
+    {
+        return now()->floatDiffInMinutes($this->created_at) <= 30;
+    }
+
+    public function getIsCancelableByParentAttribute()
+    {
+        $appointmentFinishDate = Carbon::createFromFormat('Y-m-d H:i:s', $this->date . ' ' . $this->finish);
+        return $appointmentFinishDate > now();
+    }
 
     public function baby_sitter()
     {
@@ -91,8 +101,9 @@ class Appointment extends Model
         });
     }
 
-    public function scopeNotCanceled($query){
-        return $query->whereNotIn('appointment_status_id',[2,5]);
+    public function scopeNotCanceled($query)
+    {
+        return $query->whereNotIn('appointment_status_id', [2, 5]);
     }
 
     public function scopeFuture($query)
@@ -101,9 +112,9 @@ class Appointment extends Model
         $nowDate = now()->format('Y-m-d');
         $futureDate = now()->addDays(14)->format('Y-m-d');
         $nowHour = now()->format('H:i');
-        return $query->where('date', '>', $nowDate)->where('date','<',$futureDate)->orWhere(function ($query) use ($nowDate, $nowHour) {
+        return $query->where('date', '>', $nowDate)->where('date', '<', $futureDate)->orWhere(function ($query) use ($nowDate, $nowHour) {
             $query->where('date', $nowDate)->where('date')->where('start', '>', $nowHour);
-        })->orWhere(function ($query) use ($futureDate,$nowHour) {
+        })->orWhere(function ($query) use ($futureDate, $nowHour) {
             $query->where('date', $futureDate)->where('date')->where('start', '>', $nowHour);
         });
     }

@@ -23,8 +23,12 @@ class AppointmentResource extends JsonResource
             'location'=>$this->appointment_location->name,
             'town'=>$this->town->name,
             'price'=>$this->price,
-            'child_information' => AppointmentChildrenResource::collection($this->registered_children)
+            'child_information' => AppointmentChildrenResource::collection($this->registered_children),
+            'is_cancelable_by_baby_sitter'=> $this->is_cancelable_by_baby_sitter,
+            'is_cancelable_by_parent'=> $this->is_cancelable_by_parent
         ];
     }
+
+
 
 }
