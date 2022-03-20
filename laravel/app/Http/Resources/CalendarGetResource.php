@@ -29,26 +29,28 @@ class CalendarGetResource extends JsonResource
     {
         $existTimes = [];
         $nonExistsTimes = self::fillTimesToNonExistDate($date->date);
-        $nonExistsTimesTemp = [];
 
         foreach ($date->times as $time) {
-            if (isset($nonExistsTimes[$time->start])) {
-                unset($nonExistsTimes[$time->start]);
-            }
             $string['id'] = $time->id;
             $string['date'] = $date->date;
             $string['starts'] = \Carbon\Carbon::createFromFormat('H:i:s', $time->start)->format('H:i');
             $string['end'] = \Carbon\Carbon::createFromFormat('H:i:s', $time->finish)->format('H:i');
-            $string['name'] = $string['starts'] . ' ' . $string['end']; //. ' ve ' . $time->time_status->name;
+            $string['name'] = $string['starts'] . ' - ' . $string['end']; //. ' ve ' . $time->time_status->name;
             $string['status_id'] = $time->time_status_id;
             $existTimes[] = $string;
+
+
         }
-        foreach ($nonExistsTimes as $key => $value) {
-            $nonExistsTimesTemp[$key] = $value;
-            unset($nonExistsTimes[$key]);
+        foreach ($nonExistsTimes as $key => $nonExistsTime) {
+            foreach ($existTimes as $existTime) {
+                if (($existTime['name'] == $nonExistsTimes['name'])) {
+                    unset($nonExistsTimes[$key]);
+                }
+            }
         }
 
-        return collect(array_merge($nonExistsTimesTemp, $existTimes))->sortBy('starts')->values();
+
+        return collect(array_merge($nonExistsTimes, $existTimes))->sortBy('starts')->values();
 
 
     }
