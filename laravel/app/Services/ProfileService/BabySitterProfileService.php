@@ -6,6 +6,7 @@ namespace App\Services\ProfileService;
 
 use App\Interfaces\IRepositories\IBabySitterRepository;
 use App\Interfaces\IRepositories\IUserRepository;
+use App\Interfaces\IServices\IChangableActiveStatus;
 use App\Interfaces\IServices\IProfileService;
 use App\Interfaces\PaymentInterfaces\ISubMerchantService;
 use App\Models\BabySitter;
@@ -13,7 +14,7 @@ use Carbon\Carbon;
 use JetBrains\PhpStorm\ArrayShape;
 
 
-class BabySitterProfileService implements IProfileService
+class BabySitterProfileService implements IProfileService, IChangableActiveStatus
 {
     private IUserRepository $userRepository;
     private IBabySitterRepository $babySitterRepository;
@@ -95,6 +96,16 @@ class BabySitterProfileService implements IProfileService
         }
     }
 
+    public function changeActiveStatus(int $userId){
+        try {
+            $user = $this->userRepository->getUserById(auth()->id());
+            return $this->userRepository->update($userId,['is_active',!$user->is_active]);
+        }catch (\Exception $exception){
+            throw new \Exception('Durum değiştirilemedi',400);
+        }
+
+    }
+
 
     private function saveProfilePhoto($photo): string
     {
@@ -107,5 +118,7 @@ class BabySitterProfileService implements IProfileService
         $fileName = time() . '_' . $file->getClientOriginalName();
         return '/storage/' . $file->storeAs('uploads', $fileName, 'public');
     }
+
+
 
 }

@@ -12,6 +12,7 @@ Route::prefix('baby-sitter')->group(function () {
         Route::post('update', [\App\Http\Controllers\API\BabySitter\Auth\ProfileController::class, 'updateGeneralInformation']);
         //Route::put('update-iban', [\App\Http\Controllers\API\BabySitter\Auth\ProfileController::class, 'updateIban']);
         Route::get('get-profile', [\App\Http\Controllers\API\BabySitter\Auth\ProfileController::class, 'getProfile']);
+        Route::post('change-active-status', [\App\Http\Controllers\API\BabySitter\Auth\ProfileController::class, 'changeActiveStatus']);
     });//Bitti
 
     Route::prefix('preferences')->group(function () {

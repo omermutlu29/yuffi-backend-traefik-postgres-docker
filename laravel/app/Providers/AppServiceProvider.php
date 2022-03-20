@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Http\Controllers\API\BabySitter\Auth\LoginController as BabySitterLoginController;
+use App\Http\Controllers\API\BabySitter\Auth\ProfileController;
 use App\Http\Controllers\API\BabySitter\Auth\ProfileController as BabySitterProfileController;
 use App\Http\Controllers\API\Parent\Auth\LoginController as ParentLoginController;
 use App\Http\Controllers\API\Parent\Auth\ProfileController as ParentProfileController;
@@ -15,6 +16,7 @@ use App\Interfaces\IRepositories\ICommentRepository;
 use App\Interfaces\IRepositories\IUserRepository;
 use App\Interfaces\IServices\IAppointmentService;
 use App\Interfaces\IServices\IBabySitterCalendarService;
+use App\Interfaces\IServices\IChangableActiveStatus;
 use App\Interfaces\IServices\ILoginService;
 use App\Interfaces\IServices\IMessagingService;
 use App\Interfaces\IServices\IProfileService;
@@ -68,8 +70,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->when(ProfileController::class)->needs(IChangableActiveStatus::class)->give(BabySitterProfileService::class);
         $this->app->when(AppointmentObserver::class)->needs(INotification::class)->give(PushNotificationService::class);
-        $this->app->when( NewAppointmentMessageListener::class)->needs(INotification::class)->give(PushNotificationService::class);
+        $this->app->when(NewAppointmentMessageListener::class)->needs(INotification::class)->give(PushNotificationService::class);
         $this->app->bind(ISubMerchantService::class, IyzicoSubMerchantService::class);
         $this->app->bind(ICompleteThreeDPayment::class, IyzicoThreeDPaymentService::class);
         $this->app->bind(IMessagingService::class, MessagingService::class);

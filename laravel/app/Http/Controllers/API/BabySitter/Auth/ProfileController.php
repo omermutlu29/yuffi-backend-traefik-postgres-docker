@@ -7,6 +7,7 @@ namespace App\Http\Controllers\API\BabySitter\Auth;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Requests\BabySitter\BabySitterStoreGeneralInformationRequest;
 use App\Http\Requests\BabySitter\BabySitterUpdateGeneralInformationRequest;
+use App\Interfaces\IServices\IChangableActiveStatus;
 use App\Interfaces\IServices\IProfileService;
 
 
@@ -53,7 +54,18 @@ class ProfileController extends BaseController
             return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
 
         }
+    }
 
+    public function changeActiveStatus(IChangableActiveStatus $changableActiveStatus)
+    {
+        try {
+            return $this->sendResponse(
+                $changableActiveStatus->changeActiveStatus(auth()->id()),
+                'Durumunuz başarılı bir şekilde güncellendi'
+            );
+        } catch (\Exception $exception) {
+            return $this->sendError('Hata', 'Birşeyler ters gitti', 400);
+        }
     }
 
 }

@@ -15,6 +15,7 @@ class CreateBabySittersTable extends Migration
     {
         Schema::create('baby_sitters', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->boolean('is_active')->default(true);
             $table->string('name')->nullable();
             $table->string('surname')->nullable();
             $table->string('tc', 11)->nullable();
@@ -27,7 +28,7 @@ class CreateBabySittersTable extends Migration
             $table->text('address')->nullable();
             $table->string('criminal_record')->nullable();
             $table->text('about')->nullable();
-            $table->boolean('service_contrct')->nullable();
+            $table->boolean('service_contract')->nullable();
             $table->foreignId('gender_id')->nullable()->references('id')->on('genders');
             $table->foreignId('baby_sitter_status_id')->references('id')->on('baby_sitter_statuses');
             $table->boolean('kvkk')->nullable();
