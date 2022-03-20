@@ -61,7 +61,7 @@ class AppointmentController extends BaseController
     public function disapprove(ApproveDisapproveAppointmentRequest $appointmentRequest)
     {
         try {
-            return $this->appointmentService->disapproveAppointment($appointmentRequest->appointment_id);
+            return $this->sendResponse($this->appointmentService->disapproveAppointment($appointmentRequest->appointment_id),'Başarılı bir şekilde iptal edildi!');
         } catch (\Exception $exception) {
             $this->sendError('Hata', $exception->getMessage(), 400);
         }
