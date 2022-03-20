@@ -10,6 +10,7 @@ use App\Models\ChildYear;
 use App\Models\City;
 use App\Models\Gender;
 use App\Models\ShareableTalent;
+use Carbon\Carbon;
 
 class StaticVariablesService implements IStaticVars
 {
@@ -90,10 +91,10 @@ class StaticVariablesService implements IStaticVars
 
     }
 
-    public function calculateTimes()
+    public function calculateTimes($startTime)
     {
         $times = [];
-        for ($i = 10; $i < 22; $i++) {
+        for ($i = $startTime; $i < 22; $i++) {
             $times[] = $i . ':' . '00';
         }
         return $times;

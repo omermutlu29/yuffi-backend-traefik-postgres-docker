@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API\BabySitter\Preferences;
 use App\Http\Controllers\API\BaseController;
 use App\Models\City;
 use App\Services\StaticVariables\StaticVariablesService;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class FillController extends BaseController
 {
@@ -51,13 +53,31 @@ class FillController extends BaseController
         return $this->sendResponse($days, null);
     }
 
-    public function getTimes()
+    public function getTimes(Request $request)
     {
-        return $this->variablesService->calculateTimes();
+        try {
+            if (Carbon::createFromFormat('d-m-Y', $request->get('date')) < Carbon::today()->format('d-m-Y')) {
+                throw  new \Exception('Hata', 'Gönderdiğiniz tarihin bugünden büyük veya eşit olması gerekiyor');
+            }
+            $date = Carbon::createFromFormat('d-m-Y', $request->get('date'))->format('d-m-Y');
+            $today = Carbon::today()->format('d-m-Y');
+
+            if ($date == $today) {
+                $startTime = ceil((float)Carbon::now()->addHours(3)->format('H.i'));
+                return $this->variablesService->calculateTimes($startTime);
+            } else {
+                return $this->variablesService->calculateTimes(10);
+            }
+        } catch (\Exception $exception) {
+            return $this->sendError('Hata', 'hata');
+        }
+
+
     }
 
-    public function getHours()
+    public function getHours(Request $request)
     {
+
         return $this->variablesService->hours();
     }
 
