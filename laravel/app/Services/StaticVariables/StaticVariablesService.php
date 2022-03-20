@@ -65,7 +65,7 @@ class StaticVariablesService implements IStaticVars
     public function calculateDays()
     {
         $days = [];
-        $date = date('Y-m-d');
+        $date = date('d-m-Y');
         $obj = new \stdClass();
         $obj->name = $date;
         $obj->value = 'Bugün';
