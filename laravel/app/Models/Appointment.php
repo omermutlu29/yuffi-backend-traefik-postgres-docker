@@ -16,7 +16,7 @@ class Appointment extends Model
 
     public function getIsCancelableByBabySitterAttribute()
     {
-        return now()->floatDiffInMinutes($this->created_at) <= 30;
+        return now()->floatDiffInMinutes($this->created_at) <= 30 ? true : '30 Dakika içerisinde iptal etmediğiniz için otomatik olarak kabul edilmiştir';
     }
 
     public function getIsCancelableByParentAttribute()
