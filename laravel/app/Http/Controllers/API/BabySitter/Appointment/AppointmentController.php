@@ -29,7 +29,7 @@ class AppointmentController extends BaseController
     {
         try {
             return $this->sendResponse(AppointmentResource::make($appointment),
-            'Randevularınız getirildi!');
+                'Randevularınız getirildi!');
         } catch (\Exception $exception) {
             return $this->sendError($exception->getMessage(), $exception->getMessage(), 400);
         }
@@ -57,41 +57,13 @@ class AppointmentController extends BaseController
         }
     }
 
-    public function myApprovedAppointments()
-    {
-        return $this->appointmentService->pendingApproveAppointments(auth()->id());
-    }
-
-    public function myNotApprovedAppointments()
-    {
-        return $this->appointmentService->notApprovedAppointments(auth()->id());
-    }
-
-    public function myPaidAppointments()
-    {
-        return $this->appointmentService->paidAppointments(auth()->id());
-    }
-
-    public function myPendingPaymentAppointments()
-    {
-        return $this->appointmentService->pendingPayment(auth()->id());
-    }
-
-    public function approve(ApproveDisapproveAppointmentRequest $appointmentRequest)
-    {
-        try {
-            $this->appointmentService->approveAppointment($appointmentRequest->appointment_id);
-        } catch (\Exception $exception) {
-            throw $exception;
-        }
-    }
 
     public function disapprove(ApproveDisapproveAppointmentRequest $appointmentRequest)
     {
         try {
             return $this->appointmentService->disapproveAppointment($appointmentRequest->appointment_id);
         } catch (\Exception $exception) {
-            throw $exception;
+            $this->sendError('Hata', $exception->getMessage(), 400);
         }
     }
 }
