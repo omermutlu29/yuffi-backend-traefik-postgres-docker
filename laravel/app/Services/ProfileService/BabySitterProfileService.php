@@ -112,7 +112,7 @@ class BabySitterProfileService implements IProfileService, IChangableActiveStatu
     {
         try {
             $user = $this->userRepository->getUserById(auth()->id());
-            return $this->userRepository->update($userId, ['is_active', !$user->is_active]);
+            return $this->userRepository->update($userId, ['is_active'=> !$user->is_active]);
         } catch (\Exception $exception) {
             throw new \Exception('Durum değiştirilemedi', 400);
         }
