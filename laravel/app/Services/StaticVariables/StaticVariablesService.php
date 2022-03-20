@@ -20,7 +20,7 @@ class StaticVariablesService implements IStaticVars
 
     public function getChildGenders()
     {
-        return Gender::where('name', '!=', 'Farketmez')->get();
+        return Gender::where('name', '!=', 'Fark etmez')->get();
     }
 
     public function getChildYears()
