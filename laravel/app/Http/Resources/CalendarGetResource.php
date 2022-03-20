@@ -38,8 +38,9 @@ class CalendarGetResource extends JsonResource
             $string['name'] = $string['starts'] . ' - ' . $string['end']; //. ' ve ' . $time->time_status->name;
             $string['status_id'] = $time->time_status_id;
             $existTimes[] = $string;
-
-
+            if (isset($nonExistsTimes[$string['name']])) {
+                unset($nonExistsTimes[$string['name']]);
+            }
         }
 
         return collect(array_merge($nonExistsTimes, $existTimes))->sortBy('starts')->values();
@@ -59,7 +60,7 @@ class CalendarGetResource extends JsonResource
                 $string['end'] = $minute == '00' ? $i . ':' . '30' : $i + 1 . ':' . '00';
                 $string['name'] = $string['starts'] . ' - ' . $string['end'];
                 $string['status_id'] = 999;//Eklenmemiş
-                $data[] = $string;
+                $data[$string['name']] = $string;
             }
         }
         return $data;
