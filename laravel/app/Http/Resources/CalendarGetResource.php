@@ -44,7 +44,7 @@ class CalendarGetResource extends JsonResource
             $existTimes[] = $string;
         }
         foreach ($nonExistsTimes as $key => $value) {
-            $nonExistsTimesTemp[] = $value;
+            $nonExistsTimesTemp[$key] = $value;
             unset($nonExistsTimes[$key]);
         }
 

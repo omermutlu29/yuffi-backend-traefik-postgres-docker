@@ -45,9 +45,7 @@ class BabySitterCalendarService implements IBabySitterCalendarService
                 $data[$date->date] = CalendarGetResource::prapareString($date);
             }
             for ($i = $startDate; $i < $finishDate; $i->addDays(1)) {
-                if (!isset($date[$i->format('Y-m-d')])) {
-                    $processableDates[$i->format('Y-m-d')] = CalendarGetResource::fillTimesToNonExistDate($i->format('Y-m-d'));
-                }
+                $processableDates[$i->format('Y-m-d')] = CalendarGetResource::fillTimesToNonExistDate($i->format('Y-m-d'));
             }
             $data = array_merge($processableDates, $data);
             return $data;
