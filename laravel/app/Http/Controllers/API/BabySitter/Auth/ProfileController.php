@@ -66,7 +66,7 @@ class ProfileController extends BaseController
                 'Durumunuz başarılı bir şekilde güncellendi'
             );
         } catch (\Exception $exception) {
-            return $this->sendError('Hata', 'Birşeyler ters gitti', 400);
+            return $this->sendError('Hata', $exception->getMessage(), 400);
         }
     }
 
