@@ -29,6 +29,12 @@ class CalendarGetResource extends JsonResource
     {
         $existTimes = [];
         $nonExistsTimes = self::fillTimesToNonExistDate($date->date);
+        $nonExistsTimesTemp = [];
+        //Converting key value format
+        foreach ($nonExistsTimes as $nonExistsTime) {
+            $nonExistsTimesTemp[$nonExistsTime['name']] = $nonExistsTime;
+        }
+        unset($nonExistsTimes);
 
         foreach ($date->times as $time) {
             $string['id'] = $time->id;
@@ -38,14 +44,11 @@ class CalendarGetResource extends JsonResource
             $string['name'] = $string['starts'] . ' - ' . $string['end']; //. ' ve ' . $time->time_status->name;
             $string['status_id'] = $time->time_status_id;
             $existTimes[] = $string;
-            if (isset($nonExistsTimes[$string['name']])) {
-                unset($nonExistsTimes[$string['name']]);
+            if (isset($nonExistsTimesTemp[$string['name']])) {
+                unset($nonExistsTimesTemp[$string['name']]);
             }
         }
-
-        return collect(array_merge($nonExistsTimes, $existTimes))->sortBy('starts')->values();
-
-
+        return collect(array_merge($nonExistsTimesTemp, $existTimes))->sortBy('starts')->values();
     }
 
     public static function fillTimesToNonExistDate($date)
@@ -60,7 +63,7 @@ class CalendarGetResource extends JsonResource
                 $string['end'] = $minute == '00' ? $i . ':' . '30' : $i + 1 . ':' . '00';
                 $string['name'] = $string['starts'] . ' - ' . $string['end'];
                 $string['status_id'] = 999;//Eklenmemiş
-                $data[$string['name']] = $string;
+                $data[] = $string;
             }
         }
         return $data;
