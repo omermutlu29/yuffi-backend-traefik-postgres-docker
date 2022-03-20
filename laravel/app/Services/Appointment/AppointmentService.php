@@ -57,7 +57,7 @@ class AppointmentService implements IAppointmentService
         if ($appointment->is_cancelable_by_baby_sitter !== true) {
             throw new \Exception($appointment->is_cancelable_by_baby_sitter, 400);
         }
-        return $this->appointmentRepository->disapproveAppointment($appointmentId);
+        return $this->appointmentRepository->disapprove($appointmentId);
     }
 
     public function create(int $babySitterId, int $parentId, array $data)
