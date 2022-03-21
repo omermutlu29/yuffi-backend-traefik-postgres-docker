@@ -49,7 +49,7 @@ class StaticVariablesService implements IStaticVars
         $data['child_genders'] = $this->getChildGenders();
         $data['genders'] = $this->getGenders();
         $data['days'] = $this->calculateDays();
-        $data['times'] = $this->calculateTimes();
+        //$data['times'] = $this->calculateTimes();
         $data['hours'] = $this->hours();
         $data['child_count'] = $this->getChildCount();
         $data['talents'] = $this->getTalents();
