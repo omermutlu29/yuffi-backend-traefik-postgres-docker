@@ -1,6 +1,6 @@
 <?php
 Route::prefix('baby-sitter')->group(function () {
-
+    Route::get('logout',[\App\Http\Controllers\API\BabySitter\Auth\LogoutController::class,'logout']);
     Route::prefix('login')->group(function () {
         Route::post('user', [\App\Http\Controllers\API\BabySitter\Auth\LoginController::class, 'loginOne']);
         Route::post('sms-code', [\App\Http\Controllers\API\BabySitter\Auth\LoginController::class, 'loginTwo']);

@@ -22,13 +22,13 @@ use App\Interfaces\IServices\IMessagingService;
 use App\Interfaces\IServices\IProfileService;
 use App\Interfaces\NotificationInterfaces\INotification;
 use App\Interfaces\PaymentInterfaces\ICompleteThreeDPayment;
-use App\Interfaces\PaymentInterfaces\IPayment;
 use App\Interfaces\PaymentInterfaces\IPaymentToSubMerchant;
 use App\Interfaces\PaymentInterfaces\IPaymentWithRegisteredCard;
 use App\Interfaces\PaymentInterfaces\IRegisterCardService;
 use App\Interfaces\PaymentInterfaces\ISubMerchantService;
 use App\Interfaces\PaymentInterfaces\IThreeDPaymentInitialize;
 use App\Interfaces\PaymentInterfaces\IThreeDPaymentToSubMerchant;
+use App\Jobs\PayAppointmentAmount;
 use App\Listeners\NewAppointmentMessageListener;
 use App\Observers\AppointmentObserver;
 use App\Repositories\AppointmentRepository;
@@ -71,6 +71,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
+        $this->app->when(PayAppointmentAmount::class)->needs(INotification::class)->give(PushNotificationService::class);
         $this->app->when(AppointmentObserver::class)->needs(INotification::class)->give(PushNotificationService::class);
         $this->app->when(NewAppointmentMessageListener::class)->needs(INotification::class)->give(PushNotificationService::class);
         $this->app->bind(IMessagingService::class, MessagingService::class);

@@ -1,5 +1,6 @@
 <?php
 Route::prefix('parent')->group(function () {
+    Route::get('logout', [\App\Http\Controllers\API\Parent\Auth\LogoutController::class, 'logout']);
     //SOLID
     Route::prefix('login')->group(function () {
         Route::post('user', [\App\Http\Controllers\API\Parent\Auth\LoginController::class, 'loginOne']);

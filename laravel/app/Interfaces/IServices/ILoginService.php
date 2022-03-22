@@ -11,4 +11,6 @@ interface ILoginService
     public function login(array $data, IUserRepository $userRepository);
 
     public function loginVerifier(array $data, IUserRepository $userRepository);
+
+    public function logout($user);
 }

@@ -5,35 +5,35 @@ namespace App\Jobs;
 use App\Interfaces\NotificationInterfaces\INotification;
 use App\Interfaces\PaymentInterfaces\IPaymentWithRegisteredCard;
 use App\Models\Appointment;
+use App\Services\NotificationServices\PushNotificationService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class PayAppointmentAmount implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
+    public  $tries = 5;
     private Appointment $appointment;
     private string $cardUserKey;
     private string $cardToken;
     private array $addressInformation;
     private array $products;
     private array $buyerInformation;
-    private IPaymentWithRegisteredCard $paymentService;
-    private INotification $notificationService;
+
 
     /**
      * Create a new job instance.
      *
      * @param Appointment $appointment
+     * @param INotification $notificationService
      * @throws \Exception
      */
-    public function __construct(IPaymentWithRegisteredCard $paymentWithRegisteredCardService, Appointment $appointment, INotification $notificationService)
+    public function __construct(Appointment $appointment)
     {
-        $this->notificationService = $notificationService;
-        $this->paymentService = $paymentWithRegisteredCardService;
         $this->appointment = $appointment;
         $this->prepareCardData();
         $this->prepareAddressInformation();
@@ -44,35 +44,47 @@ class PayAppointmentAmount implements ShouldQueue
     /**
      * Execute the job.
      *
+     * @param INotification $notificationService
+     * @param IPaymentWithRegisteredCard $paymentWithRegisteredCardService
      * @return void
-     * @throws \Exception
      */
-    public function handle()
+    public function handle(PushNotificationService $notificationService, IPaymentWithRegisteredCard $paymentWithRegisteredCardService)
     {
+        try {
+            if ($this->attempts() < 5){
+                Log::info($this->attempts());
+               $this->fail();
+               $this->release(now()->addMinutes(1));
+            }else{
+                $result = $paymentWithRegisteredCardService->payWithRegisteredCardForVirtualProducts(
+                    $this->cardToken,
+                    $this->cardUserKey,
+                    $this->products,
+                    $this->addressInformation,
+                    $this->buyerInformation,
+                    $this->appointment->price,
+                    $this->appointment->id);
+                $result = json_decode($result);
+                if ($result->status == "success") {
+                    $notificationService->notify(
+                        ['appointment_id' => $this->appointment->id, 'type' => 'appointment_list'],
+                        'Ödemeniz başarı ile gerçekleşti',
+                        'Ödemeniz başarı ile gerçekleşti. Bakıcı ile iletişime geçebilirsiniz!',
+                        $this->appointment->parent->google_st);
+                }
+                if ($result->status !== "success") {
+                    $notificationService->notify(
+                        ['appointment_id' => $this->appointment->id, 'type' => 'credit_cards'],
+                        'Ödemeniz alınamadı',
+                        'Randevu için ödemeniz alınamadı lütfen kredi kartınızın limitini kontrol edin!',
+                        $this->appointment->parent->google_st);
+                }
+            }
 
-        $result = $this->paymentService->payWithRegisteredCardForVirtualProducts(
-            $this->cardToken,
-            $this->cardUserKey,
-            $this->products,
-            $this->addressInformation,
-            $this->buyerInformation,
-            $this->appointment->price,
-            1);
-        $result = json_decode($result->getRawResult());
-        if ($result->status == "success") {
-            $this->notificationService->notify(
-                ['appointment_id' => $this->appointment->id, 'type' => 'appointment_list'],
-                'Ödemeniz başarı ile gerçekleşti',
-                'Ödemeniz başarı ile gerçekleşti. Bakıcı ile iletişime geçebilirsiniz!',
-                $this->appointment->parent->google_st);
+        }catch (\Exception $exception){
+            $this->release(10);
         }
-        if ($result->status !== "success") {
-            $this->notificationService->notify(
-                ['appointment_id' => $this->appointment->id, 'type' => 'credit_cards'],
-                'Ödemeniz alınamadı',
-                'Randevu için ödemeniz alınamadı lütfen kredi kartınızın limitini kontrol edin!',
-                $this->appointment->parent->google_st);
-        }
+
     }
 
     private function prepareCardData()
@@ -92,7 +104,7 @@ class PayAppointmentAmount implements ShouldQueue
             'full_name' => $parent->name . ' ' . $parent->surname,
             'city' => 'İstanbul',
             'country' => 'Türkiye',
-            'address' => $parent->address,
+            'address' => 'Hürriyet mahallesi sedef sokak 4/11',
             'zip_code' => '34520',
         ];
     }
@@ -122,7 +134,7 @@ class PayAppointmentAmount implements ShouldQueue
             'updated_at' => now()->format('Y-m-d H:i:s'),
             'created_at' => now()->format('Y-m-d H:i:s'),
             'ip' => \request()->ip(),
-            'address' => $parent->address,
+            'address' => 'Hürriyet mahallesi sedef sokak 3/11',
             'city' => 'İstanbul',
             'country' => 'Türkiye',
             'zip_code' => '34520',
