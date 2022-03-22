@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Interfaces\NotificationInterfaces\INotification;
 use App\Interfaces\PaymentInterfaces\IPaymentWithRegisteredCard;
 use App\Models\Appointment;
 use Illuminate\Bus\Queueable;
@@ -21,6 +22,7 @@ class PayAppointmentAmount implements ShouldQueue
     private array $products;
     private array $buyerInformation;
     private IPaymentWithRegisteredCard $paymentService;
+    private INotification $notificationService;
 
     /**
      * Create a new job instance.
@@ -28,8 +30,9 @@ class PayAppointmentAmount implements ShouldQueue
      * @param Appointment $appointment
      * @throws \Exception
      */
-    public function __construct(IPaymentWithRegisteredCard $paymentWithRegisteredCardService, Appointment $appointment)
+    public function __construct(IPaymentWithRegisteredCard $paymentWithRegisteredCardService, Appointment $appointment, INotification $notificationService)
     {
+        $this->notificationService = $notificationService;
         $this->paymentService = $paymentWithRegisteredCardService;
         $this->appointment = $appointment;
         $this->prepareCardData();
@@ -46,6 +49,7 @@ class PayAppointmentAmount implements ShouldQueue
      */
     public function handle()
     {
+
         $result = $this->paymentService->payWithRegisteredCardForVirtualProducts(
             $this->cardToken,
             $this->cardUserKey,
@@ -54,7 +58,21 @@ class PayAppointmentAmount implements ShouldQueue
             $this->buyerInformation,
             $this->appointment->price,
             1);
-        if (json_decode($result->getRawResult())) ;
+        $result = json_decode($result->getRawResult());
+        if ($result->status == "success") {
+            $this->notificationService->notify(
+                ['appointment_id' => $this->appointment->id, 'type' => 'appointment_list'],
+                'Ödemeniz başarı ile gerçekleşti',
+                'Ödemeniz başarı ile gerçekleşti. Bakıcı ile iletişime geçebilirsiniz!',
+                $this->appointment->parent->google_st);
+        }
+        if ($result->status !== "success") {
+            $this->notificationService->notify(
+                ['appointment_id' => $this->appointment->id, 'type' => 'credit_cards'],
+                'Ödemeniz alınamadı',
+                'Randevu için ödemeniz alınamadı lütfen kredi kartınızın limitini kontrol edin!',
+                $this->appointment->parent->google_st);
+        }
     }
 
     private function prepareCardData()
