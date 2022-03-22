@@ -68,7 +68,7 @@ class LoginService implements ILoginService
     {
         $user->google_st = null;
         $user->save();
-        auth()->user()->tokens->each(function ($token, $key) {
+        $user->tokens->each(function ($token, $key) {
             $token->delete();
         });
     }

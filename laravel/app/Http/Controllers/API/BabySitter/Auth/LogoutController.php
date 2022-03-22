@@ -16,7 +16,6 @@ class LogoutController extends BaseController
     {
         $this->middleware('auth:baby_sitter');
         $this->loginService = $loginService;
-
     }
 
     public function logout()
