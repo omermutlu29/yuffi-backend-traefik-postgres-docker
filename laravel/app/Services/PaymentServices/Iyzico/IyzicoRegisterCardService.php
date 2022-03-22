@@ -9,8 +9,6 @@ use JetBrains\PhpStorm\ArrayShape;
 
 class IyzicoRegisterCardService extends IyzicoBaseService implements IRegisterCardService
 {
-
-
     #[ArrayShape(['carduserkey' => "", 'cardtoken' => "", "cardalias" => ""])]
     public function createCard(string $cardUserKey, array $cardData): array
     {
@@ -60,8 +58,6 @@ class IyzicoRegisterCardService extends IyzicoBaseService implements IRegisterCa
             throw new \Exception($cardList->getErrorMessage(), $cardList->getErrorCode());
         }
         return ['rawResult' => $cardList->getRawResult()];
-
-
     }
 
     public function deleteCard(string $cardUserKey, string $cardToken): bool

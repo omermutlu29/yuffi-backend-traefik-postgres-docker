@@ -38,7 +38,6 @@ class CreateBabySittersTable extends Migration
             $table->ipAddress('network')->nullable();
             //$table->decimal('deposit')->default(0);
             $table->decimal('point')->default(0);
-            $table->string('sub_merchant')->nullable();
             $table->string('iban')->nullable();
             //That's about preferences start
             $table->decimal('price_per_hour')->nullable();

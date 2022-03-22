@@ -24,6 +24,7 @@ use App\Interfaces\NotificationInterfaces\INotification;
 use App\Interfaces\PaymentInterfaces\ICompleteThreeDPayment;
 use App\Interfaces\PaymentInterfaces\IPayment;
 use App\Interfaces\PaymentInterfaces\IPaymentToSubMerchant;
+use App\Interfaces\PaymentInterfaces\IPaymentWithRegisteredCard;
 use App\Interfaces\PaymentInterfaces\IRegisterCardService;
 use App\Interfaces\PaymentInterfaces\ISubMerchantService;
 use App\Interfaces\PaymentInterfaces\IThreeDPaymentInitialize;
@@ -72,22 +73,16 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->when(AppointmentObserver::class)->needs(INotification::class)->give(PushNotificationService::class);
         $this->app->when(NewAppointmentMessageListener::class)->needs(INotification::class)->give(PushNotificationService::class);
-        $this->app->bind(ISubMerchantService::class, IyzicoSubMerchantService::class);
-        $this->app->bind(ICompleteThreeDPayment::class, IyzicoThreeDPaymentService::class);
         $this->app->bind(IMessagingService::class, MessagingService::class);
         $this->app->when(CardRepository::class)->needs(IUserRepository::class)->give(ParentRepository::class);
 
         $this->app->bind(ICardRepository::class, CardRepository::class);
         $this->app->bind(IRegisterCardService::class, IyzicoRegisterCardService::class);
         //DEPOSIT
-        $this->app->bind(IDepositService::class, DepositServiceService::class);
         //Deposit Ends
 
         //Payment Systems
-        $this->app->bind(IPayment::class, IyzicoPaymentService::class);
-        $this->app->bind(IPaymentToSubMerchant::class, IyzicoPaymentService::class);
-        $this->app->bind(IThreeDPaymentInitialize::class, IyzicoThreeDPaymentService::class);
-        $this->app->bind(IThreeDPaymentToSubMerchant::class, IyzicoThreeDPaymentService::class);
+        $this->app->bind(IPaymentWithRegisteredCard::class, IyzicoPaymentService::class);
         //Payment System Ends
 
         //LOGIN BINDINGS
