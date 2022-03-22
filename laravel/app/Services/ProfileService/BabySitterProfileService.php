@@ -8,7 +8,6 @@ use App\Interfaces\IRepositories\IBabySitterRepository;
 use App\Interfaces\IRepositories\IUserRepository;
 use App\Interfaces\IServices\IChangableActiveStatus;
 use App\Interfaces\IServices\IProfileService;
-use App\Interfaces\PaymentInterfaces\ISubMerchantService;
 use App\Models\BabySitter;
 use Carbon\Carbon;
 use JetBrains\PhpStorm\ArrayShape;
@@ -18,11 +17,9 @@ class BabySitterProfileService implements IProfileService, IChangableActiveStatu
 {
     private IUserRepository $userRepository;
     private IBabySitterRepository $babySitterRepository;
-    private ISubMerchantService $subMerchantService;
 
-    public function __construct(IUserRepository $userRepository, ISubMerchantService $subMerchantService, IBabySitterRepository $babySitterRepository)
+    public function __construct(IUserRepository $userRepository, IBabySitterRepository $babySitterRepository)
     {
-        $this->subMerchantService = $subMerchantService;
         $this->userRepository = $userRepository;
         $this->babySitterRepository = $babySitterRepository;
     }
@@ -39,7 +36,6 @@ class BabySitterProfileService implements IProfileService, IChangableActiveStatu
             if (isset($data['criminal_record']))
                 $data['criminal_record'] = self::saveCriminalRecord($data['criminal_record']);
             $this->userRepository->update($babySitter->id, $data);
-            $this->updateInsertSubmerchantIban($babySitter, $data);
             return $result;
         } catch (\Exception $exception) {
             throw $exception;
@@ -75,26 +71,6 @@ class BabySitterProfileService implements IProfileService, IChangableActiveStatu
         // TODO: Implement update() method.
     }
 
-    private function updateInsertSubmerchantIban($babySitter, $data)
-    {
-        if (isset($data['iban']) && $data['iban'] !== $babySitter->iban) {
-            $babySitter = $this->userRepository->getUserById($babySitter->id);
-            if ($babySitter->sub_merchant != null) {
-                $serviceResult = $this->subMerchantService->updateIyzicoSubMerchant($babySitter->attributesToArray());
-                if ($serviceResult->getStatus() == "failure") {
-                    throw new \Exception($serviceResult->getErrorMessage());
-                }
-            }
-            if ($babySitter->sub_merchant == null) {
-                $serviceResult = $this->subMerchantService->insertIyzicoSubMerchant($babySitter->attributesToArray());
-                if ($serviceResult->getStatus() == "failure") {
-                    throw new \Exception($serviceResult->getErrorMessage());
-                }
-                $data = ['sub_merchant' => $serviceResult->getSubMerchantKey()];
-                $this->userRepository->update($babySitter->id, $data);
-            }
-        }
-    }
 
     private function saveProfilePhoto($photo): string
     {
@@ -112,7 +88,7 @@ class BabySitterProfileService implements IProfileService, IChangableActiveStatu
     {
         try {
             $user = $this->userRepository->getUserById(auth()->id());
-            return $this->userRepository->update($userId, ['is_active'=> !$user->is_active]);
+            return $this->userRepository->update($userId, ['is_active' => !$user->is_active]);
         } catch (\Exception $exception) {
             throw new \Exception('Durum değiştirilemedi', 400);
         }

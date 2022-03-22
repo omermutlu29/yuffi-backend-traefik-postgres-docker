@@ -34,7 +34,10 @@ class AppointmentObserver
      */
     public function updated(Appointment $appointment)
     {
-        //
+        if ($appointment->appointment_status_id == 5){
+            //TODO
+        }
+
     }
 
     /**
