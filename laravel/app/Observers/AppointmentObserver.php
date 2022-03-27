@@ -19,6 +19,7 @@ class AppointmentObserver
      *
      * @param \App\Models\Appointment $appointment
      * @return void
+     * @throws \Exception
      */
     public function created(Appointment $appointment)
     {
@@ -28,6 +29,15 @@ class AppointmentObserver
 
         if ($appointment->parent->google_st) {
             $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'appointment_list'], 'Yeni Randevu!', 'Yeni randevu oluştu, bakıcı 30 dakika içerisinde iptal etmezse kartınızdan ödeme alınacaktır!', $appointment->parent->google_st);
+        }
+        $startDate = $appointment->date;
+        $startDate = \Carbon\Carbon::create($startDate . ' ' . $appointment->start);
+        $range = (now()->diffInHours($startDate));
+        if ($range > 48) {
+            $startTime = now()->addHours($range - 48);
+            dispatch(new \App\Jobs\PayAppointmentAmount($appointment))->delay($startTime);
+        } else {
+            dispatch(new \App\Jobs\PayAppointmentAmount($appointment));
         }
     }
 
