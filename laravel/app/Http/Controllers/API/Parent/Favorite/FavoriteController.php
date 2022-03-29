@@ -17,7 +17,7 @@ class FavoriteController extends BaseController
     public function addToFavorites(FavoriteRequest $request)
     {
         try {
-            if (!auth()->user()->favorite_baby_sitters()->where('id', $request->baby_sitter_id)->first()) {
+            if (auth()->user()->favorite_baby_sitters()->where('baby_sitter_id', $request->baby_sitter_id)->count() == 0) {
                 auth()->user()->favorite_baby_sitters()->attach([$request->baby_sitter_id]);
             }
             return $this->sendResponse(auth()->user()->favorite_baby_sitters, 'Bakıcı favroilere eklendi!');
@@ -30,7 +30,9 @@ class FavoriteController extends BaseController
     public function deleteFromFavorites(FavoriteRequest $request)
     {
         try {
-            auth()->user()->favorite_baby_sitters()->detach([$request->baby_sitter_id]);
+            if (auth()->user()->favorite_baby_sitters()->where('baby_sitter_id', $request->baby_sitter_id)->count() > 0) {
+                auth()->user()->favorite_baby_sitters()->detach([$request->baby_sitter_id]);
+            }
             return $this->sendResponse(auth()->user()->favorite_baby_sitters, 'Bakıcı favorilerden silindi!');
         } catch (\Exception $exception) {
             $this->sendError('Hata', ['eklenemedi'], 400);
