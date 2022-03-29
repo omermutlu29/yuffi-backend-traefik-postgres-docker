@@ -35,7 +35,7 @@ class BabySitterFilterService
             }
             $sorted = $otherBabySitters->sortBy(['is_favorite', 'desc']);
             unset($favoritesIds, $otherBabySitters);
-            return $sorted;
+            return $sorted->values()->all();;
         } catch (\Exception $exception) {
             throw $exception;
         }
