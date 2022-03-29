@@ -28,9 +28,12 @@ class BabySitterFilterService
             $times = self::generateTimes($data['time'], $data['hour']);
             $data = self::prepareDataForQuery($childGenderStatus, $disabledChild, $childCount, $times, $data);
             unset($childGenderStatus, $disabledChild, $childCount, $times);
-            $favorites = $this->babySitterRepository->findBabySitterFromFavoritesOfParent($data, $parents);
-            $otherBabySitters = $this->babySitterRepository->findBabySitterForFilter($data)->diff($favorites);
-            return ['favorites' => $favorites, 'others' => $otherBabySitters];
+            $otherBabySitters = $this->babySitterRepository->findBabySitterForFilter($data);
+            $favoritesIds = $this->babySitterRepository->findBabySitterFromFavoritesOfParent($data, $parents)->pluck('id');
+            foreach ($otherBabySitters as $babySitter) {
+                in_array($babySitter->id, $favoritesIds) ? $babySitter->is_favorite = true : $babySitter->is_favorite = false;
+            }
+            return $otherBabySitters;
         } catch (\Exception $exception) {
             throw $exception;
         }

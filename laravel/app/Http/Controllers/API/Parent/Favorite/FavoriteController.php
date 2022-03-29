@@ -17,7 +17,9 @@ class FavoriteController extends BaseController
     public function addToFavorites(FavoriteRequest $request)
     {
         try {
-            auth()->user()->favorite_baby_sitters()->attach([$request->baby_sitter_id]);
+            if (!auth()->user()->favorite_baby_sitters()->where('id', $request->baby_sitter_id)->first()) {
+                auth()->user()->favorite_baby_sitters()->attach([$request->baby_sitter_id]);
+            }
             return $this->sendResponse(auth()->user()->favorite_baby_sitters, 'Bakıcı favroilere eklendi!');
         } catch (\Exception $exception) {
             $this->sendError('Hata', ['eklenemedi'], 400);
