@@ -43,6 +43,8 @@ class CalendarGetResource extends JsonResource
             $string['end'] = \Carbon\Carbon::createFromFormat('H:i:s', $time->finish)->format('H:i');
             $string['name'] = $string['starts'] . ' - ' . $string['end']; //. ' ve ' . $time->time_status->name;
             $string['status_id'] = $time->time_status_id;
+            $string['icon'] = $time->time_status_id == 1 ? 'trash' : 'calendar-outline';
+            $string['button_color'] = $time->time_status_id == 1 ? 'green' : 'orange';
             $existTimes[] = $string;
             if (isset($nonExistsTimesTemp[$string['name']])) {
                 unset($nonExistsTimesTemp[$string['name']]);
@@ -63,6 +65,8 @@ class CalendarGetResource extends JsonResource
                 $string['end'] = $minute == '00' ? $i . ':' . '30' : $i + 1 . ':' . '00';
                 $string['name'] = $string['starts'] . ' - ' . $string['end'];
                 $string['status_id'] = 999;//Eklenmemiş
+                $string['icon'] = 'add-circle-outline';
+                $string['button_color'] = 'white';
                 $data[] = $string;
             }
         }
