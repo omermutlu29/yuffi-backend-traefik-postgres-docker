@@ -28,7 +28,7 @@ interface IBabySitterRepository
      */
     public function findBabySitterForFilter(array $data);
 
-    public function findBabySitterFromFavoritesOfParent(array $data, Parents $parent);
+    public function findBabySittersIdsFromFavoritesOfParent(array $data, Parents $parent);
 
     public function removeShareableTalents(BabySitter $babySitter);
 

@@ -79,7 +79,7 @@ class BabySitterRepository implements IUserRepository, IBabySitterRepository
         return self::getUserById($id)->sub_merchant;
     }
 
-    public function findBabySitterFromFavoritesOfParent(array $data, Parents $parent)
+    public function findBabySittersIdsFromFavoritesOfParent(array $data, Parents $parent)
     {
         return $parent->favorite_baby_sitters()
             ->active()
@@ -94,7 +94,7 @@ class BabySitterRepository implements IUserRepository, IBabySitterRepository
             ->childYears($data['child_years'])
             //->depositPaid()
             ->availableTown($data['town_id'])
-            ->dateTime($data['date'], $data['times'])->get();
+            ->dateTime($data['date'], $data['times'])->pluck('id');
     }
 
     public function findBabySitterForFilter(array $data)
