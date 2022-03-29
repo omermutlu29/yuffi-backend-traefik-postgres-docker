@@ -24,7 +24,6 @@ class FavoriteController extends BaseController
             }
             return $this->sendResponse(auth()->user()->favorite_baby_sitters, 'Bakıcı favroilere eklendi!');
         } catch (\Exception $exception) {
-            \Illuminate\Support\Facades\Log::info('favorite controller ', $exception);
             return $this->sendError('Hata', ['Bir sorun ile karşılaşıldı'], 400);
         }
     }
