@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Console\Commands\DeactivateBabySitters;
 use App\Http\Controllers\API\BabySitter\Auth\LoginController as BabySitterLoginController;
 use App\Http\Controllers\API\BabySitter\Auth\ProfileController;
 use App\Http\Controllers\API\BabySitter\Auth\ProfileController as BabySitterProfileController;
@@ -92,6 +93,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->when(LoginService::class)
             ->needs(INotification::class)
             ->give(NetGSMSmsNotification::class);
+
         $this->app->when(BabySitterLoginController::class)->needs(IUserRepository::class)->give(BabySitterRepository::class);
         $this->app->when(ParentLoginController::class)->needs(IUserRepository::class)->give(ParentRepository::class);
         //Login Ends
@@ -123,6 +125,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->when(ProfileController::class)->needs(IChangableActiveStatus::class)->give(BabySitterProfileService::class);
 
+//Command for babysitter deactivation
+        $this->app->when(DeactivateBabySitters::class)
+            ->needs(INotification::class)
+            ->give(NetGSMSmsNotification::class);
 
     }
 }
