@@ -6,6 +6,7 @@ namespace App\Http\Controllers\API\Parent\Favorite;
 
 use App\Http\Controllers\API\BaseController;
 use App\Http\Requests\Parent\BabySitter\FavoriteRequest;
+use Illuminate\Support\Facades\Log;
 
 class FavoriteController extends BaseController
 {
@@ -37,7 +38,7 @@ class FavoriteController extends BaseController
             }
             return $this->sendResponse(auth()->user()->favorite_baby_sitters, 'Bakıcı favorilerden silindi!');
         } catch (\Exception $exception) {
-            \Illuminate\Support\Facades\Log::info('favorite controller ', $exception);
+            Log::info($exception);
             return $this->sendError('Hata', ['Bir sorun ile karşılaşıldı'], 400);
         }
     }
