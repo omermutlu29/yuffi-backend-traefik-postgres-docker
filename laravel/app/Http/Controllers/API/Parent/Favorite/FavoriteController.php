@@ -18,7 +18,7 @@ class FavoriteController extends BaseController
     public function addToFavorites(FavoriteRequest $request)
     {
         try {
-            $result = auth()->user()->favroite_baby_sitters()->attach($request->baby_sitter_id);
+            $result = auth()->user()->favroite_baby_sitters()->attach([$request->baby_sitter_id]);
             if (!$result) {
                 throw new \Exception('Eklenemedi', 400);
             }
@@ -32,7 +32,7 @@ class FavoriteController extends BaseController
     public function deleteFromFavorites(FavoriteRequest $request)
     {
         try {
-            $result = auth()->user()->favroite_baby_sitters()->detach($request->baby_sitter_id);
+            $result = auth()->user()->favroite_baby_sitters()->detach([$request->baby_sitter_id]);
             if (!$result) {
                 throw new \Exception('Silinemedi', 400);
             }
