@@ -29,7 +29,7 @@ class BabySitterFilterService
             $data = self::prepareDataForQuery($childGenderStatus, $disabledChild, $childCount, $times, $data);
             unset($childGenderStatus, $disabledChild, $childCount, $times);
             $otherBabySitters = $this->babySitterRepository->findBabySitterForFilter($data);
-            $favoritesIds = $this->babySitterRepository->findBabySittersIdsFromFavoritesOfParent($data, $parents)->pluck('id');
+            $favoritesIds = $this->babySitterRepository->findBabySittersIdsFromFavoritesOfParent($data, $parents);
             foreach ($otherBabySitters as $babySitter) {
                 in_array($babySitter->id, $favoritesIds) ? $babySitter->is_favorite = true : $babySitter->is_favorite = false;
             }
