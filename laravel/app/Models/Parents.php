@@ -63,6 +63,6 @@ class Parents extends Authenticatable
     }
 
     public function favorite_baby_sitters(){
-        return $this->belongsToMany(BabySitter::class,'favroites','parent_id','baby_sitter_id');
+        return $this->belongsToMany(BabySitter::class,'favorites','parent_id','baby_sitter_id');
     }
 }
