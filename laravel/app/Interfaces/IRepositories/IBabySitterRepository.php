@@ -5,6 +5,7 @@ namespace App\Interfaces\IRepositories;
 
 
 use App\Models\BabySitter;
+use App\Models\Parents;
 
 interface IBabySitterRepository
 {
@@ -26,6 +27,8 @@ interface IBabySitterRepository
      * @return mixed
      */
     public function findBabySitterForFilter(array $data);
+
+    public function findBabySitterFromFavoritesOfParent(array $data, Parents $parent);
 
     public function removeShareableTalents(BabySitter $babySitter);
 

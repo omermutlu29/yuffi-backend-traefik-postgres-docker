@@ -61,4 +61,8 @@ class Parents extends Authenticatable
     {
         return count($this->card_parents) > 0;
     }
+
+    public function favorite_baby_sitters(){
+        return $this->belongsToMany(BabySitter::class,'favroites','parent_id','baby_sitter_id');
+    }
 }

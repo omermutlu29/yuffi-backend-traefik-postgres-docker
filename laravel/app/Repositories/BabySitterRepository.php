@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Interfaces\IRepositories\IBabySitterRepository;
 use App\Interfaces\IRepositories\IUserRepository;
 use App\Models\BabySitter;
+use App\Models\Parents;
 
 class BabySitterRepository implements IUserRepository, IBabySitterRepository
 {
@@ -78,9 +79,28 @@ class BabySitterRepository implements IUserRepository, IBabySitterRepository
         return self::getUserById($id)->sub_merchant;
     }
 
+    public function findBabySitterFromFavoritesOfParent(array $data, Parents $parent)
+    {
+        return $parent->favorite_baby_sitters()
+            ->active()
+            ->pricePerHour()
+            ->childGenderStatus($data['child_gender_status'])
+            ->acceptsDisabledChild($data['disabled_child'])
+            ->gender($data['gender_id'])
+            ->wcStatus($data['wc_status'] ? true : false)
+            ->animalStatus($data['animal_status'] ? true : false)
+            ->childrenCount($data['child_count'])
+            ->shareableTalents($data['shareable_talents'])
+            ->childYears($data['child_years'])
+            //->depositPaid()
+            ->availableTown($data['town_id'])
+            ->dateTime($data['date'], $data['times'])->get();
+    }
+
     public function findBabySitterForFilter(array $data)
     {
         $babySitters = BabySitter::acceptedLocation($data['location_id'])
+            ->active()
             ->pricePerHour()
             ->childGenderStatus($data['child_gender_status'])
             ->acceptsDisabledChild($data['disabled_child'])
@@ -93,6 +113,7 @@ class BabySitterRepository implements IUserRepository, IBabySitterRepository
             //->depositPaid()
             ->availableTown($data['town_id'])
             ->dateTime($data['date'], $data['times']);
+
         if (isset($data['baby_sitter_id'])) {
             return $babySitters->where('id', $data['baby_sitter_id'])->first();
         }

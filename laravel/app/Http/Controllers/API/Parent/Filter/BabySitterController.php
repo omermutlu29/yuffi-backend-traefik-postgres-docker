@@ -27,7 +27,7 @@ class BabySitterController extends BaseController
         $filterData = ($filterData["search_param"]);
         try {
             return $this->sendResponse(
-                $babySitterFilterService->findBabySitterForAppointment($filterData),
+                $babySitterFilterService->findBabySitterForAppointment($filterData, auth()->user()),
                 'Bakıcı listesi');
         } catch (\Exception $exception) {
             return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);

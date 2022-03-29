@@ -4,6 +4,7 @@ namespace App\Services\Appointment;
 
 use App\Http\Resources\CalendarGetResource;
 use App\Interfaces\IRepositories\IBabySitterRepository;
+use App\Models\Parents;
 use JetBrains\PhpStorm\ArrayShape;
 
 class BabySitterFilterService
@@ -15,7 +16,7 @@ class BabySitterFilterService
         $this->babySitterRepository = $babySitterRepository;
     }
 
-    public function findBabySitterForAppointment(array $data)
+    public function findBabySitterForAppointment(array $data, Parents $parents)
     {
         try {
             $childYears = $this->getChildYearsAsArray($data['children']);
@@ -27,7 +28,9 @@ class BabySitterFilterService
             $times = self::generateTimes($data['time'], $data['hour']);
             $data = self::prepareDataForQuery($childGenderStatus, $disabledChild, $childCount, $times, $data);
             unset($childGenderStatus, $disabledChild, $childCount, $times);
-            return $this->babySitterRepository->findBabySitterForFilter($data);
+            $favorites = $this->babySitterRepository->findBabySitterFromFavoritesOfParent($data, $parents);
+            $otherBabySitters = $this->babySitterRepository->findBabySitterForFilter($data)->diff($favorites);
+            return ['favorites' => $favorites, 'others' => $otherBabySitters];
         } catch (\Exception $exception) {
             throw $exception;
         }
@@ -101,7 +104,7 @@ class BabySitterFilterService
 
     private function generateTimes($startTime, $hour): array
     {
-        return (CalendarGetResource::generateTimesForSearching($startTime,$hour));
+        return (CalendarGetResource::generateTimesForSearching($startTime, $hour));
 
     }
 

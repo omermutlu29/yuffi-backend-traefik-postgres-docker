@@ -49,6 +49,11 @@ Route::prefix('parent')->group(function () {
     });
     //solid ends
 
+    Route::prefix('favorite')->group(function () {
+        Route::post('add', [\App\Http\Controllers\API\Parent\Favorite\FavoriteController::class, 'addToFavorites']);
+        Route::post('delete', [\App\Http\Controllers\API\Parent\Favorite\FavoriteController::class, 'deleteFromFavorites']);
+    });
+
 
 });
 
