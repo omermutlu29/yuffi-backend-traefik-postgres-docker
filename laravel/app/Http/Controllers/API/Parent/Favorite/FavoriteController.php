@@ -16,21 +16,23 @@ class FavoriteController extends BaseController
 
     public function addToFavorites(FavoriteRequest $request)
     {
-        $result = auth()->user()->favorite_baby_sitters()->attach([$request->baby_sitter_id]);
-        if (!$result) {
-            throw new \Exception('Eklenemedi', 400);
+        try {
+            auth()->user()->favorite_baby_sitters()->attach([$request->baby_sitter_id]);
+            return $this->sendResponse(auth()->user()->favorite_baby_sitters, 'Bakıcı favroilere eklendi!');
+        } catch (\Exception $exception) {
+            $this->sendError('Hata', ['eklenemedi'], 400);
         }
-        return $this->sendResponse(auth()->user()->favorite_baby_sitters, 'Bakıcı favroilere eklendi!');
+
     }
 
     public function deleteFromFavorites(FavoriteRequest $request)
     {
-        $result = auth()->user()->favorite_baby_sitters()->detach([$request->baby_sitter_id]);
-        if (!$result) {
-            throw new \Exception('Silinemedi', 400);
+        try {
+            auth()->user()->favorite_baby_sitters()->detach([$request->baby_sitter_id]);
+            return $this->sendResponse(auth()->user()->favorite_baby_sitters, 'Bakıcı favorilerden silindi!');
+        } catch (\Exception $exception) {
+            $this->sendError('Hata', ['eklenemedi'], 400);
         }
-        return $this->sendResponse(auth()->user()->favorite_baby_sitters, 'Bakıcı favorilerden silindi!');
-
     }
 
 }
