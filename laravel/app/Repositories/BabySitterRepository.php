@@ -94,7 +94,7 @@ class BabySitterRepository implements IUserRepository, IBabySitterRepository
             ->childYears($data['child_years'])
             //->depositPaid()
             ->availableTown($data['town_id'])
-            ->dateTime($data['date'], $data['times'])->pluck('id');
+            ->dateTime($data['date'], $data['times'])->pluck('baby_sitter_id');
     }
 
     public function findBabySitterForFilter(array $data)
