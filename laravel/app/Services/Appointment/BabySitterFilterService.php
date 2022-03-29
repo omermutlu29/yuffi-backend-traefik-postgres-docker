@@ -31,7 +31,7 @@ class BabySitterFilterService
             $otherBabySitters = $this->babySitterRepository->findBabySitterForFilter($data);
             $favoritesIds = $this->babySitterRepository->findBabySittersIdsFromFavoritesOfParent($data, $parents);
             foreach ($otherBabySitters as $babySitter) {
-                in_array($babySitter->id, $favoritesIds) ? $babySitter->is_favorite = true : $babySitter->is_favorite = false;
+                in_array($babySitter->id, $favoritesIds) ? $babySitter->is_favorite = 1 : $babySitter->is_favorite = 0;
             }
             $sorted = $otherBabySitters->sortBy(['is_favorite', 'desc']);
             unset($favoritesIds, $otherBabySitters);
