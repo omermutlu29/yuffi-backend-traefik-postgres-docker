@@ -33,7 +33,7 @@ class BabySitterFilterService
             foreach ($otherBabySitters as $babySitter) {
                 in_array($babySitter->id, $favoritesIds) ? $babySitter->is_favorite = 1 : $babySitter->is_favorite = 0;
             }
-            $sorted = $otherBabySitters->sort('is_favorite', 'desc');
+            $sorted = $otherBabySitters->sort(['is_favorite','desc']);
             unset($favoritesIds, $otherBabySitters);
             return $sorted->values()->all();;
         } catch (\Exception $exception) {
