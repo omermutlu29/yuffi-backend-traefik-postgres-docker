@@ -38,7 +38,7 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'baby_sitters',
+            'provider' => 'admin',
         ],
 
         'baby_sitter'=>[
@@ -72,6 +72,10 @@ return [
     */
 
     'providers' => [
+        'admin' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
         'baby_sitters' => [
             'driver' => 'eloquent',
             'model' => App\Models\BabySitter::class,
@@ -80,10 +84,7 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Parents::class,
         ],
-        'admin' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Admin::class,
-        ],
+
 
         // 'users' => [
         //     'driver' => 'database',

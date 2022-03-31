@@ -9,6 +9,10 @@ Route::any('login',function (){
 })->name('login');
 
 Route::get('/',function (){
-    phpinfo();
 });
 
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
+});
