@@ -58,5 +58,9 @@ Route::prefix('parent')->group(function () {
        Route::post('rate-appointment',[\App\Http\Controllers\API\Parent\Point\PointController::class,'rateAppointment']);
     });
 
+    Route::get('faq', function () {
+        return \App\Models\Faq::where('user_type', 'parent')->get();
+    });
+
 });
 
