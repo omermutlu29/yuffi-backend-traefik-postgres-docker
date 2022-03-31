@@ -7,7 +7,6 @@ Route::prefix('parent')->group(function () {
         Route::post('sms-code', [\App\Http\Controllers\API\Parent\Auth\LoginController::class, 'loginTwo']);
     });//Bitti
 
-
     Route::prefix('profile')->group(function () {
         Route::post('store', [\App\Http\Controllers\API\Parent\Auth\ProfileController::class, 'storeProfile']);
         Route::post('update', [\App\Http\Controllers\API\Parent\Auth\ProfileController::class, 'updateProfile']);
@@ -22,7 +21,6 @@ Route::prefix('parent')->group(function () {
         Route::delete('delete', [\App\Http\Controllers\API\Parent\Card\CardController::class, 'delete'])->name('card.delete');
     });
 
-
     Route::prefix('appointment')->group(function () {
         Route::get('detail/{appointment}', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'getAppointmentDetail']);
         Route::get('get/future', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'getFutureAppointments']);
@@ -34,7 +32,6 @@ Route::prefix('parent')->group(function () {
         //ödeme sistemi için aşağıdaki route
         //Route::post('threeD-complete', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'completeAppointmentPayThreeD'])->name('appointment.pay.complete');
     });
-
 
     //Test edilecek
     Route::prefix('baby-sitter')->group(function () {
@@ -54,6 +51,12 @@ Route::prefix('parent')->group(function () {
         Route::post('delete', [\App\Http\Controllers\API\Parent\Favorite\FavoriteController::class, 'deleteFromFavorites']);
     });
 
+
+    Route::prefix('point')->group(function (){
+       Route::get('types',[\App\Http\Controllers\API\Parent\Point\PointController::class,'getPointTypes']);
+       Route::get('unrated-appointments',[\App\Http\Controllers\API\Parent\Point\PointController::class,'getUnratedAppointments']);
+       Route::post('rate-appointment',[\App\Http\Controllers\API\Parent\Point\PointController::class,'rateAppointment']);
+    });
 
 });
 

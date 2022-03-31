@@ -35,6 +35,11 @@ class Appointment extends Model
         return $this->belongsTo(Parents::class, 'parent_id');
     }
 
+    public function points(){
+        return $this->hasMany(BabySitterPoint::class);
+    }
+
+
     public function appointment_location()
     {
         return $this->belongsTo(AppointmentLocation::class);

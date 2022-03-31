@@ -52,7 +52,7 @@ class DeactivateBabySitters extends Command
                 $this->notification->notify(
                     [],
                     'Aktifliğiniz durdurulmuştur.',
-                    'Hesabınıza 48 saat giriş yapmadığınız için aktifliğiniz durdurulmuştur.', $baby_sitter->phone);
+                    'Uygulamaya 48 saat boyunca giriş yapmadığınız için, durumunuz çevrimdışı olarak değiştirilmiştir.', $baby_sitter->phone);
 
             }
         } catch (\Exception $exception) {

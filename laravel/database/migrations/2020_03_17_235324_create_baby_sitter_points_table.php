@@ -22,6 +22,7 @@ class CreateBabySitterPointsTable extends Migration
             $table->unsignedBigInteger('appointment_id');
             $table->foreign('appointment_id')->references('id')->on('appointments');
             $table->integer('point');
+            $table->text('additional_text');
             $table->timestamps();
         });
     }

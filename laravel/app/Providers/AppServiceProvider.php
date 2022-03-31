@@ -20,6 +20,7 @@ use App\Interfaces\IServices\IBabySitterCalendarService;
 use App\Interfaces\IServices\IChangableActiveStatus;
 use App\Interfaces\IServices\ILoginService;
 use App\Interfaces\IServices\IMessagingService;
+use App\Interfaces\IServices\IPointService;
 use App\Interfaces\IServices\IProfileService;
 use App\Interfaces\NotificationInterfaces\INotification;
 use App\Interfaces\PaymentInterfaces\ICompleteThreeDPayment;
@@ -49,6 +50,7 @@ use App\Services\PaymentServices\Iyzico\IyzicoPaymentService;
 use App\Services\PaymentServices\Iyzico\IyzicoRegisterCardService;
 use App\Services\PaymentServices\Iyzico\IyzicoSubMerchantService;
 use App\Services\PaymentServices\Iyzico\IyzicoThreeDPaymentService;
+use App\Services\PointService\PointService;
 use App\Services\ProfileService\BabySitterProfileService;
 use App\Services\ProfileService\ParentProfileService;
 use Illuminate\Support\ServiceProvider;
@@ -129,6 +131,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->when(DeactivateBabySitters::class)
             ->needs(INotification::class)
             ->give(NetGSMSmsNotification::class);
+
+        $this->app->bind(IPointService::class,PointService::class);
 
     }
 }
