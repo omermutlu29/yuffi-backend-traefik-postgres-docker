@@ -14,10 +14,9 @@ class CreateParentSmsCodesTable extends Migration
     public function up()
     {
         Schema::create('parent_sms_codes', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id('id');
             $table->string('code');
-            $table->bigInteger('parent_id')->unsigned();
-            $table->foreign('parent_id')->references('id')->on('parents');
+            $table->foreignId('parent_id')->references('id')->on('parents');
             $table->timestamps();
             $table->softDeletes();
         });

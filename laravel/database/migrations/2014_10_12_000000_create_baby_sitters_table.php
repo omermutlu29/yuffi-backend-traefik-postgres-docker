@@ -14,7 +14,7 @@ class CreateBabySittersTable extends Migration
     public function up()
     {
         Schema::create('baby_sitters', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id('id');
             $table->boolean('is_active')->default(true);
             $table->string('name')->nullable();
             $table->string('surname')->nullable();
@@ -36,7 +36,6 @@ class CreateBabySittersTable extends Migration
             $table->boolean('black_list')->default(0);
             $table->string('google_st')->nullable();
             $table->ipAddress('network')->nullable();
-            //$table->decimal('deposit')->default(0);
             $table->decimal('point')->default(0);
             $table->string('iban')->nullable();
             //That's about preferences start

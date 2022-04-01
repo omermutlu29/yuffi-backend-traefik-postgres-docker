@@ -14,7 +14,7 @@ class CreatePointTypesTable extends Migration
     public function up()
     {
         Schema::create('point_types', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id('id');
             $table->string('name');
             $table->timestamps();
         });

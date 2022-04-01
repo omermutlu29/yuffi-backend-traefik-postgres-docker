@@ -92,7 +92,6 @@ class BabySitterRepository implements IUserRepository, IBabySitterRepository
             ->childrenCount($data['child_count'])
             ->shareableTalents($data['shareable_talents'])
             ->childYears($data['child_years'])
-            //->depositPaid()
             ->availableTown($data['town_id'])
             ->dateTime($data['date'], $data['times'])->pluck('baby_sitter_id')->toArray();
     }
@@ -110,7 +109,6 @@ class BabySitterRepository implements IUserRepository, IBabySitterRepository
             ->childrenCount($data['child_count'])
             ->shareableTalents($data['shareable_talents'])
             ->childYears($data['child_years'])
-            //->depositPaid()
             ->availableTown($data['town_id'])
             ->dateTime($data['date'], $data['times']);
 

@@ -58,7 +58,6 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'bs_first_step' => \App\Http\Middleware\BabySitterFirstStep::class,
         'bs_second_step' => \App\Http\Middleware\BabySitterSecondStep::class,
-        'deposit' => \App\Http\Middleware\Deposit::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,

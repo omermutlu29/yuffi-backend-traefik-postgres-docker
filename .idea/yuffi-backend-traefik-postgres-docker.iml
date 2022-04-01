@@ -146,6 +146,10 @@
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/doctrine/dbal" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/phpseclib/bcmath_compat" />
       <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/predis/predis" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/intervention/image" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/tcg/voyager" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/larapack/doctrine-support" />
+      <excludeFolder url="file://$MODULE_DIR$/laravel/vendor/arrilot/laravel-widgets" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

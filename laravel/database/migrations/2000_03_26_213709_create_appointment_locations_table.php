@@ -14,7 +14,7 @@ class CreateAppointmentLocationsTable extends Migration
     public function up()
     {
         Schema::create('appointment_locations', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id('id');
             $table->string('name');
             $table->string('description')->nullable();
             $table->timestamps();

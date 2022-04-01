@@ -14,9 +14,8 @@ class CreateBabySitterAvailableDatesTable extends Migration
     public function up()
     {
         Schema::create('baby_sitter_available_dates', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('baby_sitter_id');
-            $table->foreign('baby_sitter_id')->references('id')->on('baby_sitters');
+            $table->id('id');
+            $table->foreignId('baby_sitter_id')->references('id')->on('baby_sitters');
             $table->date('date');
             $table->timestamps();
             $table->softDeletes();

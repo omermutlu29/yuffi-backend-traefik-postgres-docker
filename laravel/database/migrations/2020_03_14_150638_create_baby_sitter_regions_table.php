@@ -14,11 +14,9 @@ class CreateBabySitterRegionsTable extends Migration
     public function up()
     {
         Schema::create('baby_sitter_regions', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->bigInteger('baby_sitter_id')->unsigned();
-            $table->foreign('baby_sitter_id')->references('id')->on('baby_sitters');
-            $table->bigInteger('town_id')->unsigned();
-            $table->foreign('town_id')->references('id')->on('towns');
+            $table->id('id');
+            $table->foreignId('baby_sitter_id')->references('id')->on('baby_sitters');
+            $table->foreignId('town_id')->references('id')->on('towns');
             $table->timestamps();
         });
     }

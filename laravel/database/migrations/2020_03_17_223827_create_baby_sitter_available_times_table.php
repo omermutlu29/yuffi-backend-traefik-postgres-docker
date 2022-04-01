@@ -15,13 +15,11 @@ class CreateBabySitterAvailableTimesTable extends Migration
     {
         Schema::create('baby_sitter_available_times', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('available_date_id')->unsigned();
-            $table->foreign('available_date_id')->references('id')->on('baby_sitter_available_dates');
+            $table->foreignId('available_date_id')->references('id')->on('baby_sitter_available_dates');
+            $table->foreignId('time_status_id')->references('id')->on('time_statuses');
             $table->time('start');
             $table->time('finish');
             $table->boolean('is_active')->default(0);
-            $table->unsignedBigInteger('time_status_id');
-            $table->foreign('time_status_id')->references('id')->on('time_statuses');
             $table->timestamps();
             $table->softDeletes();
         });

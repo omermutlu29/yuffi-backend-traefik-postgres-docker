@@ -14,10 +14,9 @@ class CreateTownsTable extends Migration
     public function up()
     {
         Schema::create('towns', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id('id');
             $table->string('name');
-            $table->bigInteger('city_id')->unsigned();
-            $table->foreign('city_id')->references('id')->on('cities');
+            $table->foreignId('city_id')->references('id')->on('cities');
             $table->boolean('is_active')->default(false);
             $table->timestamps();
             $table->softDeletes();

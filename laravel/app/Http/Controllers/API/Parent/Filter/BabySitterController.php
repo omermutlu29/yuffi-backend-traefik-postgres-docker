@@ -9,7 +9,6 @@ use App\Http\Requests\Parent\BabySitter\MakeOfferRequest;
 use App\Http\Resources\BabySitterResource;
 use App\Interfaces\IRepositories\IAppointmentRepository;
 use App\Interfaces\IRepositories\IBabySitterRepository;
-use App\Interfaces\IRepositories\ICommentRepository;
 use App\Interfaces\IServices\IAppointmentService;
 use App\Models\BabySitter;
 use App\Services\Appointment\BabySitterFilterService;
@@ -53,14 +52,11 @@ class BabySitterController extends BaseController
         BabySitter $babySitter,
         IAppointmentRepository $appointmentRepository,
         IBabySitterRepository $babySitterRepository,
-        ICommentRepository $commentRepository
     )
     {
 
         $data = [];
         $data['general'] = BabySitterResource::make($babySitter);
-        $data['comment_count'] = $commentRepository->getBabySitterCommentsCount($babySitter->id);
-        $data['comments'] = $commentRepository->getBabySitterComments($babySitter->id);
         $data['avg_point'] = $babySitter->points()->average('point');
         $data['appointment_count'] = $appointmentRepository->getPaidAppointments($babySitter->id);
         $data['clothing'] = $babySitter->points()->where('point_type_id', 1)->average('point');

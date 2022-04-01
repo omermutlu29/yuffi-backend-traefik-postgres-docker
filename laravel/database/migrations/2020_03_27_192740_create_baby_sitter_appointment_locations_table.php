@@ -14,11 +14,9 @@ class CreateBabySitterAppointmentLocationsTable extends Migration
     public function up()
     {
         Schema::create('baby_sitter_appointment_locations', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('baby_sitter_id');
-            $table->foreign('baby_sitter_id')->references('id')->on('baby_sitters');
-            $table->unsignedBigInteger('location_id');
-            $table->foreign('location_id')->references('id')->on('appointment_locations');
+            $table->id('id');
+            $table->foreignId('baby_sitter_id')->references('id')->on('baby_sitters');
+            $table->foreignId('location_id')->references('id')->on('appointment_locations');
             $table->timestamps();
         });
     }

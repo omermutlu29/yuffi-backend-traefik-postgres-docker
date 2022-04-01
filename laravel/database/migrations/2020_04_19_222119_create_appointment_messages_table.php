@@ -14,7 +14,7 @@ class CreateAppointmentMessagesTable extends Migration
     public function up()
     {
         Schema::create('appointment_messages', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id('id');
             $table->foreignId('appointment_id')->constrained();
             $table->string('userable_id');
             $table->string('userable_type');

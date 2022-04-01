@@ -141,9 +141,13 @@
       <path value="$PROJECT_DIR$/laravel/vendor/doctrine/dbal" />
       <path value="$PROJECT_DIR$/laravel/vendor/phpseclib/bcmath_compat" />
       <path value="$PROJECT_DIR$/laravel/vendor/predis/predis" />
+      <path value="$PROJECT_DIR$/laravel/vendor/intervention/image" />
+      <path value="$PROJECT_DIR$/laravel/vendor/tcg/voyager" />
+      <path value="$PROJECT_DIR$/laravel/vendor/larapack/doctrine-support" />
+      <path value="$PROJECT_DIR$/laravel/vendor/arrilot/laravel-widgets" />
     </include_path>
   </component>
-  <component name="PhpProjectSharedConfiguration" php_language_level="7.3">
+  <component name="PhpProjectSharedConfiguration" php_language_level="7.4">
     <option name="suggestChangeDefaultLanguageLevel" value="false" />
   </component>
   <component name="PhpUnit">

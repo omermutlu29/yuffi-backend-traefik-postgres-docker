@@ -14,7 +14,7 @@ class CreateAppointmentChildrenTable extends Migration
     public function up()
     {
         Schema::create('appointment_children', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id('id');
             $table->foreignId('appointment_id')->constrained();
             $table->foreignId('gender_id')->constrained();
             $table->foreignId('child_year_id')->constrained();

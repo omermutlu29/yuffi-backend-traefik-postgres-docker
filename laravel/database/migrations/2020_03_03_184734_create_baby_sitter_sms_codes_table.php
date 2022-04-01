@@ -14,10 +14,9 @@ class CreateBabySitterSmsCodesTable extends Migration
     public function up()
     {
         Schema::create('baby_sitter_sms_codes', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id('id');
             $table->string('code');
-            $table->bigInteger('baby_sitter_id')->unsigned();
-            $table->foreign('baby_sitter_id')->references('id')->on('baby_sitters');
+            $table->foreignId('baby_sitter_id')->references('id')->on('baby_sitters');
             $table->timestamps();
             $table->softDeletes();
         });

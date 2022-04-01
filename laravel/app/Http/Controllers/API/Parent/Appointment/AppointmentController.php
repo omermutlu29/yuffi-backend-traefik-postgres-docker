@@ -93,42 +93,7 @@ class AppointmentController extends BaseController
 
 
 
-    /*public function confirmAppointmentAndPay(ConfirmAppointmentAndPayRequest $request, AppointmentPaymentService $appointmentPaymentService): \Illuminate\Http\Response
-    {
-        try {
-            $cardInformation = $request->only(['cardHolderName', 'cardNumber', 'expireMonth', 'expireYear', 'cvc']);
-            $appointment = $this->appointmentRepository->getAppointmentById($request['appointment_id']);
-            $appointmentPaymentService->payDirectly(auth()->user(), $appointment, $cardInformation);
-        } catch (\Exception $exception) {
-            return $this->sendError($exception->getMessage(), null, $exception->getCode());
-        }
 
-    }*/
-
-    /*public function confirmAppointmentPayThreeD(
-        Appointment $appointment,
-        ConfirmAppointmentAndPayRequest $request,
-        AppointmentPaymentService $appointmentPaymentService): \Illuminate\Http\Response
-    {
-        try {
-            $cardInformation = $request->only(['cardHolderName', 'cardNumber', 'expireMonth', 'expireYear', 'cvc']);
-            $appointment = $this->appointmentRepository->getAppointmentById($request['appointment_id']);
-            $appointmentPaymentService->payDirectly(auth()->user(), $appointment, $cardInformation);
-        } catch (\Exception $exception) {
-            return $this->sendError($exception->getMessage(), null, $exception->getCode());
-        }
-    }*/
-
-    /*public function completeAppointmentPayThreeD(Request $request, AppointmentPaymentService $appointmentPaymentService): \Illuminate\Http\Response
-    {
-        try {
-            $data = $request->only('conversationId', 'paymentId', 'conversationData');
-            $appointmentPaymentService->completeAppointmentPayment($data);
-            return $this->sendResponse($this->appointmentRepository->getAppointmentById($request->conversationId), 'Payment Result');
-        } catch (\Exception $exception) {
-            return $this->sendError($exception->getMessage(), null, $exception->getCode());
-        }
-    }*/
 
 
 }

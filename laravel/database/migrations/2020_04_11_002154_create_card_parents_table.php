@@ -14,7 +14,7 @@ class CreateCardParentsTable extends Migration
     public function up()
     {
         Schema::create('card_parents', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id('id');
             $table->foreignId('parent_id')->references('id')->on('parents');
             $table->string('cardtoken');
             $table->string('carduserkey');

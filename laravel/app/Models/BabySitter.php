@@ -57,10 +57,7 @@ class BabySitter extends Authenticatable
         return $this->hasMany(BabySitterAvailableDate::class);
     }
 
-    public function baby_sitter_deposits()
-    {
-        return $this->hasMany(BabySitterDeposit::class);
-    }
+
 
     public function accepted_locations()
     {
@@ -73,10 +70,7 @@ class BabySitter extends Authenticatable
         return $this->hasMany(Appointment::class);
     }
 
-    public function comments()
-    {
-        return $this->hasMany(BabySitterComment::class);
-    }
+
 
     public function points()
     {
@@ -152,10 +146,7 @@ class BabySitter extends Authenticatable
         return $query->where('child_count', '>=', $count);
     }
 
-    public function scopeDepositPaid($query)
-    {
-        return $query->where('deposit', 30);
-    }
+
 
     public function scopeAvailableTown($query, $townId)
     {

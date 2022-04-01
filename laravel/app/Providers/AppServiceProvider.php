@@ -8,12 +8,10 @@ use App\Http\Controllers\API\BabySitter\Auth\ProfileController;
 use App\Http\Controllers\API\BabySitter\Auth\ProfileController as BabySitterProfileController;
 use App\Http\Controllers\API\Parent\Auth\LoginController as ParentLoginController;
 use App\Http\Controllers\API\Parent\Auth\ProfileController as ParentProfileController;
-use App\Interfaces\DepositService\IDepositService;
 use App\Interfaces\IRepositories\IAppointmentRepository;
 use App\Interfaces\IRepositories\IBabySitterCalendarRepository;
 use App\Interfaces\IRepositories\IBabySitterRepository;
 use App\Interfaces\IRepositories\ICardRepository;
-use App\Interfaces\IRepositories\ICommentRepository;
 use App\Interfaces\IRepositories\IUserRepository;
 use App\Interfaces\IServices\IAppointmentService;
 use App\Interfaces\IServices\IBabySitterCalendarService;
@@ -23,13 +21,8 @@ use App\Interfaces\IServices\IMessagingService;
 use App\Interfaces\IServices\IPointService;
 use App\Interfaces\IServices\IProfileService;
 use App\Interfaces\NotificationInterfaces\INotification;
-use App\Interfaces\PaymentInterfaces\ICompleteThreeDPayment;
-use App\Interfaces\PaymentInterfaces\IPaymentToSubMerchant;
 use App\Interfaces\PaymentInterfaces\IPaymentWithRegisteredCard;
 use App\Interfaces\PaymentInterfaces\IRegisterCardService;
-use App\Interfaces\PaymentInterfaces\ISubMerchantService;
-use App\Interfaces\PaymentInterfaces\IThreeDPaymentInitialize;
-use App\Interfaces\PaymentInterfaces\IThreeDPaymentToSubMerchant;
 use App\Jobs\PayAppointmentAmount;
 use App\Listeners\NewAppointmentMessageListener;
 use App\Observers\AppointmentObserver;
@@ -37,19 +30,15 @@ use App\Repositories\AppointmentRepository;
 use App\Repositories\BabySitterRepository;
 use App\Repositories\CalendarRepository;
 use App\Repositories\CardRepository;
-use App\Repositories\CommentRepository;
 use App\Repositories\ParentRepository;
 use App\Services\Appointment\AppointmentService;
 use App\Services\Calendar\BabySitterCalendarService;
-use App\Services\DepositService\DepositServiceService;
 use App\Services\LoginService\LoginService;
 use App\Services\Messaging\MessagingService;
 use App\Services\NotificationServices\NetGSMSmsNotification;
 use App\Services\NotificationServices\PushNotificationService;
 use App\Services\PaymentServices\Iyzico\IyzicoPaymentService;
 use App\Services\PaymentServices\Iyzico\IyzicoRegisterCardService;
-use App\Services\PaymentServices\Iyzico\IyzicoSubMerchantService;
-use App\Services\PaymentServices\Iyzico\IyzicoThreeDPaymentService;
 use App\Services\PointService\PointService;
 use App\Services\ProfileService\BabySitterProfileService;
 use App\Services\ProfileService\ParentProfileService;
@@ -85,8 +74,6 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(ICardRepository::class, CardRepository::class);
         $this->app->bind(IRegisterCardService::class, IyzicoRegisterCardService::class);
-        //DEPOSIT
-        //Deposit Ends
 
         //Payment Systems
         $this->app->bind(IPaymentWithRegisteredCard::class, IyzicoPaymentService::class);
@@ -123,7 +110,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(IAppointmentRepository::class, AppointmentRepository::class);
         $this->app->bind(IAppointmentService::class, AppointmentService::class);
 
-        $this->app->bind(ICommentRepository::class, CommentRepository::class);
 
         //Children
 

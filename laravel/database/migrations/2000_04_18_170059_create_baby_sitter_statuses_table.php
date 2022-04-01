@@ -14,7 +14,7 @@ class CreateBabySitterStatusesTable extends Migration
     public function up()
     {
         Schema::create('baby_sitter_statuses', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id('id');
             $table->string('name');
             $table->timestamps();
         });

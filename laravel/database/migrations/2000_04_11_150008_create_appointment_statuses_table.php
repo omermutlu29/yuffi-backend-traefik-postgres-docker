@@ -14,7 +14,7 @@ class CreateAppointmentStatusesTable extends Migration
     public function up()
     {
         Schema::create('appointment_statuses', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id('id');
             $table->string('name');
             $table->string('exp')->nullable();
             $table->timestamps();

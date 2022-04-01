@@ -14,13 +14,10 @@ class CreateBabySitterPointsTable extends Migration
     public function up()
     {
         Schema::create('baby_sitter_points', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('point_type_id');
-            $table->foreign('point_type_id')->references('id')->on('point_types');
-            $table->unsignedBigInteger('baby_sitter_id');
-            $table->foreign('baby_sitter_id')->references('id')->on('baby_sitters');
-            $table->unsignedBigInteger('appointment_id');
-            $table->foreign('appointment_id')->references('id')->on('appointments');
+            $table->id('id');
+            $table->foreignId('point_type_id')->references('id')->on('point_types');
+            $table->foreignId('baby_sitter_id')->references('id')->on('baby_sitters');
+            $table->foreignId('appointment_id')->references('id')->on('appointments');
             $table->integer('point');
             $table->text('additional_text');
             $table->timestamps();
