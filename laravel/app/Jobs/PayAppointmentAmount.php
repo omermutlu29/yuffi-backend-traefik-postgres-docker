@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Interfaces\NotificationInterfaces\INotification;
 use App\Interfaces\PaymentInterfaces\IPaymentWithRegisteredCard;
 use App\Models\Appointment;
+use App\Models\PaymentTransaction;
 use App\Services\NotificationServices\PushNotificationService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -24,6 +25,8 @@ class PayAppointmentAmount implements ShouldQueue
     private array $addressInformation;
     private array $products;
     private array $buyerInformation;
+
+    private int $registeredCardId;
 
 
     /**
@@ -52,7 +55,7 @@ class PayAppointmentAmount implements ShouldQueue
     public function handle(PushNotificationService $notificationService, IPaymentWithRegisteredCard $paymentWithRegisteredCardService)
     {
         try {
-            $result = $paymentWithRegisteredCardService->payWithRegisteredCardForVirtualProducts(
+            $resultJson = $paymentWithRegisteredCardService->payWithRegisteredCardForVirtualProducts(
                 $this->cardToken,
                 $this->cardUserKey,
                 $this->products,
@@ -60,15 +63,22 @@ class PayAppointmentAmount implements ShouldQueue
                 $this->buyerInformation,
                 $this->appointment->price,
                 $this->appointment->id);
-            $result = json_decode($result);
-            if ($result->status == "success") {
+            $result = json_decode($resultJson);
+            $isSuccessPayment = $result->status == "success";
+            PaymentTransaction::create([
+                'appointment_id' => $this->appointment->id,
+                'card_parent_id' => $this->registeredCardId,
+                'payment_result' => $resultJson,
+                'is_success' => $isSuccessPayment
+            ]);
+            if ($isSuccessPayment) {
                 $notificationService->notify(
                     ['appointment_id' => $this->appointment->id, 'type' => 'appointment_list'],
                     'Ödemeniz başarı ile gerçekleşti',
                     'Ödemeniz başarı ile gerçekleşti. Bakıcı ile iletişime geçebilirsiniz!',
                     $this->appointment->parent->google_st);
             }
-            if ($result->status !== "success") {
+            if ($isSuccessPayment) {
                 $notificationService->notify(
                     ['appointment_id' => $this->appointment->id, 'type' => 'credit_cards'],
                     'Ödemeniz alınamadı',
@@ -92,6 +102,7 @@ class PayAppointmentAmount implements ShouldQueue
         if (count($cardInformation) != 1) {
             throw new \Exception('Kayıtlı kart yok veya birden fazla', 400);
         }
+        $this->registeredCardId = $cardInformation[0]->id;
         $this->cardUserKey = $cardInformation[0]->carduserkey;
         $this->cardToken = $cardInformation[0]->cardtoken;
     }
