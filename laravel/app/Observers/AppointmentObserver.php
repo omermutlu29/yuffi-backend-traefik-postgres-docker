@@ -33,12 +33,17 @@ class AppointmentObserver
         $startDate = $appointment->date;
         $startDate = \Carbon\Carbon::create($startDate . ' ' . $appointment->start);
         $range = (now()->diffInHours($startDate));
+        $paymentJob = new \App\Jobs\PayAppointmentAmount($appointment);
         if ($range > 48) {
             $startTime = now()->addHours($range - 48);
-            dispatch(new \App\Jobs\PayAppointmentAmount($appointment))->delay($startTime);
-        } else {
-            dispatch(new \App\Jobs\PayAppointmentAmount($appointment));
+            $paymentJob->delay($startTime);
         }
+
+
+        $jobId = app(\Illuminate\Contracts\Bus\Dispatcher::class)->dispatch($paymentJob);
+        $appointment->job_id = $jobId;
+        $appointment->save();
+
     }
 
     /**
@@ -52,7 +57,6 @@ class AppointmentObserver
         if ($appointment->appointment_status_id == 5) {
             //TODO
         }
-
     }
 
     /**

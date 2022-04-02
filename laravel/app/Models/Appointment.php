@@ -11,12 +11,17 @@ class Appointment extends Model
     protected $casts = ['payment_raw_result' => 'object'];
     protected $with = ['baby_sitter', 'appointment_location', 'town', 'registered_children'];
     protected $guarded = [];
-    protected $appends = ['is_cancelable_by_baby_sitter','is_cancelable_by_parent'];
+    protected $appends = ['is_cancelable_by_baby_sitter', 'is_cancelable_by_parent'];
+
+    public function have30MinutesPassed(){
+        return now()->floatDiffInMinutes($this->created_at) <= 30;
+    }
 
 
     public function getIsCancelableByBabySitterAttribute()
     {
-        return now()->floatDiffInMinutes($this->created_at) <= 30 ? true : '30 Dakika içerisinde iptal etmediğiniz için otomatik olarak kabul edilmiştir';
+        return $this->have30MinutesPassed() ? 'Eşleşmeyi iptal ediyorsunuz. Emin misiniz?'
+            : 'Eşleşmeyi iptal etmek üzeresiniz. Bir sonraki eşleşmeden alacağınız ücrette kesintiye sebep olabilir. Detaylar için S.S.S’leri inceleyebilirsiniz. İptal etmek istediğinize emin misiniz?';
     }
 
     public function getIsCancelableByParentAttribute()
@@ -35,7 +40,8 @@ class Appointment extends Model
         return $this->belongsTo(Parents::class, 'parent_id');
     }
 
-    public function points(){
+    public function points()
+    {
         return $this->hasMany(BabySitterPoint::class);
     }
 

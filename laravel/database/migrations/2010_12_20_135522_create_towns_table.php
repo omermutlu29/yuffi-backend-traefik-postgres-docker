@@ -17,7 +17,7 @@ class CreateTownsTable extends Migration
             $table->id('id');
             $table->string('name');
             $table->foreignId('city_id')->references('id')->on('cities');
-            $table->boolean('is_active')->default(false);
+            $table->boolean('is_active')->nullable()->default(false);
             $table->timestamps();
             $table->softDeletes();
 

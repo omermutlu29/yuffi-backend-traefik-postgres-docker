@@ -45,23 +45,14 @@ class CalendarController extends BaseController
         }
     }
 
-    public function update(AvailableTimeUpdate $request)
-    {
-        try {
-            return $this->sendResponse($this->calendarService->update(\auth()->id(), $request->only('available_time_id', 'time_status_id')), 'Güncelleme işlemi başarılı');
-        } catch (\Exception $exception) {
-            return $this->sendError(false, $exception->getMessage(), 400);
-
-        }
-    }
 
     public function delete(AvailableTimeDelete $request)
     {
-        //try {
+        try {
             return $this->sendResponse($this->calendarService->delete(\auth()->id(), (int)$request->get('available_time_id')), 'Silme işlemi başarılı');
-        /*} catch (\Exception $exception) {
+        } catch (\Exception $exception) {
             return $this->sendError(false, $exception->getMessage(), 400);
-        }*/
+        }
     }
 
 

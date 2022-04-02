@@ -23,9 +23,6 @@ class DatabaseSeeder extends Seeder
         $path = 'database/sql/child_years.sql';
         DB::unprepared(file_get_contents($path));
         $this->command->info('child_years table seeded!');
-        $path = 'database/sql/penalty_types.sql';
-        DB::unprepared(file_get_contents($path));
-        $this->command->info('penalty_types Years table seeded!');
         $path = 'database/sql/genders.sql';
         DB::unprepared(file_get_contents($path));
         $this->command->info('genders table seeded!');
@@ -41,8 +38,6 @@ class DatabaseSeeder extends Seeder
         $path = 'database/sql/appointment_statuses.sql';
         DB::unprepared(file_get_contents($path));
         $this->command->info('appointment_statuses table seeded!');
-        $path = 'database/sql/baby_sitter_statuses.sql';
-        DB::unprepared(file_get_contents($path));
-        $this->command->info('baby_sitter_statuses table seeded!');
+
     }
 }

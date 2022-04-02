@@ -4,6 +4,8 @@
 namespace App\Interfaces\IRepositories;
 
 
+use App\Models\Appointment;
+
 interface IAppointmentRepository
 {
     public function getAppointmentById(int $id);
@@ -28,7 +30,7 @@ interface IAppointmentRepository
 
     public function approveAppointment(int $appointmentId);
 
-    public function disapprove(int $appointmentId);
+    public function disapprove(Appointment $appointment);
 
     public function store(array $data);
 

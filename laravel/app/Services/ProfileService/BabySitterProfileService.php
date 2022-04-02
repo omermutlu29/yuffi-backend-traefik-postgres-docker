@@ -54,7 +54,6 @@ class BabySitterProfileService implements IProfileService, IChangableActiveStatu
             $acceptedLocations ? $this->babySitterRepository->updateAcceptedLocations($babySitter, $acceptedLocations) : null;
             $shareableTalents ? $this->babySitterRepository->updateShareableTalents($babySitter, $shareableTalents) : $this->babySitterRepository->removeShareableTalents($babySitter);
             $childYears ? $this->babySitterRepository->updateChildYears($babySitter, $childYears) : null;
-            $this->userRepository->update($babySitter->id, ['baby_sitter_status_id' => 5]);
         } catch (\Exception $exception) {
             throw $exception;
         }
@@ -62,7 +61,7 @@ class BabySitterProfileService implements IProfileService, IChangableActiveStatu
 
     public function getProfile($id)
     {
-        $relations = ['baby_sitter_status:id,name', 'shareable_talents', 'child_years:id,name', 'gender:id,name', 'child_gender:id,name', 'accepted_locations', 'available_towns'];
+        $relations = ['shareable_talents', 'child_years:id,name', 'gender:id,name', 'child_gender:id,name', 'accepted_locations', 'available_towns'];
         return $this->userRepository->getUserWithRelations($id, $relations);
     }
 

@@ -31,12 +31,12 @@ class AppointmentRepository implements IAppointmentRepository
 
     public function getPastAppointmentsByParentId(int $parentId)
     {
-        return Appointment::where('parent_id', $parentId)->past()->orderBy('created_at','DESC')->get();
+        return Appointment::where('parent_id', $parentId)->past()->orderBy('created_at', 'DESC')->get();
     }
 
     public function getFutureAppointmentsByParentId(int $parentId)
     {
-        return Appointment::where('parent_id', $parentId)->future()->orderBy('created_at','DESC')->get();
+        return Appointment::where('parent_id', $parentId)->future()->orderBy('created_at', 'DESC')->get();
     }
 
     public function getAppointmentsByBabySitterIdAndStatusId(int $babySitter, int $statusId)
@@ -81,9 +81,15 @@ class AppointmentRepository implements IAppointmentRepository
         return Appointment::where('id', $appointmentId)->update(['baby_sitter_approved' => true, 'appointment_status_id' => 3]);
     }
 
-    public function disapprove(int $appointmentId)
+    public function disapprove(Appointment $appointment)
     {
-        return Appointment::where('id', $appointmentId)->update(['baby_sitter_approved' => false, 'appointment_status_id' => 5]);
+        return $appointment->update(
+            [
+                'appointment_status_id' => 5,
+                'is_rejected_by_baby_sitter' => true,
+                'rejected_time_range' => now()->diffInHours($appointment->created_at)
+            ]
+        );
     }
 
     public function disapproveAppointment(int $appointmentId)
@@ -98,11 +104,11 @@ class AppointmentRepository implements IAppointmentRepository
 
     public function getPastAppointmentsByBabySitterId(int $babySitterId)
     {
-        return Appointment::where('baby_sitter_id', $babySitterId)->past()->orderBy('created_at','DESC')->get();
+        return Appointment::where('baby_sitter_id', $babySitterId)->past()->orderBy('created_at', 'DESC')->get();
     }
 
     public function getFutureAppointmentsByBabySitterId(int $babySitterId)
     {
-        return Appointment::where('baby_sitter_id', $babySitterId)->future()->orderBy('created_at','DESC')->get();
+        return Appointment::where('baby_sitter_id', $babySitterId)->future()->orderBy('created_at', 'DESC')->get();
     }
 }

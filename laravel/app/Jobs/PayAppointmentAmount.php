@@ -18,6 +18,7 @@ class PayAppointmentAmount implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+
     public $tries = 5;
     private Appointment $appointment;
     private string $cardUserKey;
@@ -45,16 +46,22 @@ class PayAppointmentAmount implements ShouldQueue
         $this->prepareBuyerInformation();
     }
 
-    /**
-     * Execute the job.
-     *
-     * @param INotification $notificationService
-     * @param IPaymentWithRegisteredCard $paymentWithRegisteredCardService
-     * @return void
-     */
+    public function failed(\Exception $e = null)
+    {
+        Log::info($this->attempts());
+    }
+
+
     public function handle(PushNotificationService $notificationService, IPaymentWithRegisteredCard $paymentWithRegisteredCardService)
     {
         try {
+            $paymentTransaction = PaymentTransaction::create([
+                'appointment_id' => $this->appointment->id,
+                'card_parent_id' => $this->registeredCardId,
+                'payment_result' => '{}',
+                'is_success' => false
+            ]);
+
             $resultJson = $paymentWithRegisteredCardService->payWithRegisteredCardForVirtualProducts(
                 $this->cardToken,
                 $this->cardUserKey,
@@ -65,36 +72,34 @@ class PayAppointmentAmount implements ShouldQueue
                 $this->appointment->id);
             $result = json_decode($resultJson);
             $isSuccessPayment = $result->status == "success";
-            PaymentTransaction::create([
-                'appointment_id' => $this->appointment->id,
-                'card_parent_id' => $this->registeredCardId,
-                'payment_result' => $resultJson,
-                'is_success' => $isSuccessPayment
-            ]);
+
             if ($isSuccessPayment) {
+                $paymentTransaction->is_success = true;
+                $paymentTransaction->payment_result = $resultJson;
+                $paymentTransaction->save();
                 $notificationService->notify(
                     ['appointment_id' => $this->appointment->id, 'type' => 'appointment_list'],
                     'Ödemeniz başarı ile gerçekleşti',
                     'Ödemeniz başarı ile gerçekleşti. Bakıcı ile iletişime geçebilirsiniz!',
                     $this->appointment->parent->google_st);
             }
-            if ($isSuccessPayment) {
+            if (!$isSuccessPayment) {
+                $paymentTransaction->payment_result = $resultJson;
+                $paymentTransaction->save();
                 $notificationService->notify(
                     ['appointment_id' => $this->appointment->id, 'type' => 'credit_cards'],
                     'Ödemeniz alınamadı',
                     'Randevu için ödemeniz alınamadı lütfen kredi kartınızın limitini kontrol edin!',
                     $this->appointment->parent->google_st);
             }
-
-
-        } catch (\Exception $exception) {
-            if ($this->attempts() < 5) {
-                Log::info($exception);
-                $this->release(now()->addMinutes(10));
+        } catch (\Throwable $exception) {
+            if ($this->attempts() == 5) {
+                throw $exception;
             }
+            $this->release(now()->addSeconds(10));
         }
-
     }
+
 
     private function prepareCardData()
     {

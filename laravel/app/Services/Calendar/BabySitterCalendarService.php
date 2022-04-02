@@ -57,6 +57,10 @@ class BabySitterCalendarService implements IBabySitterCalendarService
     public function delete(int $babySitterId, int $availableTimeId)
     {
         try {
+            $availableTime = $this->babySitterCalendarRepository->getAvailableTimeByIdWithDate($availableTimeId);
+            if ($availableTime->baby_sitter_available_date->baby_sitter_id != $babySitterId) {
+                throw new \Exception('Yetkisiz erişim', 400);
+            }
             return ($this->babySitterCalendarRepository->deleteAvailableTime($availableTimeId));
         } catch (\Exception $exception) {
             throw $exception;

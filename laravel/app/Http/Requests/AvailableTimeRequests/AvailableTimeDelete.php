@@ -21,8 +21,7 @@ class AvailableTimeDelete extends BaseApiRequest
      */
     public function authorize()
     {
-        $availableTime = $this->calendarRepository->getAvailableTimeByIdWithDate(\request()->get('available_time_id'));
-        return (\request()->user()->can('delete', $availableTime));
+       return true;
     }
 
     /**
@@ -33,7 +32,7 @@ class AvailableTimeDelete extends BaseApiRequest
     public function rules()
     {
         return [
-            'available_time_id'=>'required|exists:baby_sitter_available_times,id'
+            'available_time_id'=>'required|exists:baby_sitter_available_times,id|numeric'
         ];
     }
 }

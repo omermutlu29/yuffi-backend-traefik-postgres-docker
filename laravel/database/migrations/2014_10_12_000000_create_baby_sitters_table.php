@@ -27,10 +27,9 @@ class CreateBabySittersTable extends Migration
             $table->text('other_talents')->nullable();
             $table->text('address')->nullable();
             $table->string('criminal_record')->nullable();
-            $table->text('about')->nullable();
             $table->boolean('service_contract')->nullable();
             $table->foreignId('gender_id')->nullable()->references('id')->on('genders');
-            $table->foreignId('baby_sitter_status_id')->references('id')->on('baby_sitter_statuses');
+
             $table->boolean('kvkk')->nullable();
             $table->boolean('is_accepted')->default(0);
             $table->boolean('black_list')->default(0);

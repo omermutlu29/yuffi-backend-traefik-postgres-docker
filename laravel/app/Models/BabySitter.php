@@ -92,10 +92,6 @@ class BabySitter extends Authenticatable
         return $this->belongsToMany(ChildYear::class, 'baby_sitter_child_years', 'baby_sitter_id', 'child_year_id');
     }
 
-    public function baby_sitter_status()
-    {
-        return $this->belongsTo(BabySitterStatus::class);
-    }
 
     /**
      * Scopes
@@ -103,7 +99,6 @@ class BabySitter extends Authenticatable
      * @param string $phone
      * @return mixed
      */
-
     public function scopePhone($query, string $phone)
     {
         return $query->where('phone', $phone);
