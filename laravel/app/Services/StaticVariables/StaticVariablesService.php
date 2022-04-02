@@ -10,7 +10,6 @@ use App\Models\ChildYear;
 use App\Models\City;
 use App\Models\Gender;
 use App\Models\ShareableTalent;
-use Carbon\Carbon;
 
 class StaticVariablesService implements IStaticVars
 {
@@ -26,7 +25,7 @@ class StaticVariablesService implements IStaticVars
 
     public function getChildYears()
     {
-        return ChildYear::orderBy('id','ASC')->get();
+        return ChildYear::orderBy('id', 'ASC')->get();
     }
 
     public function getTowns(City $city)
@@ -93,9 +92,18 @@ class StaticVariablesService implements IStaticVars
 
     public function calculateTimes($startTime)
     {
+        $minutes = ['00', '30'];
         $times = [];
         for ($i = $startTime; $i < 22; $i++) {
-            $times[] = $i . ':' . '00';
+            if ($i < 21) {
+                foreach ($minutes as $minute) {
+                    $times[] = $i . ':' . $minute;
+                }
+            }
+            if ($i == 21) {
+                $times[] = $i . ':' . '00';
+            }
+
         }
         return $times;
     }
