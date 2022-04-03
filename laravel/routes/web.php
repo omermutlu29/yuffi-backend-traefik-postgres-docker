@@ -16,7 +16,3 @@ Route::get('/',function (){
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 });
-
-Route::any('broadcasting/auth',function (\Illuminate\Http\Request $request){
-    dd($request->user());
-})->middleware('auth:parent,baby_sitter');
