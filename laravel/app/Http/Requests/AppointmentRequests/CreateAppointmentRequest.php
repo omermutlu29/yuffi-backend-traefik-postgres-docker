@@ -24,7 +24,7 @@ class CreateAppointmentRequest extends BaseApiRequest
      */
     public function rules()
     {
-        $addThreeDays = today()->addDays(3)->format('d-m-Y');
+        $addThreeDays = today()->format('d-m-Y');
         $add15Days = today()->addDays(15)->format('d-m-Y');
         $startTime = (Carbon::make('10:00')->format('H:i'));
         $endTime = (Carbon::make('21:00')->format('H:i'));
