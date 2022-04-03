@@ -57,12 +57,24 @@ class BabySitterController extends BaseController
 
         $data = [];
         $data['general'] = BabySitterResource::make($babySitter);
-        $data['appointment_count'] = 1;
-        $data['avg_point'] = (4.3);
-        $data['clothing'] = (3.1);
-        $data['timing'] = (2.4);
-        $data['contact'] = (3.4);
+        $data['points'] = [];
+        $data['points'][] = [
+          "title"=>"Ortalama Puan",
+          "point"=>4.3
+        ];
+        $data['points'][] = [
+            "title"=>"Giyim",
+            "point"=>3.1
+        ];
+        $data['points'][] = [
+            "title"=>"Zamanlama",
+            "point"=>3.5
+        ];
 
+        $data['points'][] = [
+            "title"=>"İletişim",
+            "point"=>4
+        ];
         return $this->sendResponse($data, 'Bilgiler başarı ile getirildi!');
     }
 
