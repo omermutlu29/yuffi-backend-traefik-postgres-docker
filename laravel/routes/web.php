@@ -18,5 +18,5 @@ Route::group(['prefix' => 'admin'], function () {
 });
 
 Route::any('broadcasting/auth',function (\Illuminate\Http\Request $request){
-    dd(true);
+    dd($request->user());
 })->middleware('auth:parent,baby_sitter');
