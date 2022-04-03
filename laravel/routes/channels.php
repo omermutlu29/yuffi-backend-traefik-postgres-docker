@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Broadcast;
 
 Broadcast::channel('App.Models.Parent.{id}', function ($user, $id) {
-    \Illuminate\Support\Facades\Log::info("parent".' '.$user.' '.$id);
     if ($user instanceof \App\Models\Parents) {
+        \Illuminate\Support\Facades\Log::info("parent".' '.$user.' '.$id);
         return (int)$user->id === (int)$id;
     }
     return false;
