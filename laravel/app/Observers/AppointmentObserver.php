@@ -32,6 +32,7 @@ class AppointmentObserver
             $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'appointment_list'], 'Yeni Randevu!', 'Yeni randevu oluştu, bakıcı 30 dakika içerisinde iptal etmezse kartınızdan ödeme alınacaktır!', $appointment->parent->google_st);
         }
         try {
+            //Hata TODO
             $startDate = $appointment->date;
             $startDate = \Carbon\Carbon::create($startDate . ' ' . $appointment->start);
             $range = (now()->diffInHours($startDate));
@@ -45,7 +46,7 @@ class AppointmentObserver
             $jobId = app(\Illuminate\Contracts\Bus\Dispatcher::class)->dispatch($paymentJob);
             $appointment->job_id = $jobId;
             $appointment->save();
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             Log::info($exception);
         }
 
