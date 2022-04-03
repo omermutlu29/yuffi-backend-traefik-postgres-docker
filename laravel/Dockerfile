@@ -20,6 +20,12 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-install pdo
 RUN docker-php-ext-install pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd
+#Laraver supervisor configuration
+COPY laravel-worker.conf /etc/supervisor/conf.d/laravel-worker.conf.d
+CMD ["service supervisor reread"]
+CMD ["service supervisor update"]
+CMD ["service supervisor start"]
+
 
 WORKDIR /var/www
 
