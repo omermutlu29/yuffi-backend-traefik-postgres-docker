@@ -28,8 +28,9 @@ class NetGSMSmsNotification implements INotification
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $http_response = curl_exec($ch);
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
         if (substr($http_response, 0, 2) != "00") {
-            return false;
+            return true;
         } else {
             return true;
         }

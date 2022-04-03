@@ -31,7 +31,7 @@ class LoginService implements ILoginService
             if (env('APP_ENV') == 'local') {
                 return true;
             }
-            return $this->notificationService->notify([],"ONAY SMS'i", $code, $user->phone);
+            return $this->notificationService->notify([], "ONAY SMS'i", $code, $user->phone);
         } catch (\Exception $exception) {
             throw $exception;
         }
@@ -49,7 +49,7 @@ class LoginService implements ILoginService
             if (!$userRepository->get_last_sms_code($user->id, $data['code'])) {
                 throw new \Exception('SMS code does not match', 400);
             }
-            if (\request()->ip()){
+            if (\request()->ip()) {
                 $user->network = \request()->ip();
             }
             $return['status'] = true;
