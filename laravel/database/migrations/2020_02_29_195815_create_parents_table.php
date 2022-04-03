@@ -15,6 +15,7 @@ class CreateParentsTable extends Migration
     {
         Schema::create('parents', function (Blueprint $table) {
             $table->id('id');
+            $table->uuid('uuid')->unique();
             $table->string('name')->nullable();
             $table->string('surname')->nullable();
             $table->string('email')->nullable()->unique();

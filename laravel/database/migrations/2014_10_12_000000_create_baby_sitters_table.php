@@ -15,6 +15,7 @@ class CreateBabySittersTable extends Migration
     {
         Schema::create('baby_sitters', function (Blueprint $table) {
             $table->id('id');
+            $table->uuid('uuid')->unique();
             $table->boolean('is_active')->default(true);
             $table->string('name')->nullable();
             $table->string('surname')->nullable();
