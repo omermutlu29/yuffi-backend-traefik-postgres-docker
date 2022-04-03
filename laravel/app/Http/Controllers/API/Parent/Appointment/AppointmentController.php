@@ -60,7 +60,6 @@ class AppointmentController extends BaseController
 
     public function createAppointment(CreateAppointmentRequest $request, IAppointmentService $appointmentService, BabySitterFilterService $appointmentFilterService)
     {
-        try {
             $data = $request->only('create_params');
             $data = $data['create_params'];
             $data['date'] = Carbon::createFromFormat('d-m-Y', $data['date']);
@@ -72,9 +71,6 @@ class AppointmentController extends BaseController
             } else {
                 return $this->sendError('Hata!', 'Bakıcı belirttiğiniz zaman(lar) içerisinde müsait görünmemektedir!');
             }
-        } catch (\Exception $exception) {
-            return $this->sendError('Hata', $exception->getMessage(), 400);
-        }
     }
 
     public function cancelAppointment(AppointmentCancelRequest $request, IAppointmentService $appointmentService)
