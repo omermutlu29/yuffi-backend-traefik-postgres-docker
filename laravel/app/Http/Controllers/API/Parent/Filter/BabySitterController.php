@@ -57,11 +57,11 @@ class BabySitterController extends BaseController
 
         $data = [];
         $data['general'] = BabySitterResource::make($babySitter);
-        $data['avg_point'] = $babySitter->points()->average('point');
-        $data['appointment_count'] = $appointmentRepository->getPaidAppointments($babySitter->id);
-        $data['clothing'] = $babySitter->points()->where('point_type_id', 1)->average('point');
-        $data['timing'] = $babySitter->points()->where('point_type_id', 2)->average('point');
-        $data['contact'] = $babySitter->points()->where('point_type_id', 3)->average('point');
+        $data['avg_point'] = ceil(4.3);
+        $data['appointment_count'] = 1;
+        $data['clothing'] = ceil(3.1);
+        $data['timing'] = ceil(2.4);
+        $data['contact'] = ceil(3.4);
 
         return $this->sendResponse($data, 'Bilgiler başarı ile getirildi!');
     }
