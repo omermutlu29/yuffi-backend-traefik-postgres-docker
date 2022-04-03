@@ -41,17 +41,13 @@ return [
             'provider' => 'admin',
         ],
 
-        'baby_sitter'=>[
+        'baby_sitter' => [
             'driver' => 'passport',
             'provider' => 'baby_sitters',
         ],
-        'parent'=>[
+        'parent' => [
             'driver' => 'passport',
             'provider' => 'parents',
-        ],
-        'admin'=>[
-            'driver' => 'passport',
-            'provider' => 'admin',
         ]
     ],
     /*
