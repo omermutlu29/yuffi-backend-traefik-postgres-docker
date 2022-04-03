@@ -2,10 +2,16 @@
 
 use Illuminate\Support\Facades\Broadcast;
 
-Broadcast::middleware('auth:parent')->channel('App.Models.Parent.{id}', function ($user, $id) {
-    return (int)$user->id === (int)$id;
+Broadcast::channel('App.Models.Parent.{id}', function ($user, $id) {
+    if ($user instanceof \App\Models\Parents) {
+        return (int)$user->id === (int)$id;
+    }
+    return false;
 });
-Broadcast::middleware('auth:baby_sitter')->channel('App.Models.BabySitter.{id}', function ($user, $id) {
-    return (int)$user->id === (int)$id;
+Broadcast::channel('App.Models.BabySitter.{id}', function ($user, $id) {
+    if ($user instanceof \App\Models\BabySitter) {
+        return (int)$user->id === (int)$id;
+    }
+    return false;
 });
 
