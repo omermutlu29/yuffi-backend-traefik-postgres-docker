@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Interfaces\NotificationInterfaces\INotification;
 use App\Models\Appointment;
+use Illuminate\Support\Facades\Log;
 
 class AppointmentObserver
 {
@@ -30,19 +31,24 @@ class AppointmentObserver
         if ($appointment->parent->google_st) {
             $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'appointment_list'], 'Yeni Randevu!', 'Yeni randevu oluştu, bakıcı 30 dakika içerisinde iptal etmezse kartınızdan ödeme alınacaktır!', $appointment->parent->google_st);
         }
-        $startDate = $appointment->date;
-        $startDate = \Carbon\Carbon::create($startDate . ' ' . $appointment->start);
-        $range = (now()->diffInHours($startDate));
-        $paymentJob = new \App\Jobs\PayAppointmentAmount($appointment);
-        if ($range > 48) {
-            $startTime = now()->addHours($range - 48);
-            $paymentJob->delay($startTime);
+        try {
+            $startDate = $appointment->date;
+            $startDate = \Carbon\Carbon::create($startDate . ' ' . $appointment->start);
+            $range = (now()->diffInHours($startDate));
+            $paymentJob = new \App\Jobs\PayAppointmentAmount($appointment);
+            if ($range > 48) {
+                $startTime = now()->addHours($range - 48);
+                $paymentJob->delay($startTime);
+            }
+
+
+            $jobId = app(\Illuminate\Contracts\Bus\Dispatcher::class)->dispatch($paymentJob);
+            $appointment->job_id = $jobId;
+            $appointment->save();
+        }catch (\Exception $exception){
+            Log::info($exception);
         }
 
-
-        $jobId = app(\Illuminate\Contracts\Bus\Dispatcher::class)->dispatch($paymentJob);
-        $appointment->job_id = $jobId;
-        $appointment->save();
 
     }
 
