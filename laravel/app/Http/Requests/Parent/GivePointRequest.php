@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Parent;
 
 use App\Http\Requests\BaseApiRequest;
+use App\Models\PointType;
 
 class GivePointRequest extends BaseApiRequest
 {
@@ -23,12 +24,12 @@ class GivePointRequest extends BaseApiRequest
      */
     public function rules()
     {
-        return [
+        $validationArray = [
             'appointment_points' => 'required',
-            'appointment_points.*.appointment_id' => 'required|exists:appointments,id',
-            'appointment_points.*.point_type' => 'required|exists:point_types,id',
-            'appointment_points.*.point' => 'required|min:1|max:5|numeric',
-            'appointment_points.*.additional_text' => 'max:600'
         ];
+        foreach (PointType::all() as $item) {
+            $validationArray['appointment_points.' . $item->id . '.point'] = 'required|number|max:5|min:0';
+        }
+        return $validationArray;
     }
 }
