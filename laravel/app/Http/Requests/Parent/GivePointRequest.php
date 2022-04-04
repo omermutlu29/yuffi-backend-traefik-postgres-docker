@@ -24,12 +24,14 @@ class GivePointRequest extends BaseApiRequest
      */
     public function rules()
     {
-        $validationArray = [
-            'appointment_points' => 'required',
-        ];
-        foreach (PointType::all() as $item) {
-            $validationArray['appointment_points.' . $item->id . '.point'] = 'required|number|max:5|min:0';
+        $validationArray = [];
+        $validationArray['points'] = 'required';
+        foreach (PointType::all() as $pointType){
+            $validationArray['points.'.$pointType->id] = 'required';
+            $validationArray['points.'.$pointType->id.'.point'] = 'required|min:0|max:5';
+            $validationArray['points.'.$pointType->id.'.additional_text'] = 'max:100';
         }
+
         return $validationArray;
     }
 }
