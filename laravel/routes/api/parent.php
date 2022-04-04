@@ -55,7 +55,7 @@ Route::prefix('parent')->group(function () {
     Route::prefix('point')->group(function (){
        Route::get('types',[\App\Http\Controllers\API\Parent\Point\PointController::class,'getPointTypes']);
        Route::get('unrated-appointments',[\App\Http\Controllers\API\Parent\Point\PointController::class,'getUnratedAppointments']);
-       Route::post('rate-appointment',[\App\Http\Controllers\API\Parent\Point\PointController::class,'rateAppointment']);
+       Route::post('rate-appointment/{appointment}',[\App\Http\Controllers\API\Parent\Point\PointController::class,'rateAppointment']);
     });
 
     Route::get('faq', function () {
