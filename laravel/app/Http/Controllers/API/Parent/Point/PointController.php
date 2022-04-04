@@ -41,6 +41,7 @@ class PointController extends BaseController
 
     public function rateAppointment(GivePointRequest $request)
     {
+        return $request->all();
         try {
             foreach ($request->appointment_points as $point) {
                 $this->pointService->rateAppointment(
