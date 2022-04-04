@@ -45,10 +45,10 @@ class PointController extends BaseController
         //try {
             foreach ($data['appointment_points'] as $point) {
                 $this->pointService->rateAppointment(
-                    $point->appointment_id,
-                    $point->point_type,
-                    $point->point,
-                    $point->additional_text
+                    $point['appointment_id'],
+                    $point['point_type'],
+                    $point['point'],
+                    $point['additional_text']
                 );
             }
             return $this->sendResponse(true, 'Puan başarılı bir şekilde verildi!');
