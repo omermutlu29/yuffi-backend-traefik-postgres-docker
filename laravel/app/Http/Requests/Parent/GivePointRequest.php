@@ -38,7 +38,7 @@ class GivePointRequest extends BaseApiRequest
     public function messages()
     {
         foreach (PointType::all() as $pointType) {
-            $messages['points.' . $pointType->id] = $pointType->name . ' için puan gönderimi zorunludur';
+            $messages['points.' . $pointType->id.'.required'] = $pointType->name . ' için puan gönderimi zorunludur';
         }
         return $messages;
     }
