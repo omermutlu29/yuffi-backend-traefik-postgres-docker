@@ -25,7 +25,8 @@ class AppointmentResource extends JsonResource
             'price'=>$this->price,
             'child_information' => AppointmentChildrenResource::collection($this->registered_children),
             'is_cancelable_by_baby_sitter'=> $this->is_cancelable_by_baby_sitter,
-            'is_cancelable_by_parent'=> $this->is_cancelable_by_parent
+            'is_cancelable_by_parent'=> $this->is_cancelable_by_parent,
+            'has_rated'=> $this->has_rated
         ];
     }
 
