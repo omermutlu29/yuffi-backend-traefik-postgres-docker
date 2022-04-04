@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class BabySitterPoint extends Model
 {
+    protected $guarded=[];
     public function appointment(){
         return $this->belongsTo(Appointment::class);
     }
