@@ -33,7 +33,7 @@ class Appointment extends Model
 
     public function getHasRatedAttribute()
     {
-        return $this->points()->count() == 0;
+        return $this->points()->count() > 0;
     }
 
     public function baby_sitter()
