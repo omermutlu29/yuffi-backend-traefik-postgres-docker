@@ -26,12 +26,20 @@ class GivePointRequest extends BaseApiRequest
     {
         $validationArray = [];
         $validationArray['points'] = 'required';
-        foreach (PointType::all() as $pointType){
-            $validationArray['points.'.$pointType->id] = 'required';
-            $validationArray['points.'.$pointType->id.'.point'] = 'required|min:0|max:5';
-            $validationArray['points.'.$pointType->id.'.additional_text'] = 'max:100';
+        foreach (PointType::all() as $pointType) {
+            $validationArray['points.' . $pointType->id] = 'required';
+            $validationArray['points.' . $pointType->id . '.point'] = 'required|min:0|max:5';
+            $validationArray['points.' . $pointType->id . '.additional_text'] = 'max:100';
         }
 
         return $validationArray;
+    }
+
+    public function messages()
+    {
+        foreach (PointType::all() as $pointType) {
+            $messages['points.' . $pointType->id] = $pointType->name . ' için puan gönderimi zorunludur';
+        }
+        return $messages;
     }
 }
