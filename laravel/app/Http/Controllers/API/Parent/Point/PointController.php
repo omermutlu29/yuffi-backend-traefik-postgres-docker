@@ -43,7 +43,7 @@ class PointController extends BaseController
     {
         $data = $request->only('appointment_points');
         //try {
-            foreach ($data->appointment_points as $point) {
+            foreach ($data['appointment_points'] as $point) {
                 $this->pointService->rateAppointment(
                     $point->appointment_id,
                     $point->point_type,
