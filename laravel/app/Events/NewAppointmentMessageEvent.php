@@ -60,7 +60,7 @@ class NewAppointmentMessageEvent implements ShouldBroadcastNow
             'text' => $this->appointmentMessage->message,
             'createdAt' => $this->appointmentMessage->created_at->format('m/d/Y H:i:s'),
             'user' => [
-                '_id' => $this->appointmentMessage->userable_id,
+                '_id' => $this->appointmentMessage->userable->uuid,
                 'name' => $this->appointmentMessage->userable->name . ' ' . $this->appointmentMessage->userable->last_name,
                 'avatar' => $this->appointmentMessage->userable->photo,
             ]
