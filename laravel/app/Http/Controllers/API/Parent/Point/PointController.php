@@ -42,22 +42,20 @@ class PointController extends BaseController
     public function rateAppointment(GivePointRequest $request)
     {
         $data = $request->only('appointment_points');
-        return $data;
-        try {
-            foreach ($data as $point) {
-                /*$this->pointService->rateAppointment(
-                    $point['appointment_id'],
-                    $point['point_type'],
-                    $point['point'],
-                    $point['additionalText']
-                );*/
-                return $point[0];
+        //try {
+            foreach ($data->appointment_points as $point) {
+                $this->pointService->rateAppointment(
+                    $point->appointment_id,
+                    $point->point_type,
+                    $point->point,
+                    $point->additional_text
+                );
             }
             return $this->sendResponse(true, 'Puan başarılı bir şekilde verildi!');
-        } catch (\Exception $exception) {
+       /* } catch (\Exception $exception) {
             Log::info($exception);
             return $this->sendError('Bir sorun oluştu', ['error' => 'Bir sorun oluştu'], 400);
-        }
+        }*/
 
     }
 
