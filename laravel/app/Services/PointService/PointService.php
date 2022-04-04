@@ -25,7 +25,7 @@ class PointService implements IPointService
      * @return bool
      * @throws \Exception
      */
-    public function rateAppointment(Appointment $appointment, PointType $pointType, int $point, string $additionalText): bool
+    public function rateAppointment(Appointment $appointment, PointType $pointType, int $point, $additionalText=null): bool
     {
         if (BabySitterPoint::where([
                 'appointment_id' => $appointment->id,

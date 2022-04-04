@@ -11,5 +11,5 @@ use App\Models\PointType;
 interface IPointService
 {
     public function getUnratedAppointments(Parents $parent);
-    public function rateAppointment(Appointment $appointment, PointType $pointType, int $point, string $additionalText);
+    public function rateAppointment(Appointment $appointment, PointType $pointType, int $point, $additionalText=null);
 }
