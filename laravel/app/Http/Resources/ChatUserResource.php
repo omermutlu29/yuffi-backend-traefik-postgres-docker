@@ -13,7 +13,7 @@ class ChatUserResource extends JsonResource
             'text' => $this->message,
             'createdAt' => $this->created_at->format('m/d/Y H:i:s'),
             'user' => [
-                '_id' => (int)$this->userable_id,
+                '_id' => (int)$this->userable->uuid,
                 'name' => $this->userable->name . ' ' . $this->userable->last_name,
                 'avatar' => $this->userable->photo,
             ]
