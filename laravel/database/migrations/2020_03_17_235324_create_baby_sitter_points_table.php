@@ -19,7 +19,7 @@ class CreateBabySitterPointsTable extends Migration
             $table->foreignId('baby_sitter_id')->references('id')->on('baby_sitters');
             $table->foreignId('appointment_id')->references('id')->on('appointments');
             $table->integer('point');
-            $table->text('additional_text');
+            $table->text('additional_text')->nullable();
             $table->timestamps();
         });
     }

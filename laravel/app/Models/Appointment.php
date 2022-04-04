@@ -11,9 +11,10 @@ class Appointment extends Model
     protected $casts = ['payment_raw_result' => 'object'];
     protected $with = ['baby_sitter', 'appointment_location', 'town', 'registered_children'];
     protected $guarded = [];
-    protected $appends = ['is_cancelable_by_baby_sitter', 'is_cancelable_by_parent'];
+    protected $appends = ['is_cancelable_by_baby_sitter', 'is_cancelable_by_parent','has_rated'];
 
-    public function have30MinutesPassed(){
+    public function have30MinutesPassed()
+    {
         return now()->floatDiffInMinutes($this->created_at) <= 30;
     }
 
@@ -28,6 +29,11 @@ class Appointment extends Model
     {
         $appointmentFinishDate = Carbon::createFromFormat('Y-m-d H:i:s', $this->date . ' ' . $this->finish);
         return $appointmentFinishDate > now();
+    }
+
+    public function getHasRatedAttribute()
+    {
+        return $this->points()->count() == 0;
     }
 
     public function baby_sitter()
