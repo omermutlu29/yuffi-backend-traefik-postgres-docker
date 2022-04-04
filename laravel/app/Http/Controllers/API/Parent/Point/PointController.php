@@ -51,7 +51,7 @@ class PointController extends BaseController
                     $point['point'],
                     $point['additionalText']
                 );*/
-                return $point;
+                return $point[0];
             }
             return $this->sendResponse(true, 'Puan başarılı bir şekilde verildi!');
         } catch (\Exception $exception) {
