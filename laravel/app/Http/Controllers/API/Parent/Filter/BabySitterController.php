@@ -55,10 +55,8 @@ class BabySitterController extends BaseController
 
     )
     {
-        $favorites = auth()->user()->favorite_baby_sitters()->pluck('baby_sitter_id')->toArray();
         $data = [];
         $data['general'] = BabySitterResource::make($babySitter);
-        $data['general']['is_favorite'] = in_array($babySitter->id, $favorites);
         $data['points'] = [];
         $data['points'][] = [
             "title" => "Ortalama Puan",
