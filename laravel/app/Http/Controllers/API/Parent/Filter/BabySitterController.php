@@ -52,28 +52,30 @@ class BabySitterController extends BaseController
         BabySitter $babySitter,
         IAppointmentRepository $appointmentRepository,
         IBabySitterRepository $babySitterRepository,
+
     )
     {
-
+        $favorites = auth()->user()->favorite_baby_sitters()->pluck('baby_sitter_id')->toArray();
         $data = [];
         $data['general'] = BabySitterResource::make($babySitter);
+        $data['general']['is_favorite'] = in_array($babySitter->id, $favorites);
         $data['points'] = [];
         $data['points'][] = [
-          "title"=>"Ortalama Puan",
-          "point"=>4.3
+            "title" => "Ortalama Puan",
+            "point" => 4.3
         ];
         $data['points'][] = [
-            "title"=>"Giyim",
-            "point"=>3.1
+            "title" => "Giyim",
+            "point" => 3.1
         ];
         $data['points'][] = [
-            "title"=>"Zamanlama",
-            "point"=>3.5
+            "title" => "Zamanlama",
+            "point" => 3.5
         ];
 
         $data['points'][] = [
-            "title"=>"İletişim",
-            "point"=>4
+            "title" => "İletişim",
+            "point" => 4
         ];
         return $this->sendResponse($data, 'Bilgiler başarı ile getirildi!');
     }
