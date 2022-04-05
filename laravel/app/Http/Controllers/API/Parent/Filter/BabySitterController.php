@@ -11,7 +11,9 @@ use App\Interfaces\IRepositories\IAppointmentRepository;
 use App\Interfaces\IRepositories\IBabySitterRepository;
 use App\Interfaces\IServices\IAppointmentService;
 use App\Models\BabySitter;
+use App\Models\PointType;
 use App\Services\Appointment\BabySitterFilterService;
+use Intervention\Image\Point;
 
 class BabySitterController extends BaseController
 {
@@ -50,31 +52,18 @@ class BabySitterController extends BaseController
 
     public function show(
         BabySitter $babySitter,
-        IAppointmentRepository $appointmentRepository,
-        IBabySitterRepository $babySitterRepository
-
     )
     {
         $data = [];
         $data['general'] = BabySitterResource::make($babySitter);
         $data['points'] = [];
-        $data['points'][] = [
-            "title" => "Ortalama Puan",
-            "point" => 4.3
-        ];
-        $data['points'][] = [
-            "title" => "Giyim",
-            "point" => 3.1
-        ];
-        $data['points'][] = [
-            "title" => "Zamanlama",
-            "point" => 3.5
-        ];
+        foreach (PointType::where('id','!=',4)->get() as $pointType){
+            $data['points'][] = [
+                "title" => $pointType->name,
+                "point" => $babySitter->points()->where('point_type_id',$pointType->id)->avg('point')
+            ];
+        }
 
-        $data['points'][] = [
-            "title" => "İletişim",
-            "point" => 4
-        ];
         return $this->sendResponse($data, 'Bilgiler başarı ile getirildi!');
     }
 
