@@ -51,7 +51,7 @@ class BabySitterController extends BaseController
     public function show(
         BabySitter $babySitter,
         IAppointmentRepository $appointmentRepository,
-        IBabySitterRepository $babySitterRepository,
+        IBabySitterRepository $babySitterRepository
 
     )
     {
