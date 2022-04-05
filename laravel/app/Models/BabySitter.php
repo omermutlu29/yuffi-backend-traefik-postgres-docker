@@ -26,6 +26,11 @@ class BabySitter extends Authenticatable
         });
     }
 
+
+    public function experience_count(){
+        return $this->appointments()->count();
+    }
+
     public function getLastNameAttribute()
     {
         try {

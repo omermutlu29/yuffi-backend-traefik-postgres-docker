@@ -25,6 +25,7 @@ class BabySitterResource extends JsonResource
             'photo'=>$this->photo,
             'has_calendar_for_future'=>$this->has_calendar_for_future,
             'price_per_hour'=>$this->price_per_hour,
+            'experience_count'=>$this->experience_count()
 
         ];
         if (auth()->check()){
