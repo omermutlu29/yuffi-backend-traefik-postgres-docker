@@ -60,7 +60,7 @@ class BabySitterController extends BaseController
         foreach (PointType::where('id','!=',4)->get() as $pointType){
             $data['points'][] = [
                 "title" => $pointType->name,
-                "point" => $babySitter->points()->where('point_type_id',$pointType->id)->avg('point')
+                "point" => number_format($babySitter->points()->where('point_type_id',$pointType->id)->avg('point'),1)
             ];
         }
 
