@@ -24,7 +24,7 @@ class CardController extends BaseController
     {
         try {
             $userKey = $this->cardRepository->getUserKey(auth()->id());
-            if (!$userKey) throw new \Exception('Kayıtlı kartınız bulunmuyor. Kart eklemeden sistemi kullanamazsınız.', 400);
+            //if (!$userKey) throw new \Exception('Kayıtlı kartınız bulunmuyor. Kart eklemeden sistemi kullanamazsınız.', 400);
             $response = $this->registerCardService->getCardList($userKey);
             if (isset($response['rawResult'])) {
                 $response = json_decode($response['rawResult']);
