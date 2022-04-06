@@ -36,6 +36,18 @@ class Parents extends Authenticatable
         }
     }
 
+    public function isReadyToCreateAppointment()
+    {
+        return !(is_null($this->name)
+            || is_null($this->surname)
+            || is_null($this->email)
+            || is_null($this->tc)
+            || is_null($this->phone)
+            || is_null($this->birthday)
+            || is_null($this->photo)
+            || is_null($this->gender_id));
+    }
+
     public function modelName()
     {
         return '\Parents';

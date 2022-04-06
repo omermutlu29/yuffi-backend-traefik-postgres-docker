@@ -11,6 +11,7 @@ Route::prefix('parent')->group(function () {
         Route::post('store', [\App\Http\Controllers\API\Parent\Auth\ProfileController::class, 'storeProfile']);
         Route::post('update', [\App\Http\Controllers\API\Parent\Auth\ProfileController::class, 'updateProfile']);
         Route::get('get-profile', [\App\Http\Controllers\API\Parent\Auth\ProfileController::class, 'getProfile']);
+        Route::get('is-ready-to-create-appointment',[\App\Http\Controllers\API\Parent\Auth\ProfileController::class,'isReadyToCreateAppointment']);
     });//Bitti
 
     //Route::resource('child', \App\Http\Controllers\API\Parent\Child\ChildController::class);//Bitti
