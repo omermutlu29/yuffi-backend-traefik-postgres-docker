@@ -31,8 +31,8 @@ class CreateAppointmentRequest extends BaseApiRequest
         $add15Days = today()->addDays(15)->format('d-m-Y');
         $startTime = (Carbon::make('10:00')->format('H:i'));
         $endTime = (Carbon::make('21:00')->format('H:i'));
-        $ifItIsNotRegisteredCard = 'exclude_unless:create_params.paymentWithRegisteredCard,true';
-        $ifItIsRegisteredCard = 'exclude_unless:create_params.paymentWithRegisteredCard,false';
+        $ifItIsRegisteredCard = 'exclude_unless:create_params.paymentWithRegisteredCard,true';
+        $ifItIsNotRegisteredCard = 'exclude_unless:create_params.paymentWithRegisteredCard,false';
         return [
             'create_params' => 'required',
             'create_params.baby_sitter_id' => 'required|exists:baby_sitters,id',
