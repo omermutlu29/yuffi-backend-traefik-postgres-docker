@@ -63,7 +63,7 @@ class ProfileController extends BaseController
             }
             throw new \Exception('Profilinizi tamamlamadan randevu oluşturamazsınız!', 400);
         } catch (\Exception $exception) {
-            return $this->sendError('Uyarı!', ['message' => $exception->getMessage()]);
+            return $this->sendError('Uyarı!', ['message' => $exception->getMessage()],$exception->getCode());
         }
 
     }
