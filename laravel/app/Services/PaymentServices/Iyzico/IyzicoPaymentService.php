@@ -32,16 +32,7 @@ class IyzicoPaymentService extends IyzicoBaseService implements IPayment
         $products = self::createBasketItems($products);
         $request->setBasketItems($products);
         $payment = \Iyzipay\Model\Payment::create($request, $this->options);
-        if ($payment->getStatus() != "success") {
-
-            throw new \Exception($payment->getErrorMessage(), 400);
-        }
-        $return = ['success' => $payment->getStatus() == 'success'];
-        if ($cardInformation['registerCard'] == true) {
-            $return['cardUserKey'] = $payment->getCardUserKey();
-            $return['cardToken'] = $payment->getCardToken();
-        }
-        return $return;
+        return $payment;
     }
 
     private static function createPaymentRequest($conversationId, $totalPrice): \Iyzipay\Request\CreatePaymentRequest

@@ -4,7 +4,6 @@
 namespace App\Interfaces\IServices;
 
 
-use App\Interfaces\IRepositories\ICardRepository;
 use App\Models\Appointment;
 
 interface IAppointmentPayment

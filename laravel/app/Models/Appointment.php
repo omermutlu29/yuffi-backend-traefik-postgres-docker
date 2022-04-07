@@ -11,11 +11,16 @@ class Appointment extends Model
     protected $casts = ['payment_raw_result' => 'object'];
     protected $with = ['baby_sitter', 'appointment_location', 'town', 'registered_children'];
     protected $guarded = [];
-    protected $appends = ['is_cancelable_by_baby_sitter', 'is_cancelable_by_parent','has_rated'];
+    protected $appends = ['is_cancelable_by_baby_sitter', 'is_cancelable_by_parent', 'has_rated'];
 
     public function have30MinutesPassed()
     {
         return now()->floatDiffInMinutes($this->created_at) <= 30;
+    }
+
+    public function payment_transactions(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(PaymentTransaction::class);
     }
 
 

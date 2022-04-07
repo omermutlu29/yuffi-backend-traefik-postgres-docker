@@ -19,24 +19,32 @@ class PayAppointmentAmount implements IAppointmentPayment
 
     public function payToAppointment(Appointment $appointment, array $cardData)
     {
+
         $this->appointment = $appointment;
-        $paymentStatus = $this->paymentService->pay(
+        $payment = $paymentStatus = $this->paymentService->pay(
             $cardData,
             $this->prepareProducts(),
             $this->prepareAddressInformation(),
             $this->prepareBuyerInformation(),
             $this->appointment->price,
             $this->appointment->id);
-        if (!$paymentStatus) {
-            throw new \Exception('Bir sorun oluştu', 400);
+
+        if ($payment->getStatus() != "success") {
+            throw new \Exception($payment->getErrorMessage(), 400);
         }
-        if (isset($paymentStatus['cardUserKey']) && isset($paymentStatus['cardToken'])) {
+
+        if ($cardData['registerCard'] == true) {
             $appointment->parent->card_parents()->create([
-                'carduserkey' => $paymentStatus['cardUserKey'],
-                'cardtoken' => $paymentStatus['cardToken'],
-                'cardalias'=>'test'
+                'carduserkey' => $payment->getCardUserKey(),
+                'cardtoken' => $payment->getCardToken(),
+                'cardalias' => $payment->getCardFamily(),
             ]);
         }
+
+        $appointment->payment_transactions()->create([
+            'payment_result' => $payment->getRawResult(),
+            'is_success' => $payment->getStatus() == "success"
+        ]);
         return $paymentStatus;
     }
 
