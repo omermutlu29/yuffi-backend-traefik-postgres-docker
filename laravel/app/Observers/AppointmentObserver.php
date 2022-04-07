@@ -24,7 +24,7 @@ class AppointmentObserver
      */
     public function created(Appointment $appointment)
     {
-        if ($appointment->baby_sitter->google_st !== null) {
+       /* if ($appointment->baby_sitter->google_st !== null) {
             $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'appointment_list'], 'Yeni Randevu!', 'Yeni bir randevu oluştu, 30 dakika içerisinde iptal etmezsen kabul etmiş sayılacaksın', $appointment->baby_sitter->google_st);
         }
 
@@ -49,7 +49,7 @@ class AppointmentObserver
         } catch (\Exception $exception) {
             Log::info($exception);
         }
-
+*/
 
     }
 

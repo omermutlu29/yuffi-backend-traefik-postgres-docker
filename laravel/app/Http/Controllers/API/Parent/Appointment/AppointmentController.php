@@ -10,10 +10,11 @@ use App\Http\Requests\GetAppointmentDetailRequest;
 use App\Http\Requests\Parent\Appointment\AppointmentCancelRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Interfaces\IRepositories\IAppointmentRepository;
+use App\Interfaces\IServices\IAppointmentPayment;
 use App\Interfaces\IServices\IAppointmentService;
+use App\Interfaces\PaymentInterfaces\IPaymentWithRegisteredCard;
 use App\Models\Appointment;
 use App\Services\Appointment\BabySitterFilterService;
-use Carbon\Carbon;
 
 class AppointmentController extends BaseController
 {
@@ -58,42 +59,46 @@ class AppointmentController extends BaseController
         }
     }
 
-    public function createAppointment(CreateAppointmentRequest $request, IAppointmentService $appointmentService, BabySitterFilterService $appointmentFilterService)
+    public function createAppointment(
+        CreateAppointmentRequest $request,
+        IAppointmentService $appointmentService,
+        BabySitterFilterService $appointmentFilterService,
+        IAppointmentPayment $paymentService
+    )
     {
-        try {
-            $data = $request->only('create_params');
-            $data = $data['create_params'];
-            $data['date'] = Carbon::createFromFormat('d-m-Y', $data['date']);
-            if ($appointmentFilterService->isBabySitterStillAvailable($data, $data['baby_sitter_id'])) {
-                if (!$appointmentService->create($data['baby_sitter_id'], auth()->id(), $data)) {
-                    return $this->sendError('Hata!', 'Bir sorun oluştu lütfen tekrar deneyin!');
-                }
-                return $this->sendResponse(true, 'Randevu başarı ile oluşturuldu', 200);
-            } else {
-                return $this->sendError('Hata!', 'Bakıcı belirttiğiniz zaman(lar) içerisinde müsait görünmemektedir!');
-            }
-        } catch (\Exception $exception) {
-            return $this->sendError('Hata', $exception->getMessage(), 400);
-        }
+        //try {
+            $data = $request->manipulateData();
+            $cardData = $request->generateCardData($data);
+            //Bakıcı halen müsait mi ?
+
+            $appointmentFilterService->isBabySitterStillAvailable($data, $data['baby_sitter_id']) ??
+            throw new \Exception('Bakıcı belirttiğiniz zaman(lar) içerisinde müsait görünmemektedir!', 400);
+
+            //Appointment oluşturulabildi mi ?
+            $appointment = $appointmentService->create($data['baby_sitter_id'], auth()->id(), $data) ??
+                throw new \Exception('Bir sorun oluştu lütfen tekrar deneyin!', 400);
+
+            //Ödeme alınabildi mi ?
+            $paymentService->payToAppointment($appointment, $cardData);
+            return $this->sendResponse(true, 'Randevu başarı ile oluşturuldu', 200);
+        //} catch (\Exception $exception) {
+        //    return $this->sendError('Hata', ['message' => $exception->getMessage()], 400);
+       // }
     }
 
     public function cancelAppointment(AppointmentCancelRequest $request, IAppointmentService $appointmentService)
     {
         try {
-            if ($appointmentService->cancelAppointment((int)$request->appointment_id, auth()->user())){
-                return $this->sendResponse(true,'Randevu başarı ile iptal edildi');
-            }else{
-                return $this->sendError('Hata', ['hata'=>'randevu iptal edilirken bir hata ile karşılaşıldı'], 400);
+            if ($appointmentService->cancelAppointment((int)$request->appointment_id, auth()->user())) {
+                return $this->sendResponse(true, 'Randevu başarı ile iptal edildi');
+            } else {
+                return $this->sendError('Hata', ['hata' => 'randevu iptal edilirken bir hata ile karşılaşıldı'], 400);
             }
 
         } catch (\Exception $exception) {
             return $this->sendError('Hata', null, 400);
         }
     }
-
-
-
-
 
 
 }

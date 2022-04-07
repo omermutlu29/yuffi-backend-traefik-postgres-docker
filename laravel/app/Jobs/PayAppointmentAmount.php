@@ -2,120 +2,48 @@
 
 namespace App\Jobs;
 
-use App\Interfaces\NotificationInterfaces\INotification;
-use App\Interfaces\PaymentInterfaces\IPaymentWithRegisteredCard;
+use App\Interfaces\IServices\IAppointmentPayment;
+use App\Interfaces\PaymentInterfaces\IPayment;
 use App\Models\Appointment;
-use App\Models\PaymentTransaction;
-use App\Services\NotificationServices\PushNotificationService;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
+use JetBrains\PhpStorm\ArrayShape;
 
-class PayAppointmentAmount implements ShouldQueue
+class PayAppointmentAmount implements IAppointmentPayment
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-
-    public $tries = 5;
+    private IPayment $paymentService;
     private Appointment $appointment;
-    private string $cardUserKey;
-    private string $cardToken;
-    private array $addressInformation;
-    private array $products;
-    private array $buyerInformation;
 
-    private int $registeredCardId;
+    public function __construct(IPayment $paymentService)
+    {
+        $this->paymentService = $paymentService;
+    }
 
-
-    /**
-     * Create a new job instance.
-     *
-     * @param Appointment $appointment
-     * @param INotification $notificationService
-     * @throws \Exception
-     */
-    public function __construct(Appointment $appointment)
+    public function payToAppointment(Appointment $appointment, array $cardData)
     {
         $this->appointment = $appointment;
-        $this->prepareCardData();
-        $this->prepareAddressInformation();
-        $this->prepareProducts();
-        $this->prepareBuyerInformation();
-    }
-
-    public function failed(\Exception $e = null)
-    {
-        Log::info($this->attempts());
-    }
-
-
-    public function handle(PushNotificationService $notificationService, IPaymentWithRegisteredCard $paymentWithRegisteredCardService)
-    {
-        try {
-            $paymentTransaction = PaymentTransaction::create([
-                'appointment_id' => $this->appointment->id,
-                'card_parent_id' => $this->registeredCardId,
-                'payment_result' => '{}',
-                'is_success' => false
+        $paymentStatus = $this->paymentService->pay(
+            $cardData,
+            $this->prepareProducts(),
+            $this->prepareAddressInformation(),
+            $this->prepareBuyerInformation(),
+            $this->appointment->price,
+            $this->appointment->id);
+        if (!$paymentStatus) {
+            throw new \Exception('Bir sorun oluştu', 400);
+        }
+        if (isset($paymentStatus['cardUserKey']) && isset($paymentStatus['cardToken'])) {
+            $appointment->parent->card_parents()->create([
+                'carduserkey' => $paymentStatus['cardUserKey'],
+                'cardtoken' => $paymentStatus['cardToken'],
+                'cardalias'=>'test'
             ]);
-
-            $resultJson = $paymentWithRegisteredCardService->payWithRegisteredCardForVirtualProducts(
-                $this->cardToken,
-                $this->cardUserKey,
-                $this->products,
-                $this->addressInformation,
-                $this->buyerInformation,
-                $this->appointment->price,
-                $this->appointment->id);
-            $result = json_decode($resultJson);
-            $isSuccessPayment = $result->status == "success";
-
-            if ($isSuccessPayment) {
-                $paymentTransaction->is_success = true;
-                $paymentTransaction->payment_result = $resultJson;
-                $paymentTransaction->save();
-                $notificationService->notify(
-                    ['appointment_id' => $this->appointment->id, 'type' => 'appointment_list'],
-                    'Ödemeniz başarı ile gerçekleşti',
-                    'Ödemeniz başarı ile gerçekleşti. Bakıcı ile iletişime geçebilirsiniz!',
-                    $this->appointment->parent->google_st);
-            }
-            if (!$isSuccessPayment) {
-                $paymentTransaction->payment_result = $resultJson;
-                $paymentTransaction->save();
-                $notificationService->notify(
-                    ['appointment_id' => $this->appointment->id, 'type' => 'credit_cards'],
-                    'Ödemeniz alınamadı',
-                    'Randevu için ödemeniz alınamadı lütfen kredi kartınızın limitini kontrol edin!',
-                    $this->appointment->parent->google_st);
-            }
-        } catch (\Throwable $exception) {
-            if ($this->attempts() == 5) {
-                throw $exception;
-            }
-            $this->release(now()->addSeconds(10));
         }
+        return $paymentStatus;
     }
 
-
-    private function prepareCardData()
-    {
-        $cardInformation = $this->appointment->parent->card_parents;
-        if (count($cardInformation) != 1) {
-            throw new \Exception('Kayıtlı kart yok veya birden fazla', 400);
-        }
-        $this->registeredCardId = $cardInformation[0]->id;
-        $this->cardUserKey = $cardInformation[0]->carduserkey;
-        $this->cardToken = $cardInformation[0]->cardtoken;
-    }
-
-    private function prepareAddressInformation()
+    #[ArrayShape(['full_name' => "string", 'city' => "string", 'country' => "string", 'address' => "string", 'zip_code' => "string"])] private function prepareAddressInformation()
     {
         $parent = $this->appointment->parent;
-        $this->addressInformation = [
+        return [
             'full_name' => $parent->name . ' ' . $parent->surname,
             'city' => 'İstanbul',
             'country' => 'Türkiye',
@@ -124,9 +52,9 @@ class PayAppointmentAmount implements ShouldQueue
         ];
     }
 
-    private function prepareProducts()
+    private function prepareProducts(): array
     {
-        $this->products = [
+        return [
             [
                 'id' => 1,
                 'name' => 'Bebek bakıcılığı',
@@ -136,10 +64,10 @@ class PayAppointmentAmount implements ShouldQueue
         ];
     }
 
-    private function prepareBuyerInformation()
+    private function prepareBuyerInformation(): array
     {
         $parent = $this->appointment->parent;
-        $this->buyerInformation = [
+        return [
             'id' => $parent->id,
             'name' => $parent->name,
             'surname' => $parent->surname,
@@ -155,4 +83,6 @@ class PayAppointmentAmount implements ShouldQueue
             'zip_code' => '34520',
         ];
     }
+
+
 }

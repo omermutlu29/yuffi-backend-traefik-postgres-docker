@@ -13,6 +13,7 @@ use App\Interfaces\IRepositories\IBabySitterCalendarRepository;
 use App\Interfaces\IRepositories\IBabySitterRepository;
 use App\Interfaces\IRepositories\ICardRepository;
 use App\Interfaces\IRepositories\IUserRepository;
+use App\Interfaces\IServices\IAppointmentPayment;
 use App\Interfaces\IServices\IAppointmentService;
 use App\Interfaces\IServices\IBabySitterCalendarService;
 use App\Interfaces\IServices\IChangableActiveStatus;
@@ -21,7 +22,7 @@ use App\Interfaces\IServices\IMessagingService;
 use App\Interfaces\IServices\IPointService;
 use App\Interfaces\IServices\IProfileService;
 use App\Interfaces\NotificationInterfaces\INotification;
-use App\Interfaces\PaymentInterfaces\IPaymentWithRegisteredCard;
+use App\Interfaces\PaymentInterfaces\IPayment;
 use App\Interfaces\PaymentInterfaces\IRegisterCardService;
 use App\Jobs\PayAppointmentAmount;
 use App\Listeners\NewAppointmentMessageListener;
@@ -66,7 +67,6 @@ class AppServiceProvider extends ServiceProvider
         if($this->app->environment('production')) {
             \URL::forceScheme('https');
         }
-        $this->app->when(PayAppointmentAmount::class)->needs(INotification::class)->give(PushNotificationService::class);
         $this->app->when(AppointmentObserver::class)->needs(INotification::class)->give(PushNotificationService::class);
         $this->app->when(NewAppointmentMessageListener::class)->needs(INotification::class)->give(PushNotificationService::class);
         $this->app->bind(IMessagingService::class, MessagingService::class);
@@ -76,7 +76,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(IRegisterCardService::class, IyzicoRegisterCardService::class);
 
         //Payment Systems
-        $this->app->bind(IPaymentWithRegisteredCard::class, IyzicoPaymentService::class);
+        $this->app->bind(IAppointmentPayment::class,PayAppointmentAmount::class);
+        $this->app->bind(IPayment::class, IyzicoPaymentService::class);
         //Payment System Ends
 
         //LOGIN BINDINGS

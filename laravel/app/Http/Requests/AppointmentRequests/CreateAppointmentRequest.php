@@ -4,8 +4,6 @@ namespace App\Http\Requests\AppointmentRequests;
 
 use App\Http\Requests\BaseApiRequest;
 use Carbon\Carbon;
-use LVR\CreditCard\CardExpirationMonth;
-use LVR\CreditCard\CardExpirationYear;
 use LVR\CreditCard\CardNumber;
 
 class CreateAppointmentRequest extends BaseApiRequest
@@ -51,14 +49,58 @@ class CreateAppointmentRequest extends BaseApiRequest
             'create_params.paymentWithRegisteredCard' => 'required|boolean',
             'create_params.creditCard' => 'required',
             //Kredi kartı bilgileri
+
             'create_params.creditCard.cardNumber' => [$ifItIsNotRegisteredCard, 'required', new CardNumber],
             'create_params.creditCard.cardHolderName' => [$ifItIsNotRegisteredCard, 'required', 'min:5'],
-            'create_params.creditCard.expireYear' => [$ifItIsNotRegisteredCard, 'required', new CardExpirationYear($this->get('expireMonth'))],
-            'create_params.creditCard.expireMonth' => [$ifItIsNotRegisteredCard, 'required', new CardExpirationMonth($this->get('expireYear'))],
+
+
+            'create_params.creditCard.expireYear' => [$ifItIsNotRegisteredCard, 'required'],
+            'create_params.creditCard.expireMonth' => [$ifItIsNotRegisteredCard, 'required'],
+
+
+            'create_params.creditCard.cvc' => [$ifItIsNotRegisteredCard, 'required'],
+            'create_params.creditCard.registerCard' => [$ifItIsNotRegisteredCard, 'required', 'boolean'],
             //Kredi kartı son
             'create_params.creditCard.cardToken' => [$ifItIsRegisteredCard, 'required'],
             //Kayıtlı kredi kartı
+
         ];
 
+    }
+
+    public function manipulateData()
+    {
+        $data = $this->only('create_params');
+        $data = $data['create_params'];
+        $data['date'] = Carbon::createFromFormat('d-m-Y', $data['date']);
+        return $data;
+    }
+
+    public function generateCardData($data)
+    {
+        $creditCard = $this->user()->card_parents()->first();
+        if ($data['paymentWithRegisteredCard'] == true) {
+            $creditCard ?? throw new \Exception('Kredi kartı bulunamadı!', 400);
+            $cardData = [
+                'cardToken' => $creditCard->cardtoken,
+                'cardUserKey' => $creditCard->carduserkey
+            ];
+        } else {
+
+            $cardData = [
+                'cardNumber' => $this->get('create_params')['creditCard']['cardNumber'],
+                'cardHolderName' => $this->get('create_params')['creditCard']['cardHolderName'],
+                'expireYear' => $this->get('create_params')['creditCard']['expireYear'],
+                'expireMonth' => $this->get('create_params')['creditCard']['expireMonth'],
+                'cvc' => $this->get('create_params')['creditCard']['cvc'],
+                'registerCard' => $this->get('create_params')['creditCard']['registerCard'],
+            ];
+
+            if ($creditCard) {
+                $cardData['cardUserKey'] = $creditCard->carduserkey;
+            }
+
+        }
+        return $cardData;
     }
 }

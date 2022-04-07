@@ -76,18 +76,17 @@ class AppointmentService implements IAppointmentService
                 'appointment_location_id' => $data['location_id'],
                 'location' => $data['location'] ?? null
             ];
+            //TODO Bakılacak
             $calculatedTimes = CalendarGetResource::generateTimesForSearching($data['time'], $data['hour']);
-            DB::transaction(function () use ($appointmentData, $data) {
+            return DB::transaction(function () use ($appointmentData, $data) {
                 $appointment = $this->appointmentRepository->store($appointmentData);
                 if (!$appointment)
                     throw new \Exception('Appointment could not created', 401);
                 foreach ($data['children'] as $child) {
                     $appointment->registered_children()->create($child);
                 }
-
-
+                return $appointment;
             });
-            return true;
         } catch (\Exception $exception) {
             throw $exception;
         }

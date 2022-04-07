@@ -3,14 +3,14 @@
 
 namespace App\Services\PaymentServices\Iyzico;
 
-use App\Interfaces\PaymentInterfaces\IPaymentWithRegisteredCard;
+use App\Interfaces\PaymentInterfaces\IPayment;
 
 
-class IyzicoPaymentService extends IyzicoBaseService implements IPaymentWithRegisteredCard
+class IyzicoPaymentService extends IyzicoBaseService implements IPayment
 {
-    public function payWithRegisteredCardForVirtualProducts(
-        string $cardToken,
-        string $cardUserKey,
+
+    public function pay(
+        array $cardInformation,
         array $products,
         array $addressInformation,
         array $buyerInformation,
@@ -18,6 +18,34 @@ class IyzicoPaymentService extends IyzicoBaseService implements IPaymentWithRegi
         int $conversationId)
     {
         $this->setOptions();
+        $request = self::createPaymentRequest($conversationId, $totalPrice);
+
+        $paymentCard = self::createPaymentCard($cardInformation);
+        $request->setPaymentCard($paymentCard);
+
+        $buyer = self::createBuyer($buyerInformation);
+        $request->setBuyer($buyer);
+
+        $billingAddress = self::createBillingAddress($addressInformation);
+        $request->setBillingAddress($billingAddress);
+
+        $products = self::createBasketItems($products);
+        $request->setBasketItems($products);
+        $payment = \Iyzipay\Model\Payment::create($request, $this->options);
+        if ($payment->getStatus() != "success") {
+
+            throw new \Exception($payment->getErrorMessage(), 400);
+        }
+        $return = ['success' => $payment->getStatus() == 'success'];
+        if ($cardInformation['registerCard'] == true) {
+            $return['cardUserKey'] = $payment->getCardUserKey();
+            $return['cardToken'] = $payment->getCardToken();
+        }
+        return $return;
+    }
+
+    private static function createPaymentRequest($conversationId, $totalPrice): \Iyzipay\Request\CreatePaymentRequest
+    {
         $request = new \Iyzipay\Request\CreatePaymentRequest();
         $request->setLocale(\Iyzipay\Model\Locale::TR);
         $request->setConversationId($conversationId);
@@ -28,13 +56,11 @@ class IyzicoPaymentService extends IyzicoBaseService implements IPaymentWithRegi
         $request->setBasketId($conversationId);
         $request->setPaymentChannel(\Iyzipay\Model\PaymentChannel::WEB);
         $request->setPaymentGroup(\Iyzipay\Model\PaymentGroup::PRODUCT);
+        return $request;
+    }
 
-        $paymentCard = new \Iyzipay\Model\PaymentCard();
-        $paymentCard->setCardToken($cardToken);
-        $paymentCard->setCardUserKey($cardUserKey);
-        $paymentCard->setRegisterCard(0);
-        $request->setPaymentCard($paymentCard);
-
+    private static function createBuyer($buyerInformation): \Iyzipay\Model\Buyer
+    {
         $buyer = new \Iyzipay\Model\Buyer();
         $buyer->setId($buyerInformation['id']);
         $buyer->setName($buyerInformation['name']);
@@ -49,16 +75,22 @@ class IyzicoPaymentService extends IyzicoBaseService implements IPaymentWithRegi
         $buyer->setCity($buyerInformation['city']);
         $buyer->setCountry($buyerInformation['country']);
         $buyer->setZipCode($buyerInformation['zip_code']);
-        $request->setBuyer($buyer);
+        return $buyer;
+    }
 
+    private static function createBillingAddress($addressInformation): \Iyzipay\Model\Address
+    {
         $billingAddress = new \Iyzipay\Model\Address();
         $billingAddress->setContactName($addressInformation['full_name']);
         $billingAddress->setCity($addressInformation['city']);
         $billingAddress->setCountry($addressInformation['country']);
         $billingAddress->setAddress($addressInformation['address']);
         $billingAddress->setZipCode($addressInformation['zip_code']);
-        $request->setBillingAddress($billingAddress);
+        return $billingAddress;
+    }
 
+    private static function createBasketItems($products): array
+    {
         $basketItems = [];
         foreach ($products as $product) {
             $newProduct = new \Iyzipay\Model\BasketItem();
@@ -69,9 +101,38 @@ class IyzicoPaymentService extends IyzicoBaseService implements IPaymentWithRegi
             $newProduct->setPrice((float)$product['price']);
             $basketItems[] = $newProduct;
         }
-        $request->setBasketItems($basketItems);
-        $payment = \Iyzipay\Model\Payment::create($request, $this->options);
-        \Illuminate\Support\Facades\Log::info($payment->getRawResult());
-        return $payment->getRawResult();
+        return $basketItems;
     }
+
+    private static function createPaymentCard($cardInformation): \Iyzipay\Model\PaymentCard
+    {
+        $paymentCard = new \Iyzipay\Model\PaymentCard();
+        if (
+            isset($cardInformation['cardHolderName']) &&
+            isset($cardInformation['cardNumber']) &&
+            isset($cardInformation['expireMonth']) &&
+            isset($cardInformation['expireYear']) &&
+            isset($cardInformation['cvc']) &&
+            isset($cardInformation['registerCard'])
+        ) {
+            $paymentCard->setCardNumber($cardInformation['cardNumber']);
+            $paymentCard->setCardHolderName($cardInformation['cardHolderName']);
+            $paymentCard->setExpireMonth($cardInformation['expireMonth']);
+            $paymentCard->setExpireYear($cardInformation['expireYear']);
+            $paymentCard->setCvc($cardInformation['cvc']);
+            if (isset($cardInformation['cardUserKey'])) {
+                $paymentCard->setRegisterCard($cardInformation['registerCard']);
+                $paymentCard->setCardUserKey($cardInformation['cardUserKey']);
+            }
+        }
+
+        if (isset($cardInformation['cardUserKey']) && isset($cardInformation['cardToken'])) {
+            $paymentCard->setCardToken($cardInformation['cardToken']);
+            $paymentCard->setCardUserKey($cardInformation['cardUserKey']);
+        }
+
+        return $paymentCard;
+
+    }
+
 }
