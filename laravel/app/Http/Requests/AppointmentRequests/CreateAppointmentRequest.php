@@ -96,7 +96,7 @@ class CreateAppointmentRequest extends BaseApiRequest
                 'registerCard' => $this->get('create_params')['creditCard']['registerCard'],
             ];
 
-            if ($creditCard) {
+            if ($creditCard && $cardData['registerCard'] == 1) {
                 $cardData['cardUserKey'] = $creditCard->carduserkey;
             }
 
