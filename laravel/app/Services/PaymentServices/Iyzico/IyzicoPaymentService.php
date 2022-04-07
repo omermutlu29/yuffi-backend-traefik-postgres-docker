@@ -115,14 +115,15 @@ class IyzicoPaymentService extends IyzicoBaseService implements IPayment
                 $paymentCard->setRegisterCard($cardInformation['registerCard']);
                 $paymentCard->setCardUserKey($cardInformation['cardUserKey']);
             }
+            return $paymentCard;
         }
 
         if (isset($cardInformation['cardUserKey']) && isset($cardInformation['cardToken'])) {
             $paymentCard->setCardToken($cardInformation['cardToken']);
             $paymentCard->setCardUserKey($cardInformation['cardUserKey']);
+            return $paymentCard;
         }
 
-        return $paymentCard;
 
     }
 
