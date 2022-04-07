@@ -33,7 +33,7 @@ class PayAppointmentAmount implements IAppointmentPayment
             throw new \Exception($payment->getErrorMessage(), 400);
         }
 
-        if ($cardData['registerCard'] == true) {
+        if (isset($cardData['registerCard']) && $cardData['registerCard'] == true) {
             $appointment->parent->card_parents()->create([
                 'carduserkey' => $payment->getCardUserKey(),
                 'cardtoken' => $payment->getCardToken(),
