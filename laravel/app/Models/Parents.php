@@ -45,7 +45,10 @@ class Parents extends Authenticatable
             || is_null($this->phone)
             || is_null($this->birthday)
             || is_null($this->photo)
-            || is_null($this->gender_id));
+            || is_null($this->gender_id)
+            || is_null($this->city)
+            || is_null($this->address)
+        );
     }
 
     public function modelName()

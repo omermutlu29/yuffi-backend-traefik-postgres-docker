@@ -30,6 +30,7 @@ class CreateParentsTable extends Migration
             $table->string('google_st')->nullable();
             $table->string('network')->nullable();
             $table->text('address')->nullable();
+            $table->string('city')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
