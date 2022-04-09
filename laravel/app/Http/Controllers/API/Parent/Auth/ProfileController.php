@@ -34,11 +34,15 @@ class ProfileController extends BaseController
 
     public function updateProfile(ParentUpdateProfileRequest $request)
     {
+        try {
             return $this->parentProfileService->update(
                 \auth()->id(),
                 $request->only('name', 'surname', 'tc', 'birthday', 'service_contract', 'gender_id', 'photo', 'email','address','city')
             ) ? $this->sendResponse($this->parentProfileService->getProfile(\auth()->id()), 'Profiliniz güncellendi') :
                 $this->sendError('Bir hata ile karşılaşıldı', 400);
+        } catch (\Exception $exception) {
+            return $this->sendError('Hata!', ['message' => [$exception->getMessage()]], 400);
+        }
     }
 
     public function getProfile()
