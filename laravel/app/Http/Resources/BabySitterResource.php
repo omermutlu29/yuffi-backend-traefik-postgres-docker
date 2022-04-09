@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Parents;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class BabySitterResource extends JsonResource
@@ -28,7 +29,7 @@ class BabySitterResource extends JsonResource
             'experience_count'=>$this->experience_count()
 
         ];
-        if (auth()->check()){
+        if (auth()->check() && auth()->user() instanceof Parents){
             $data['is_favorite']=in_array($this->id,auth()->user()->favorite_baby_sitters()->pluck('baby_sitter_id')->toArray());
         }
 
