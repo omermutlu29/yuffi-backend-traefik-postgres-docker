@@ -110,7 +110,7 @@ class IyzicoPaymentService extends IyzicoBaseService implements IPayment
             $paymentCard->setExpireMonth($cardInformation['expireMonth']);
             $paymentCard->setExpireYear($cardInformation['expireYear']);
             $paymentCard->setCvc($cardInformation['cvc']);
-            if (isset($cardInformation['registerCard'])) {
+            if (isset($cardInformation['registerCard']) && $cardInformation['registerCard'] == 1) {
                 $paymentCard->setRegisterCard($cardInformation['registerCard']);
             }
             return $paymentCard;
