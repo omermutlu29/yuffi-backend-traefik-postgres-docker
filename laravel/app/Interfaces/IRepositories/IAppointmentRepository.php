@@ -30,7 +30,7 @@ interface IAppointmentRepository
 
     public function approveAppointment(int $appointmentId);
 
-    public function disapprove(Appointment $appointment);
+    public function disapprove(int $appointmentId);
 
     public function store(array $data);
 
