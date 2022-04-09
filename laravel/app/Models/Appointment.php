@@ -128,11 +128,11 @@ class Appointment extends Model
         return $query->whereNotIn('appointment_status_id', [2, 5]);
     }
 
-    public function scopeFuture($query)
+    public function scopeFuture($query,int $days=15)
     {
         $query->notCanceled();
         $nowDate = now()->format('Y-m-d');
-        $futureDate = now()->addDays(15)->format('Y-m-d');
+        $futureDate = now()->addDays($days)->format('Y-m-d');
         $nowHour = now()->format('H:i');
         return $query->where('date', '>', $nowDate)->where('date', '<', $futureDate)->orWhere(function ($query) use ($nowDate, $nowHour) {
             $query->where('date', $nowDate)->where('date')->where('start', '>', $nowHour);
@@ -140,4 +140,6 @@ class Appointment extends Model
             $query->where('date', $futureDate)->where('date')->where('start', '>', $nowHour);
         });
     }
+
+
 }
