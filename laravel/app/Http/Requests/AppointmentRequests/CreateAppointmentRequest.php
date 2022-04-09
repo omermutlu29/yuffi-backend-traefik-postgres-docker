@@ -30,6 +30,7 @@ class CreateAppointmentRequest extends BaseApiRequest
         $startTime = (Carbon::make('10:00')->format('H:i'));
         $endTime = (Carbon::make('21:00')->format('H:i'));
         $ifItIsRegisteredCard = 'exclude_unless:create_params.paymentWithRegisteredCard,true';
+
         $ifItIsNotRegisteredCard = 'exclude_unless:create_params.paymentWithRegisteredCard,false';
         return [
             'create_params' => 'required',
