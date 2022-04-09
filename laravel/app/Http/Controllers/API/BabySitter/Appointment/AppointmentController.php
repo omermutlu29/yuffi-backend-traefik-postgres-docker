@@ -49,12 +49,12 @@ class AppointmentController extends BaseController
 
     public function getFutureAppointments()
     {
-        try {
+        //try {
             return $this->sendResponse(
                 AppointmentResource::collection($this->appointmentRepository->getFutureAppointmentsByBabySitterId(auth()->id())), 'Randevularınız getirildi!');
-        } catch (\Exception $exception) {
-            return $this->sendError($exception->getMessage(), $exception->getMessage(), 400);
-        }
+        //} catch (\Exception $exception) {
+        //    return $this->sendError($exception->getMessage(), $exception->getMessage(), 400);
+        //}
     }
 
 
