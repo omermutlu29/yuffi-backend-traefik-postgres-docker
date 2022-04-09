@@ -42,5 +42,5 @@ interface IAppointmentRepository
 
     public function getFutureAppointmentsByBabySitterId(int $babySitterId);
 
-    public function getApproachingAppointments(int $babySitterId);
+    public function getUpcomingAppointments(int $babySitterId);
 }

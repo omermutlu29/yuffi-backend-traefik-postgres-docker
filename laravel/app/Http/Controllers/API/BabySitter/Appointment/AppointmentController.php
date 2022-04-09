@@ -57,10 +57,10 @@ class AppointmentController extends BaseController
         }
     }
 
-    public function getApproachingAppointments(){
+    public function getUpcomingAppointments(){
         try{
             return $this->sendResponse(
-                AppointmentResource::collection($this->appointmentRepository->getApproachingAppointments(auth()->id())), 'Randevularınız getirildi!');
+                AppointmentResource::collection($this->appointmentRepository->getUpcomingAppointments(auth()->id())), 'Randevularınız getirildi!');
         }catch (\Exception $exception){
             return $this->sendError('Hata',$exception->getMessage(),400);
         }
