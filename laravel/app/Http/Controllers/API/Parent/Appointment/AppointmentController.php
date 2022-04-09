@@ -88,16 +88,16 @@ class AppointmentController extends BaseController
 
     public function cancelAppointment(AppointmentCancelRequest $request, IAppointmentService $appointmentService)
     {
-        try {
+        //try {
             if ($appointmentService->cancelAppointment((int)$request->appointment_id, auth()->user())) {
                 return $this->sendResponse(true, 'Randevu başarı ile iptal edildi');
             } else {
                 return $this->sendError('Hata', ['hata' => 'randevu iptal edilirken bir hata ile karşılaşıldı'], 400);
             }
 
-        } catch (\Exception $exception) {
+        /*} catch (\Exception $exception) {
             return $this->sendError('Hata', null, 400);
-        }
+        }*/
     }
 
 
