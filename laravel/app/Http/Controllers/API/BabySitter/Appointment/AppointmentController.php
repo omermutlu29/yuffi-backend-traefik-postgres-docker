@@ -11,6 +11,7 @@ use App\Http\Resources\AppointmentResource;
 use App\Interfaces\IRepositories\IAppointmentRepository;
 use App\Interfaces\IServices\IAppointmentService;
 use App\Models\Appointment;
+use App\Services\Appointment\AppointmentService;
 
 class AppointmentController extends BaseController
 {
@@ -57,22 +58,28 @@ class AppointmentController extends BaseController
         }
     }
 
-    public function getUpcomingAppointments(){
-        try{
+    public function getUpcomingAppointments()
+    {
+        try {
             return $this->sendResponse(
                 AppointmentResource::collection($this->appointmentRepository->getUpcomingAppointments(auth()->id())), 'Randevularınız getirildi!');
-        }catch (\Exception $exception){
-            return $this->sendError('Hata',$exception->getMessage(),400);
+        } catch (\Exception $exception) {
+            return $this->sendError('Hata', $exception->getMessage(), 400);
         }
     }
 
 
-    public function disapprove(ApproveDisapproveAppointmentRequest $appointmentRequest)
+    public function disapprove(ApproveDisapproveAppointmentRequest $appointmentRequest, AppointmentService $appointmentService)
     {
         try {
-            return $this->sendResponse($this->appointmentService->disapproveAppointment($appointmentRequest->appointment_id), 'Başarılı bir şekilde iptal edildi!');
+            if ($appointmentService->cancelAppointment((int)$appointmentRequest->get('appointment_id'), auth()->user())) {
+                return $this->sendResponse(true, 'Randevu başarı ile iptal edildi');
+            } else {
+                return $this->sendError('Hata', ['hata' => 'Randevu iptal edilirken bir hata ile karşılaşıldı'], 400);
+            }
+
         } catch (\Exception $exception) {
-            $this->sendError('Hata', $exception->getMessage(), 400);
+            return $this->sendError('Hata', null, 400);
         }
     }
 }

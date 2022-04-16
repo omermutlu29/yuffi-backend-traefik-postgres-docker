@@ -3,17 +3,9 @@
 namespace App\Http\Requests\AppointmentRequests;
 
 use App\Http\Requests\BaseApiRequest;
-use App\Interfaces\IRepositories\IAppointmentRepository;
 
 class ApproveDisapproveAppointmentRequest extends BaseApiRequest
 {
-    private $appointmentRepository;
-
-    public function __construct(IAppointmentRepository $appointmentRepository)
-    {
-        $this->appointmentRepository = $appointmentRepository;
-    }
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -21,8 +13,7 @@ class ApproveDisapproveAppointmentRequest extends BaseApiRequest
      */
     public function authorize()
     {
-        $appointment = $this->appointmentRepository->getAppointmentById(\request()->post('appointment_id'));
-        return \request()->user()->can('update', $appointment);
+        return true;
     }
 
     /**

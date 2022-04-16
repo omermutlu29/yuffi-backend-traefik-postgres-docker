@@ -24,33 +24,17 @@ class AppointmentObserver
      */
     public function created(Appointment $appointment)
     {
-       /* if ($appointment->baby_sitter->google_st !== null) {
-            $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'appointment_list'], 'Yeni Randevu!', 'Yeni bir randevu oluştu, 30 dakika içerisinde iptal etmezsen kabul etmiş sayılacaksın', $appointment->baby_sitter->google_st);
-        }
-
-        if ($appointment->parent->google_st) {
-            $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'appointment_list'], 'Yeni Randevu!', 'Yeni randevu oluştu, bakıcı 30 dakika içerisinde iptal etmezse kartınızdan ödeme alınacaktır!', $appointment->parent->google_st);
-        }
-        try {
-            //Hata TODO
-            $startDate = $appointment->date;
-            $startDate = \Carbon\Carbon::create($startDate . ' ' . $appointment->start);
-            $range = (now()->diffInHours($startDate));
-            $paymentJob = new \App\Jobs\PayAppointmentAmount($appointment);
-            if ($range > 48) {
-                $startTime = now()->addHours($range - 48);
-                $paymentJob->delay($startTime);
-            }
-
-
-            $jobId = app(\Illuminate\Contracts\Bus\Dispatcher::class)->dispatch($paymentJob);
-            $appointment->job_id = $jobId;
-            $appointment->save();
-        } catch (\Exception $exception) {
-            Log::info($exception);
-        }
-*/
-
+        //TODO
+        //1. appointment tarihine ait saatleri bakıcının ajandasında
+        // rezerve olarak ata (1 saat öncesi ve sonrasını da blokla)
+        //
+        //2. ebeveyne bildirim gönder
+        //Mesaj paneliniz aktif! Şimdi bakıcı ile doğrudan iletişime geçebilirsiniz. Eşleştiğiniz bakıcının
+        //ilk 30 dakika iptal etme hakkı bulunmaktadır.
+        //3. bakıyıca bildirim gider : Bir eşleşme gerçekleşti! Şimdi ebeveyn ile mesaj paneli üzerinden doğrudan iletişime
+        //geçebilirsiniz! İlk 30 dakika iptal etme hakkınız bulunmaktadır!
+        //
+        //TODO
     }
 
     /**
@@ -61,8 +45,10 @@ class AppointmentObserver
      */
     public function updated(Appointment $appointment)
     {
-        if ($appointment->appointment_status_id == 5) {
+        if ($appointment->appointment_status_id == 2) {
             //TODO
+            //bakıcı iptal ettiyse
+            //TODO bakıcı iptal etti ve
         }
     }
 

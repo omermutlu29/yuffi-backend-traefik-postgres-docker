@@ -95,11 +95,32 @@ class AppointmentService implements IAppointmentService
     public function cancelAppointment(int $appointmentId, $user)
     {
         try {
+            $appointment = $this->appointmentRepository->getAppointmentById($appointmentId);
+            if (!$appointment) {
+                throw new \Exception('Appointment could not find', 400);
+            }
+
             if ($user instanceof BabySitter) {
-                return $this->appointmentRepository->updateAppointment($appointmentId, ['appointment_status_id' => 5]);
+                if ($appointment->baby_sitter_id != $user->id) {
+                    throw new \Exception('Kendinize ait olmayan randevuyu iptal edemezsiniz!', 400);
+                }
+                return $this->appointmentRepository->updateAppointment(
+                    $appointmentId,
+                    [
+                        'appointment_status_id' => 2,
+                        'is_rejected_by_baby_sitter' => true,
+                        'rejected_time_range' => now()->diffInHours($appointment->created_at)
+                    ]);
             }
             if ($user instanceof Parents) {
-                return $this->appointmentRepository->updateAppointment($appointmentId, ['appointment_status_id' => 2]);
+                if ($appointment->parent_id != $user->id) {
+                    throw new \Exception('Kendinize ait olmayan randevuyu iptal edemezsiniz!', 400);
+                }
+                return $this->appointmentRepository->updateAppointment($appointmentId, [
+                    'appointment_status_id' => 3,
+                    'is_rejected_by_baby_sitter' => false,
+                    'rejected_time_range' => now()->diffInHours($appointment->created_at)
+                ]);
             }
         } catch (\Exception $exception) {
             throw new \Exception('Randevu iptal edilemedi', 400);

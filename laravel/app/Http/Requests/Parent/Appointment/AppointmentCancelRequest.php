@@ -13,7 +13,7 @@ class AppointmentCancelRequest extends FormRequest
      */
     public function authorize()
     {
-        return true; //TODO
+        return true;
     }
 
     /**

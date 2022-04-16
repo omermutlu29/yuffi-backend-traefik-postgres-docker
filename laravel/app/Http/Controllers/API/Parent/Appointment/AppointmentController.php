@@ -66,7 +66,7 @@ class AppointmentController extends BaseController
         IAppointmentPayment $paymentService
     )
     {
-        //try {
+        try {
             $data = $request->manipulateData();
             $cardData = $request->generateCardData($data);
             //Bakıcı halen müsait mi ?
@@ -81,23 +81,23 @@ class AppointmentController extends BaseController
             //Ödeme alınabildi mi ?
             $paymentService->payToAppointment($appointment, $cardData);
             return $this->sendResponse(true, 'Randevu başarı ile oluşturuldu', 200);
-        //} catch (\Exception $exception) {
-        //    return $this->sendError('Hata', ['message' => $exception->getMessage()], 400);
-       // }
+        } catch (\Exception $exception) {
+            return $this->sendError('Hata', ['message' => $exception->getMessage()], 400);
+        }
     }
 
     public function cancelAppointment(AppointmentCancelRequest $request, IAppointmentService $appointmentService)
     {
-        //try {
+        try {
             if ($appointmentService->cancelAppointment((int)$request->appointment_id, auth()->user())) {
                 return $this->sendResponse(true, 'Randevu başarı ile iptal edildi');
             } else {
-                return $this->sendError('Hata', ['hata' => 'randevu iptal edilirken bir hata ile karşılaşıldı'], 400);
+                return $this->sendError('Hata', ['hata' => 'Randevu iptal edilirken bir hata ile karşılaşıldı'], 400);
             }
 
-        /*} catch (\Exception $exception) {
+        } catch (\Exception $exception) {
             return $this->sendError('Hata', null, 400);
-        }*/
+        }
     }
 
 

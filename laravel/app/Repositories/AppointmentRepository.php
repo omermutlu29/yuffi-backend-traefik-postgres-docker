@@ -81,23 +81,6 @@ class AppointmentRepository implements IAppointmentRepository
         return Appointment::where('id', $appointmentId)->update(['baby_sitter_approved' => true, 'appointment_status_id' => 3]);
     }
 
-    public function disapprove(int $appointmentId)
-    {
-        $appointment = $this->getAppointmentById($appointmentId);
-        return $appointment->update(
-            [
-                'appointment_status_id' => 5,
-                'is_rejected_by_baby_sitter' => true,
-                'rejected_time_range' => now()->diffInHours($appointment->created_at)
-            ]
-        );
-    }
-
-    public function disapproveAppointment(int $appointmentId)
-    {
-        // TODO: Implement disapproveAppointment() method.
-    }
-
     public function store(array $data)
     {
         return Appointment::create($data);
