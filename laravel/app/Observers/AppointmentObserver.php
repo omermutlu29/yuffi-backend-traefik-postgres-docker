@@ -26,12 +26,12 @@ class AppointmentObserver
         }
     }
 
+
     public function updated(Appointment $appointment)
     {
         if ($appointment->appointment_status_id == 2) {
             $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'messaging'], 'Yeni Mesaj', 'Bakıcınız buluşmayı iptal etti. Dilerseniz şimdi yeni bir arama yapabilirsiniz. Ücret iadesi hesabınıza yansıtılacaktır.', $appointment->parent->google_st);
             $this->makeAvailableBabySitterTimes($appointment);
-
         }
         if ($appointment->appointment_status_id == 3) {
             $message = 'Eşleşme ebeveyn tarafından iptal edildi.';
@@ -42,6 +42,7 @@ class AppointmentObserver
             $message = $message . " Buluşma saati tekrar ajandanızda açık hale getirilmiştir.";
             $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'messaging'], 'Yeni Mesaj', $message, $appointment->baby_sitter->google_st);
             $this->makeAvailableBabySitterTimes($appointment);
+
         }
     }
 
@@ -72,7 +73,7 @@ class AppointmentObserver
             $times = $date->times()
                 ->whereTime('start', '>=', $startTime->format('H:i:s'))
                 ->whereTime('start', '<=', $finishTime->format('H:i:s'))
-                ->update(['time_status_id'=>1]);
+                ->update(['time_status_id' => 1]);
         }
     }
 

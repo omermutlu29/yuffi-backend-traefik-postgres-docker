@@ -104,8 +104,7 @@ class AppointmentService implements IAppointmentService
                 if ($appointment->baby_sitter_id != $user->id) {
                     throw new \Exception('Kendinize ait olmayan randevuyu iptal edemezsiniz!', 400);
                 }
-                return $this->appointmentRepository->updateAppointment(
-                    $appointmentId,
+                return $appointment->update(
                     [
                         'appointment_status_id' => 2,
                         'is_rejected_by_baby_sitter' => true,
@@ -116,7 +115,7 @@ class AppointmentService implements IAppointmentService
                 if ($appointment->parent_id != $user->id) {
                     throw new \Exception('Kendinize ait olmayan randevuyu iptal edemezsiniz!', 400);
                 }
-                return $this->appointmentRepository->updateAppointment($appointmentId, [
+                return $appointment->update([
                     'appointment_status_id' => 3,
                     'is_rejected_by_baby_sitter' => false,
                     'rejected_time_range' => now()->diffInHours($appointment->created_at)

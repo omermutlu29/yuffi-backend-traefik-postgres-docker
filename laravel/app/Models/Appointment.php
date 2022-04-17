@@ -125,10 +125,10 @@ class Appointment extends Model
 
     public function scopeNotCanceled($query)
     {
-        return $query->whereNotIn('appointment_status_id', [2, 5,3]);
+        return $query->whereNotIn('appointment_status_id', [2, 5, 3]);
     }
 
-    public function scopeFuture($query,int $days=15)
+    public function scopeFuture($query, int $days = 15)
     {
         $query->notCanceled();
         $nowDate = now()->format('Y-m-d');
