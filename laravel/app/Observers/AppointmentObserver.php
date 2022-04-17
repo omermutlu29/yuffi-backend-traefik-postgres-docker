@@ -4,7 +4,7 @@ namespace App\Observers;
 
 use App\Interfaces\NotificationInterfaces\INotification;
 use App\Models\Appointment;
-use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class AppointmentObserver
 {
@@ -24,17 +24,13 @@ class AppointmentObserver
      */
     public function created(Appointment $appointment)
     {
-        //TODO
-        //1. appointment tarihine ait saatleri bakıcının ajandasında
-        // rezerve olarak ata (1 saat öncesi ve sonrasını da blokla)
-        //
-        //2. ebeveyne bildirim gönder
-        //Mesaj paneliniz aktif! Şimdi bakıcı ile doğrudan iletişime geçebilirsiniz. Eşleştiğiniz bakıcının
-        //ilk 30 dakika iptal etme hakkı bulunmaktadır.
-        //3. bakıyıca bildirim gider : Bir eşleşme gerçekleşti! Şimdi ebeveyn ile mesaj paneli üzerinden doğrudan iletişime
-        //geçebilirsiniz! İlk 30 dakika iptal etme hakkınız bulunmaktadır!
-        //
-        //TODO
+        try {
+            $this->updateTimesOfBabySitter($appointment, 3);
+            $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'messaging'], 'Yeni Mesaj', 'Mesaj paneliniz aktif! Şimdi bakıcı ile doğrudan iletişime geçebilirsiniz. Eşleştiğiniz bakıcının ilk 30 dakika iptal etme hakkı bulunmaktadır.', $appointment->parent->google_st);
+            $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'messaging'], 'Yeni Mesaj', 'Bir eşleşme gerçekleşti! Şimdi ebeveyn ile mesaj paneli üzerinden doğrudan iletişime geçebilirsiniz. İlk 30 dakika iptal etme hakkınız bulunmaktadır!', $appointment->baby_sitter->google_st);
+        } catch (\Exception $exception) {
+            \Illuminate\Support\Facades\Log::info($exception);
+        }
     }
 
     /**
@@ -46,42 +42,39 @@ class AppointmentObserver
     public function updated(Appointment $appointment)
     {
         if ($appointment->appointment_status_id == 2) {
-            //TODO
-            //bakıcı iptal ettiyse
-            //TODO bakıcı iptal etti ve
+            $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'messaging'], 'Yeni Mesaj', 'Bakıcınız buluşmayı iptal etti. Dilerseniz şimdi yeni bir arama yapabilirsiniz. Ücret iadesi hesabınıza yansıtılacaktır.', $appointment->parent->google_st);
+            $this->updateTimesOfBabySitter($appointment, 1);
+
+        }
+        if ($appointment->appointment_status_id == 3) {
+            $message = 'Eşleşme ebeveyn tarafından iptal edildi.';
+            $timeRange = $appointment->rejected_time_range;
+            if ($timeRange < 12) {
+                $message = $message . " Belirlemiş olduğunuz bakıcılık bedelinin 1/3’ü tarafınıza iade edilecektir.";
+            }
+            $message = $message . " Buluşma saati tekrar ajandanızda açık hale getirilmiştir.";
+            $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'messaging'], 'Yeni Mesaj', $message, $appointment->baby_sitter->google_st);
+            $this->updateTimesOfBabySitter($appointment, 1);
         }
     }
 
     /**
-     * Handle the Appointment "deleted" event.
-     *
-     * @param \App\Models\Appointment $appointment
-     * @return void
+     * 9:00:00 - 12:30
+     * @param Appointment $appointment 10:00:00 10:30:00 11:00:00 11:30:00
      */
-    public function deleted(Appointment $appointment)
+
+    private function updateTimesOfBabySitter(Appointment $appointment, $timeStatus)
     {
-        //
+        $babySitter = $appointment->baby_sitter;
+        $date = $babySitter->baby_sitter_available_dates()->where('date', $appointment->date)->first();
+        if ($date) {
+            $startTime = Carbon::createFromFormat('H:i:s', $appointment->start);
+            $finishTime = Carbon::createFromFormat('H:i:s', $appointment->finish);
+            $startTime->subHours(1);
+            $finishTime->addHours(1);
+            $date->times()->whereTime('start', '>=', $startTime)->whereTime('finish', '<=', $finishTime)->update(['time_status_id' => $timeStatus]);
+        }
     }
 
-    /**
-     * Handle the Appointment "restored" event.
-     *
-     * @param \App\Models\Appointment $appointment
-     * @return void
-     */
-    public function restored(Appointment $appointment)
-    {
-        //
-    }
 
-    /**
-     * Handle the Appointment "force deleted" event.
-     *
-     * @param \App\Models\Appointment $appointment
-     * @return void
-     */
-    public function forceDeleted(Appointment $appointment)
-    {
-        //
-    }
 }
