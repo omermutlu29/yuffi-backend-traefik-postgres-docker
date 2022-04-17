@@ -50,8 +50,8 @@ class AppointmentObserver
         $babySitter = $appointment->baby_sitter;
         $date = $babySitter->baby_sitter_available_dates()->where('date', $appointment->date)->first();
         if ($date) {
-            $startTime = Carbon::createFromFormat('H:i', $appointment->start);
-            $finishTime = Carbon::createFromFormat('H:i', $appointment->finish);
+            $startTime = Carbon::createFromFormat('H:i:s', $appointment->start);
+            $finishTime = Carbon::createFromFormat('H:i:s', $appointment->finish);
             $startTime->subHours(1);
             $finishTime->addHours(1);
             $date->times()->whereTime('start', '>=', $startTime)
