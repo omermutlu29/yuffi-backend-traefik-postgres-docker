@@ -53,8 +53,8 @@ class AppointmentObserver
         if ($date) {
             $startTime = Carbon::createFromFormat('H:i', $appointment->start);
             $finishTime = Carbon::createFromFormat('H:i', $appointment->finish);
-            //$startTime->subHours(1);
-            //$finishTime->addHours(1);
+            $startTime->subHours(1);
+            $finishTime->addHours(1);
             $date->times()->whereTime('start', '>=', $startTime)
                 ->whereTime('finish', '<=', $finishTime)
                 ->update(['time_status_id' => 2]);
@@ -68,8 +68,8 @@ class AppointmentObserver
         if ($date) {
             $startTime = Carbon::createFromFormat('H:i:s', $appointment->start);
             $finishTime = Carbon::createFromFormat('H:i:s', $appointment->finish);
-            //$startTime->subHours(1);
-            //$finishTime->addHours(1);
+            $startTime->subHours(1);
+            $finishTime->addHours(1);
             $date->times()
                 ->whereTime('start', '>=', $startTime->format('H:i:s'))
                 ->whereTime('start', '<=', $finishTime->format('H:i:s'))
