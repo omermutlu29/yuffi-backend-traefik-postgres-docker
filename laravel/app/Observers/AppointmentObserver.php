@@ -18,7 +18,7 @@ class AppointmentObserver
     public function created(Appointment $appointment)
     {
         try {
-            $this->updateTimesOfBabySitter($appointment, 3);
+            $this->blockBabySitterTimes($appointment);
             $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'messaging'], 'Yeni Mesaj', 'Mesaj paneliniz aktif! Şimdi bakıcı ile doğrudan iletişime geçebilirsiniz. Eşleştiğiniz bakıcının ilk 30 dakika iptal etme hakkı bulunmaktadır.', $appointment->parent->google_st);
             $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'messaging'], 'Yeni Mesaj', 'Bir eşleşme gerçekleşti! Şimdi ebeveyn ile mesaj paneli üzerinden doğrudan iletişime geçebilirsiniz. İlk 30 dakika iptal etme hakkınız bulunmaktadır!', $appointment->baby_sitter->google_st);
         } catch (\Exception $exception) {
@@ -30,7 +30,7 @@ class AppointmentObserver
     {
         if ($appointment->appointment_status_id == 2) {
             $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'messaging'], 'Yeni Mesaj', 'Bakıcınız buluşmayı iptal etti. Dilerseniz şimdi yeni bir arama yapabilirsiniz. Ücret iadesi hesabınıza yansıtılacaktır.', $appointment->parent->google_st);
-            $this->updateTimesOfBabySitter($appointment, 1);
+            $this->makeAvailableBabySitterTimes($appointment);
 
         }
         if ($appointment->appointment_status_id == 3) {
@@ -41,11 +41,11 @@ class AppointmentObserver
             }
             $message = $message . " Buluşma saati tekrar ajandanızda açık hale getirilmiştir.";
             $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'messaging'], 'Yeni Mesaj', $message, $appointment->baby_sitter->google_st);
-            $this->updateTimesOfBabySitter($appointment, 1);
+            $this->makeAvailableBabySitterTimes($appointment);
         }
     }
 
-    private function updateTimesOfBabySitter(Appointment $appointment, $timeStatus)
+    private function blockBabySitterTimes(Appointment $appointment)
     {
         $babySitter = $appointment->baby_sitter;
         $date = $babySitter->baby_sitter_available_dates()->where('date', $appointment->date)->first();
@@ -56,7 +56,22 @@ class AppointmentObserver
             $finishTime->addHours(1);
             $date->times()->whereTime('start', '>=', $startTime)
                 ->whereTime('finish', '<=', $finishTime)
-                ->update(['time_status_id' => $timeStatus]);
+                ->update(['time_status_id' => 3]);
+        }
+    }
+
+    private function makeAvailableBabySitterTimes(Appointment $appointment)
+    {
+        $babySitter = $appointment->baby_sitter;
+        $date = $babySitter->baby_sitter_available_dates()->where('date', $appointment->date)->first();
+        if ($date) {
+            $startTime = Carbon::createFromFormat('H:i:s', $appointment->start);
+            $finishTime = Carbon::createFromFormat('H:i:s', $appointment->finish);
+            $startTime->subHours(1);
+            $finishTime->addHours(1);
+            $date->times()->whereTime('start', '>=', $startTime)
+                ->whereTime('finish', '<=', $finishTime)
+                ->update(['time_status_id' => 1]);
         }
     }
 
