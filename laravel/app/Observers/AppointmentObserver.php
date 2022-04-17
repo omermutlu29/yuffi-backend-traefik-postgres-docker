@@ -69,9 +69,10 @@ class AppointmentObserver
             $finishTime = Carbon::createFromFormat('H:i:s', $appointment->finish);
             $startTime->subHours(1);
             $finishTime->addHours(1);
-            $date->times()->whereTime('start', '>=', $startTime)
-                ->whereTime('finish', '<=', $finishTime)
-                ->update(['time_status_id' => 1]);
+            $times = $date->times()
+                ->whereTime('start', '>=', $startTime->format('H:i:s'))
+                ->whereTime('start', '<=', $finishTime->format('H:i:s'))
+                ->update(['time_status_id'=>1]);
         }
     }
 
