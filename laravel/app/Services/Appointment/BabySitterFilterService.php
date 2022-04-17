@@ -26,6 +26,7 @@ class BabySitterFilterService
             $disabledChild = $this->areThereDisableChild($data['children']);
             $childCount = count($data['children']);
             $times = self::generateTimes($data['time'], $data['hour']);
+            dump($times);
             $data = self::prepareDataForQuery($childGenderStatus, $disabledChild, $childCount, $times, $data);
             unset($childGenderStatus, $disabledChild, $childCount, $times);
             $otherBabySitters = $this->babySitterRepository->findBabySitterForFilter($data);
