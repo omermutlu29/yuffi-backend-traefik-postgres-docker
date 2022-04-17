@@ -15,13 +15,6 @@ class AppointmentObserver
         $this->notificationService = $notificationService;
     }
 
-    /**
-     * Handle the Appointment "created" event.
-     *
-     * @param \App\Models\Appointment $appointment
-     * @return void
-     * @throws \Exception
-     */
     public function created(Appointment $appointment)
     {
         try {
@@ -33,12 +26,6 @@ class AppointmentObserver
         }
     }
 
-    /**
-     * Handle the Appointment "updated" event.
-     *
-     * @param \App\Models\Appointment $appointment
-     * @return void
-     */
     public function updated(Appointment $appointment)
     {
         if ($appointment->appointment_status_id == 2) {
@@ -58,14 +45,13 @@ class AppointmentObserver
         }
     }
 
-
     private function updateTimesOfBabySitter(Appointment $appointment, $timeStatus)
     {
         $babySitter = $appointment->baby_sitter;
         $date = $babySitter->baby_sitter_available_dates()->where('date', $appointment->date)->first();
         if ($date) {
-            $startTime = Carbon::createFromFormat('H:i:s', $appointment->start);
-            $finishTime = Carbon::createFromFormat('H:i:s', $appointment->finish);
+            $startTime = Carbon::createFromFormat('H:i', $appointment->start);
+            $finishTime = Carbon::createFromFormat('H:i', $appointment->finish);
             $startTime->subHours(1);
             $finishTime->addHours(1);
             $date->times()->whereTime('start', '>=', $startTime)
