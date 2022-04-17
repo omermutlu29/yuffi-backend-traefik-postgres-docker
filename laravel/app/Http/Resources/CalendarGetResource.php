@@ -75,8 +75,8 @@ class CalendarGetResource extends JsonResource
         $loop = $hour * 2;
         $start = Carbon::createFromFormat('H:i', $start);
         for ($i = 0; $i < $loop; $i++) {
-            $start = $start->addMinutes(30);
             $times[] = $start->format('H:i');
+            $start = $start->addMinutes(30);
         }
         return $times;
 
