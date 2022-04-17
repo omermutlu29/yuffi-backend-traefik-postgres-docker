@@ -110,7 +110,6 @@ class BabySitterFilterService
     private function generateTimes($startTime, $hour): array
     {
         return (CalendarGetResource::generateTimesForSearching($startTime, $hour));
-
     }
 
     private function getChildYearsAsArray(mixed $children)

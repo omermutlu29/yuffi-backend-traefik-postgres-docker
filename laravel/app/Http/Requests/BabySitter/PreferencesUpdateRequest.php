@@ -24,7 +24,7 @@ class PreferencesUpdateRequest extends BaseApiRequest
     public function rules()
     {
         return [
-            'price_per_hour' => 'required|numeric|max:500|min:75',
+            'price_per_hour' => 'required|numeric|max:500|min:100',
             'child_gender_id' => 'required|exists:genders,id|numeric',
             'parent_gender_id' => 'required|exists:genders,id|numeric',
             'child_count' => 'required|min:1|numeric',
