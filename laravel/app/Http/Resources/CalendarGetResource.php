@@ -78,6 +78,8 @@ class CalendarGetResource extends JsonResource
             $times[] = $start->format('H:i');
             $start = $start->addMinutes(30);
         }
+        $start->addMinutes(30);
+        $times[]= $start->format('H:i');
         return $times;
 
     }
