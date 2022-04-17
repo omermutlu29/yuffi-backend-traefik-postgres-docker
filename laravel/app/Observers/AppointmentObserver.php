@@ -58,10 +58,6 @@ class AppointmentObserver
         }
     }
 
-    /**
-     * 9:00:00 - 12:30
-     * @param Appointment $appointment 10:00:00 10:30:00 11:00:00 11:30:00
-     */
 
     private function updateTimesOfBabySitter(Appointment $appointment, $timeStatus)
     {
@@ -72,7 +68,9 @@ class AppointmentObserver
             $finishTime = Carbon::createFromFormat('H:i:s', $appointment->finish);
             $startTime->subHours(1);
             $finishTime->addHours(1);
-            $date->times()->whereTime('start', '>=', $startTime)->whereTime('finish', '<=', $finishTime)->update(['time_status_id' => $timeStatus]);
+            $date->times()->whereTime('start', '>=', $startTime)
+                ->whereTime('finish', '<=', $finishTime)
+                ->update(['time_status_id' => $timeStatus]);
         }
     }
 
