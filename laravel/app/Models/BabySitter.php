@@ -165,11 +165,12 @@ class BabySitter extends Authenticatable
 
     public function scopeDateTime($query, $date, array $times)
     {
+        dump($times);
         return $query->whereHas('baby_sitter_available_dates', function ($q) use ($date, $times) {//O gün yer var mı ?
             $q->where('date', Carbon::make($date));
+
             foreach ($times as $time) {
                 $q->whereHas('times', function ($q1) use ($time) {//O günün saatlerinde yer var mı varsa meşgul mü değil mi ?
-                    dump($time);
                     $q1->where('start', $time)->where('time_status_id', 1);
                 });
             }
