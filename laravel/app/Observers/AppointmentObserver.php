@@ -57,7 +57,7 @@ class AppointmentObserver
             $finishTime->addHours(1);
             $date->times()->whereTime('start', '>=', $startTime)
                 ->whereTime('finish', '<=', $finishTime)
-                ->update(['time_status_id' => 3]);
+                ->update(['time_status_id' => 2]);
         }
     }
 
