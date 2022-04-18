@@ -32,7 +32,9 @@ class AppointmentObserver
     {
         try {
             if ($appointment->appointment_status_id == 2) {
-                $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'home'], 'Yeni Mesaj', 'Bakıcınız buluşmayı iptal etti. Dilerseniz şimdi yeni bir arama yapabilirsiniz. Ücret iadesi hesabınıza yansıtılacaktır.', $appointment->parent->google_st);
+                if ($appointment->parent->google_st){
+                    $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'home'], 'Yeni Mesaj', 'Bakıcınız buluşmayı iptal etti. Dilerseniz şimdi yeni bir arama yapabilirsiniz. Ücret iadesi hesabınıza yansıtılacaktır.', $appointment->parent->google_st);
+                }
                 $this->makeAvailableBabySitterTimes($appointment);
             }
             if ($appointment->appointment_status_id == 3) {
@@ -42,7 +44,9 @@ class AppointmentObserver
                     $message = $message . " Belirlemiş olduğunuz bakıcılık bedelinin 1/3’ü tarafınıza iade edilecektir.";
                 }
                 $message = $message . " Buluşma saati tekrar ajandanızda açık hale getirilmiştir.";
-                $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'home'], 'Yeni Mesaj', $message, $appointment->baby_sitter->google_st);
+                if($appointment->baby_sitter->google_st){
+                    $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'home'], 'Yeni Mesaj', $message, $appointment->baby_sitter->google_st);
+                }
                 $this->makeAvailableBabySitterTimes($appointment);
 
             }
