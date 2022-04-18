@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('deactivate:baby_sitters')->dailyAt('00:00');
+        $schedule->command('notification-point:send')->hourlyAt(42);
     }
 
     /**

@@ -9,7 +9,8 @@ Route::any('login', function () {
     ]);
 })->name('login');
 
-Route::get('/', function (\App\Services\Appointment\AppointmentService $appointmentService) {
+Route::get('/', function () {
+    \App\Models\Appointment::notificationDidNotSent()->get()->dd();
 });
 
 

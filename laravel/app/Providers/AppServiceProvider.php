@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Console\Commands\DeactivateBabySitters;
+use App\Console\Commands\SendPointNotification;
 use App\Http\Controllers\API\BabySitter\Auth\LoginController as BabySitterLoginController;
 use App\Http\Controllers\API\BabySitter\Auth\ProfileController;
 use App\Http\Controllers\API\BabySitter\Auth\ProfileController as BabySitterProfileController;
@@ -120,6 +121,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->when(DeactivateBabySitters::class)
             ->needs(INotification::class)
             ->give(NetGSMSmsNotification::class);
+
+        $this->app->when(SendPointNotification::class)
+            ->needs(INotification::class)
+            ->give(PushNotificationService::class);
 
         $this->app->bind(IPointService::class,PointService::class);
 

@@ -38,6 +38,7 @@ class Appointment extends Model
 
     public function getHasRatedAttribute()
     {
+
         return $this->points()->count() > 0;
     }
 
@@ -125,7 +126,9 @@ class Appointment extends Model
 
     public function scopeNotCanceled($query)
     {
-        return $query->whereNotIn('appointment_status_id', [2, 5, 3]);
+        return $query->whereNotIn('appointment_status_id', [2, 5, 3])
+            ->where('is_rejected_by_baby_sitter', null)
+            ->where('rejected_time_range', null);
     }
 
     public function scopeFuture($query, int $days = 15)
@@ -139,6 +142,17 @@ class Appointment extends Model
         })->orWhere(function ($query) use ($futureDate, $nowHour) {
             $query->where('date', $futureDate)->where('date')->where('start', '>', $nowHour);
         });
+    }
+
+    public function scopeNotificationDidNotSent($query)
+    {
+        $query->notCanceled();
+        $nowDate = now()->format('Y-m-d');
+        $nowSubTwoHour = now()->subHours(2)->format('H:i');
+        $query->where('date', '<', $nowDate)->orWhere(function ($query) use ($nowDate, $nowSubTwoHour) {
+            $query->where('date', $nowDate)->where('finish', '<=', $nowSubTwoHour);
+        });
+        return $query->where('sent_point_notification', false);
     }
 
 

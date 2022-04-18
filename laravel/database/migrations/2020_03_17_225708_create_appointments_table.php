@@ -28,6 +28,7 @@ class CreateAppointmentsTable extends Migration
             $table->string('location')->nullable();
             $table->boolean('is_rejected_by_baby_sitter')->nullable();
             $table->string('rejected_time_range')->nullable();
+            $table->boolean('sent_point_notification')->default(false)->nullable();
             $table->timestamps();
         });
     }
