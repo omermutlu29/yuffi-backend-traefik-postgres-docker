@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Interfaces\NotificationInterfaces\INotification;
 use App\Models\Appointment;
+use App\Models\Log;
 use Carbon\Carbon;
 
 class AppointmentObserver
@@ -29,21 +30,26 @@ class AppointmentObserver
 
     public function updated(Appointment $appointment)
     {
-        if ($appointment->appointment_status_id == 2) {
-            $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'home'], 'Yeni Mesaj', 'Bakıcınız buluşmayı iptal etti. Dilerseniz şimdi yeni bir arama yapabilirsiniz. Ücret iadesi hesabınıza yansıtılacaktır.', $appointment->parent->google_st);
-            $this->makeAvailableBabySitterTimes($appointment);
-        }
-        if ($appointment->appointment_status_id == 3) {
-            $message = 'Eşleşme ebeveyn tarafından iptal edildi.';
-            $timeRange = $appointment->rejected_time_range;
-            if ($timeRange < 12) {
-                $message = $message . " Belirlemiş olduğunuz bakıcılık bedelinin 1/3’ü tarafınıza iade edilecektir.";
+        try {
+            if ($appointment->appointment_status_id == 2) {
+                $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'home'], 'Yeni Mesaj', 'Bakıcınız buluşmayı iptal etti. Dilerseniz şimdi yeni bir arama yapabilirsiniz. Ücret iadesi hesabınıza yansıtılacaktır.', $appointment->parent->google_st);
+                $this->makeAvailableBabySitterTimes($appointment);
             }
-            $message = $message . " Buluşma saati tekrar ajandanızda açık hale getirilmiştir.";
-            $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'home'], 'Yeni Mesaj', $message, $appointment->baby_sitter->google_st);
-            $this->makeAvailableBabySitterTimes($appointment);
+            if ($appointment->appointment_status_id == 3) {
+                $message = 'Eşleşme ebeveyn tarafından iptal edildi.';
+                $timeRange = $appointment->rejected_time_range;
+                if ($timeRange < 12) {
+                    $message = $message . " Belirlemiş olduğunuz bakıcılık bedelinin 1/3’ü tarafınıza iade edilecektir.";
+                }
+                $message = $message . " Buluşma saati tekrar ajandanızda açık hale getirilmiştir.";
+                $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'home'], 'Yeni Mesaj', $message, $appointment->baby_sitter->google_st);
+                $this->makeAvailableBabySitterTimes($appointment);
 
+            }
+        }catch (\Exception $exception){
+            \Illuminate\Support\Facades\Log::info($exception);
         }
+
     }
 
     private function blockBabySitterTimes(Appointment $appointment)
