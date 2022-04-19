@@ -4,14 +4,15 @@ namespace App\Observers;
 
 use App\Interfaces\NotificationInterfaces\INotification;
 use App\Models\Appointment;
+use App\Services\NotificationServices\PushNotificationService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
 class AppointmentObserver
 {
-    private INotification $notificationService;
+    private PushNotificationService $notificationService;
 
-    public function __construct(INotification $notificationService)
+    public function __construct(PushNotificationService $notificationService)
     {
         $this->notificationService = $notificationService;
     }
