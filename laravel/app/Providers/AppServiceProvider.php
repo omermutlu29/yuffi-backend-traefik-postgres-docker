@@ -65,9 +65,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if($this->app->environment('production')) {
+        //if($this->app->environment('production')) {
             \URL::forceScheme('https');
-        }
+        //}
         $this->app->when(AppointmentObserver::class)->needs(INotification::class)->give(PushNotificationService::class);
         $this->app->when(NewAppointmentMessageListener::class)->needs(INotification::class)->give(PushNotificationService::class);
         $this->app->bind(IMessagingService::class, MessagingService::class);
