@@ -20,8 +20,12 @@ class AppointmentObserver
     {
         try {
             $this->blockBabySitterTimes($appointment);
-            $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'messaging'], 'Yeni Mesaj', 'Mesaj paneliniz aktif! Şimdi bakıcı ile doğrudan iletişime geçebilirsiniz. Eşleştiğiniz bakıcının ilk 30 dakika iptal etme hakkı bulunmaktadır.', $appointment->parent->google_st);
-            $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'messaging'], 'Yeni Mesaj', 'Bir eşleşme gerçekleşti! Şimdi ebeveyn ile mesaj paneli üzerinden doğrudan iletişime geçebilirsiniz. İlk 30 dakika iptal etme hakkınız bulunmaktadır!', $appointment->baby_sitter->google_st);
+            if ($appointment->parent->google_st) {
+                $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'messaging'], 'Yeni Mesaj', 'Mesaj paneliniz aktif! Şimdi bakıcı ile doğrudan iletişime geçebilirsiniz. Eşleştiğiniz bakıcının ilk 30 dakika iptal etme hakkı bulunmaktadır.', $appointment->parent->google_st);
+            }
+            if($appointment->baby_sitter->google_st) {
+                $this->notificationService->notify(['appointment_id' => $appointment->id, 'type' => 'messaging'], 'Yeni Mesaj', 'Bir eşleşme gerçekleşti! Şimdi ebeveyn ile mesaj paneli üzerinden doğrudan iletişime geçebilirsiniz. İlk 30 dakika iptal etme hakkınız bulunmaktadır!', $appointment->baby_sitter->google_st);
+            }
         } catch (\Exception $exception) {
             \Illuminate\Support\Facades\Log::info($exception);
         }
