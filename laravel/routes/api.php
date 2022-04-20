@@ -1,7 +1,11 @@
 <?php
-Route::get('test-chat', function (\Illuminate\Http\Request $request) {
-    (new \App\Services\Messaging\MessagingService())->sendMessage(\App\Models\Parents::find(218), \App\Models\Appointment::find(49), $request->message);
+
+use Illuminate\Support\Facades\Log;
+
+Route::get('test-chat', function () {
+
 });
+
 Route::prefix('fill')->group(function () {
     Route::get('towns/{city}', [\App\Http\Controllers\API\BabySitter\Preferences\FillController::class, 'getTowns']);
     Route::get('child-genders', [\App\Http\Controllers\API\BabySitter\Preferences\FillController::class, 'getChildGenders']);

@@ -5,33 +5,28 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN useradd -G www-data,root -u $uid -d /home/$user $user
 RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN apt-get update && apt-get install -y \
-    git \
-    supervisor \
     curl \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
     libpq-dev \
     zip \
     unzip \
+    git \
     vim \
-    git
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd
 RUN docker-php-ext-install pdo
-RUN docker-php-ext-install pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd
-#Laraver supervisor configuration
-COPY laravel-worker.conf /etc/supervisor/conf.d/laravel-worker.conf.d
-CMD ["service supervisor reread"]
-CMD ["service supervisor update"]
-CMD ["service supervisor start"]
+RUN docker-php-ext-install pdo_mysql pdo_pgsql mbstring exif pcntl bcmath
 
 
-WORKDIR /var/www
+WORKDIR /var/www/laravel
 
 EXPOSE 9000
 
 CMD ["php-fpm"]
-
-
-
