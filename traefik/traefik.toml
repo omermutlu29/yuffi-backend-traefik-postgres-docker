@@ -51,6 +51,6 @@ entryPoint = "http"
     main = "api.yuffi.co"
 
 [[acme.domains]]
-main = "echo.yuffi.co"
+    main = "echo.yuffi.co"
 
 
