@@ -1,0 +1,54 @@
+debug = false
+loglevel = "ERROR"
+defaultEntryPoints = ["http", "https"]
+
+[accessLog]
+filePath = "/var/log/traefik/access.log"
+
+[entryPoints]
+    [entryPoints.http]
+        address = ":80"
+        [entryPoints.http.redirect]
+        entryPoint = "https"
+    [entryPoints.https]
+        address = ":443"
+        [entryPoints.https.tls]
+    [entryPoints.traefik]
+        address = ":8080"
+        [entryPoints.traefik.auth.basic]
+        users = ["admin:$apr1$02Ws.ddh$1NYYgfGvHWUIc9dGsM0U/1"]
+
+[api]
+entrypoint = "traefik"
+
+[retry]
+
+[docker]
+endpoint = "unix:///var/run/docker.sock"
+domain = "monitor.adrec.org"
+watch = true
+network = "web"
+exposedByDefault = false
+
+[acme]
+email = "omermutlu29@gmail.com"
+storage = "acme.json"
+entryPoint = "https"
+onHostRule = true
+[acme.httpChallenge]
+entryPoint = "http"
+
+[acme.dnsChallange]
+    provider = "digitalocean"
+    delayBeforeChech = 0
+
+[[acme.domains]]
+    main = "adrec.org"
+
+[[acme.domains]]
+    main = "monitor.adrec.org"
+
+[[acme.domains]]
+    main = "api.adrec.org"
+
+

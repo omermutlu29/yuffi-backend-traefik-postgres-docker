@@ -1,26 +1,12 @@
 version: '3'
+networks:
+  web:
+    external: true
+  internal:
+    external: false
+  code-network:
+    driver: bridge
 services:
-  traefik:
-    container_name: traefik
-    image: traefik:1.7.4-alpine
-    restart: always
-    depends_on:
-      - laravel
-    command: --docker
-    ports:
-      - 80:80
-      - 443:443
-    labels:
-      - traefik.backend=traefik
-      - traefik.frontend.rule=Host:monitor.yuffi.co
-      - traefik.port=8080
-    networks:
-      - proxy
-      - internal
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - $PWD/traefik.toml:/traefik.toml
-      - $PWD/acme.json:/acme.json
   laravel:
     build:
       args:
@@ -35,31 +21,38 @@ services:
     labels:
       - traefik.enable=false
     depends_on:
-      - postgres
+      - db
     working_dir: /var/www
     volumes:
       - ./php/local.ini:/usr/local/etc/php/conf.d/php.ini
       - ./laravel/:/var/www
     networks:
-      - local-bridge
-      - internal
+      - web
+      - code-network
 
   nginx:
     image: nginx:alpine
     container_name: nginx
-    tty: true
+    ports:
+      - "8000:80"
     labels:
-      - traefik.backend=web
-      - traefik.frontend.rule=Host:api.yuffi.co
-      - traefik.port=80
+      - "traefik.backend=laravel"
+      - "traefik.docker.network=web"
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:api.yuffi.co"
+      - "traefik.port=8000"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.STSIncludeSubdomains=false"
+      - "traefik.frontend.headers.STSPreload=true"
     depends_on:
       - postgres
     volumes:
       - ./laravel/:/var/www
       - ./nginx/conf.d/:/etc/nginx/conf.d
     networks:
-      - local-bridge
-      - internal
+      - web
+      - code-network
 
 
   postgres:
@@ -78,7 +71,7 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - local-bridge
+      - code-network
     restart: unless-stopped
 
   echo:
@@ -87,29 +80,29 @@ services:
       context: ./echo
       dockerfile: Dockerfile
     restart: unless-stopped
+
     volumes:
       - ./:/usr/src/app
     labels:
-      - traefik.enable=true
-      - traefik.frontend.rule=Host:echo.yuffi.co
-      - traefik.port=80
+      - "traefik.backend=laravel"
+      - "traefik.docker.network=web"
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:echo.yuffi.co"
+      - "traefik.port=8000"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.STSIncludeSubdomains=false"
+      - "traefik.frontend.headers.STSPreload=true"
     networks:
-      - local-bridge
-      - internal
-
-
+      - web
+      - code-network
   redis:
     image: redis
     restart: unless-stopped
     ports:
       - "6379:6379"
     networks:
-      - local-bridge
-      - internal
+      - web
+      - code-network
 
-networks:
-  local-bridge:
-    driver: bridge
-  proxy:
-    external: true
-  internal:
+

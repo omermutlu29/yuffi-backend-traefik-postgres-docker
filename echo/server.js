@@ -17,7 +17,7 @@ require('laravel-echo-server').run({
     },
     "devMode": true,
     "host": null,
-    "port": "80",
+    "port": "8000",
     "protocol": "http",
     "socketio": {}
 });
