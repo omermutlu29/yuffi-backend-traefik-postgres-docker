@@ -80,7 +80,8 @@ services:
       context: ./echo
       dockerfile: Dockerfile
     restart: unless-stopped
-
+    ports:
+    - "6001:80"
     volumes:
       - ./:/usr/src/app
     labels:
@@ -88,7 +89,7 @@ services:
       - "traefik.docker.network=web"
       - "traefik.enable=true"
       - "traefik.frontend.rule=Host:echo.yuffi.co"
-      - "traefik.port=8000"
+      - "traefik.port=6001"
       - "traefik.frontend.headers.forceSTSHeader=true"
       - "traefik.frontend.headers.STSSeconds=315360000"
       - "traefik.frontend.headers.STSIncludeSubdomains=false"
