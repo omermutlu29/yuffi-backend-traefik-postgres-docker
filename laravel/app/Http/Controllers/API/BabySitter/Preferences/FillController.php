@@ -64,6 +64,9 @@ class FillController extends BaseController
 
             if ($date == $today) {
                 $startTime = ceil((float)Carbon::now()->addHours(3)->format('H.i'));
+                if ($startTime < 10 ){
+                    $startTime = 10;
+                }
                 return $this->variablesService->calculateTimes($startTime);
             } else {
                 return $this->variablesService->calculateTimes(10);
