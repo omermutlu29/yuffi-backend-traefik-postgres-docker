@@ -138,10 +138,10 @@ class Appointment extends Model
         $futureDate = now()->addDays($days)->format('Y-m-d');
         $nowHour = now()->format('H:i');
         return $query->where('date', '>', $nowDate)->where('date', '<', $futureDate)->orWhere(function ($query) use ($nowDate, $nowHour) {
-            $query->where('date', $nowDate)->where('date')->where('start', '>', $nowHour);
-        })->orWhere(function ($query) use ($futureDate, $nowHour) {
+            $query->where('date', $nowDate)->where('start', '>', $nowHour);
+        });/*->orWhere(function ($query) use ($futureDate, $nowHour) {
             $query->where('date', $futureDate)->where('date')->where('start', '>', $nowHour);
-        });
+        });*/
     }
 
     public function scopeNotificationDidNotSent($query)
