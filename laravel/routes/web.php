@@ -1,6 +1,5 @@
 <?php
 
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 Route::any('login', function () {
@@ -10,7 +9,7 @@ Route::any('login', function () {
 })->name('login');
 
 Route::get('/', function () {
-    \App\Models\Appointment::notificationDidNotSent()->get()->dd();
+    return abort(403);
 });
 
 
