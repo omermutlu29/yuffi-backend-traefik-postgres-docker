@@ -25,7 +25,7 @@ entrypoint = "traefik"
 
 [docker]
 endpoint = "unix:///var/run/docker.sock"
-domain = "monitor.adrec.org"
+domain = "monitor.yuffi.co"
 watch = true
 network = "web"
 exposedByDefault = false
@@ -42,13 +42,12 @@ entryPoint = "http"
     provider = "digitalocean"
     delayBeforeChech = 0
 
-[[acme.domains]]
-    main = "adrec.org"
+
 
 [[acme.domains]]
-    main = "monitor.adrec.org"
+    main = "monitor.yuffi.co"
 
 [[acme.domains]]
-    main = "api.adrec.org"
+    main = "api.yuffi.co"
 
 
