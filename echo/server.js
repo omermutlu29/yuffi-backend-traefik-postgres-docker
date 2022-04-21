@@ -5,7 +5,7 @@ console.log(env.REDIS_HOST)
 console.log(env.APP_URL)
 
 require('laravel-echo-server').run({
-    "authHost": "http://nginx/",
+    "authHost": "http://nginx:8000/",
     "authEndpoint": "broadcasting/auth",
     "database": "redis",
     "databaseConfig": {
