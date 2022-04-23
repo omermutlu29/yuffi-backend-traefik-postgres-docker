@@ -65,10 +65,11 @@ Route::prefix('parent')->group(function () {
 
     Route::prefix('contracts', function () {
         Route::get('hizmet-sozlesmesi',function (){
-            return \App\Models\Contract::find(1);
+
+            dd(\App\Models\Contract::find(1));
         });
         Route::get('aydinlatma-metni',function (){
-            return \App\Models\Contract::find(3);
+            dd(\App\Models\Contract::find(3));
         });
     });
 
