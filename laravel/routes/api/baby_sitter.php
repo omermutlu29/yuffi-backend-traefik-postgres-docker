@@ -43,5 +43,9 @@ Route::prefix('baby-sitter')->group(function () {
         return \App\Models\Faq::where('user_type', 'baby_sitter')->get();
     });
 
+    Route::get('contract', function () {
+        return \App\Models\Contract::where('user_type', 'baby_sitter')->get();
+    });
+
 
 });

@@ -11,7 +11,7 @@ Route::prefix('parent')->group(function () {
         Route::post('store', [\App\Http\Controllers\API\Parent\Auth\ProfileController::class, 'storeProfile']);
         Route::post('update', [\App\Http\Controllers\API\Parent\Auth\ProfileController::class, 'updateProfile']);
         Route::get('get-profile', [\App\Http\Controllers\API\Parent\Auth\ProfileController::class, 'getProfile']);
-        Route::get('is-ready-to-create-appointment',[\App\Http\Controllers\API\Parent\Auth\ProfileController::class,'isReadyToCreateAppointment']);
+        Route::get('is-ready-to-create-appointment', [\App\Http\Controllers\API\Parent\Auth\ProfileController::class, 'isReadyToCreateAppointment']);
     });//Bitti
 
     //Route::resource('child', \App\Http\Controllers\API\Parent\Child\ChildController::class);//Bitti
@@ -53,14 +53,18 @@ Route::prefix('parent')->group(function () {
     });
 
 
-    Route::prefix('point')->group(function (){
-       Route::get('types',[\App\Http\Controllers\API\Parent\Point\PointController::class,'getPointTypes']);
-       Route::get('unrated-appointments',[\App\Http\Controllers\API\Parent\Point\PointController::class,'getUnratedAppointments']);
-       Route::post('rate-appointment/{appointment}',[\App\Http\Controllers\API\Parent\Point\PointController::class,'rateAppointment']);
+    Route::prefix('point')->group(function () {
+        Route::get('types', [\App\Http\Controllers\API\Parent\Point\PointController::class, 'getPointTypes']);
+        Route::get('unrated-appointments', [\App\Http\Controllers\API\Parent\Point\PointController::class, 'getUnratedAppointments']);
+        Route::post('rate-appointment/{appointment}', [\App\Http\Controllers\API\Parent\Point\PointController::class, 'rateAppointment']);
     });
 
     Route::get('faq', function () {
         return \App\Models\Faq::where('user_type', 'parent')->get();
+    });
+
+    Route::get('faq', function () {
+        return \App\Models\Contract::where('user_type', 'parent')->get();
     });
 
 });
