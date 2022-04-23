@@ -63,8 +63,13 @@ Route::prefix('parent')->group(function () {
         return \App\Models\Faq::where('user_type', 'parent')->get();
     });
 
-    Route::get('faq', function () {
-        return \App\Models\Contract::where('user_type', 'parent')->get();
+    Route::prefix('contracts', function () {
+        Route::get('hizmet-sozlesmesi',function (){
+            return \App\Models\Contract::find(1);
+        });
+        Route::get('aydinlatma-metni',function (){
+            return \App\Models\Contract::find(3);
+        });
     });
 
 });

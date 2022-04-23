@@ -43,8 +43,14 @@ Route::prefix('baby-sitter')->group(function () {
         return \App\Models\Faq::where('user_type', 'baby_sitter')->get();
     });
 
-    Route::get('contract', function () {
-        return \App\Models\Contract::where('user_type', 'baby_sitter')->get();
+
+    Route::prefix('contracts', function () {
+        Route::get('hizmet-sozlesmesi',function (){
+            return \App\Models\Contract::find(4);
+        });
+        Route::get('aydinlatma-metni',function (){
+            return \App\Models\Contract::find(2);
+        });
     });
 
 
