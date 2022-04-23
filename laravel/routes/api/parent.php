@@ -63,13 +63,13 @@ Route::prefix('parent')->group(function () {
         return \App\Models\Faq::where('user_type', 'parent')->get();
     });
 
-    Route::prefix('contracts', function () {
+    Route::prefix('contracts')->group(function () {
         Route::get('hizmet-sozlesmesi',function (){
 
-            dd(\App\Models\Contract::find(1));
+            return \App\Models\Contract::find(1);
         });
         Route::get('aydinlatma-metni',function (){
-            dd(\App\Models\Contract::find(3));
+            return \App\Models\Contract::find(3);
         });
     });
 
