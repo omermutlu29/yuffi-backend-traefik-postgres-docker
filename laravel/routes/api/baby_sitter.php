@@ -44,7 +44,7 @@ Route::prefix('baby-sitter')->group(function () {
     });
 
 
-    Route::prefix('contracts', function () {
+    Route::prefix('contracts')->group(function () {
         Route::get('hizmet-sozlesmesi',function (){
             return \App\Models\Contract::find(4);
         });
