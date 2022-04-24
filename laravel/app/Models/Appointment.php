@@ -138,9 +138,7 @@ class Appointment extends Model
         $nowHour = now()->format('H:i');
         return $query->where('date', '>', $nowDate)->where('date', '<', $futureDate)->orWhere(function ($query) use ($nowDate, $nowHour) {
             $query->where('date', $nowDate)->where('start', '>', $nowHour);
-        })->notCanceled();/*->orWhere(function ($query) use ($futureDate, $nowHour) {
-            $query->where('date', $futureDate)->where('date')->where('start', '>', $nowHour);
-        });*/
+        })->notCanceled();
     }
 
     public function scopeNotificationDidNotSent($query)
