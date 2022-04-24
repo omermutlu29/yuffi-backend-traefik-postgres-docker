@@ -127,8 +127,7 @@ class Appointment extends Model
     public function scopeNotCanceled($query)
     {
         return $query->whereNotIn('appointment_status_id', [2, 5, 3])
-            ->where('is_rejected_by_baby_sitter', null)
-            ->where('rejected_time_range', null);
+            ->where('is_rejected_by_baby_sitter', null);
     }
 
     public function scopeFuture($query, int $days = 15)
