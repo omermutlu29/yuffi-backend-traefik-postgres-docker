@@ -26,7 +26,7 @@ Route::prefix('parent')->group(function () {
         Route::get('detail/{appointment}', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'getAppointmentDetail']);
         Route::get('get/future', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'getFutureAppointments']);
         Route::get('get/past', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'getPastAppointments']);
-        Route::get('get/canceled', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'canceledAppointment']);
+        Route::get('get/canceled', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'getCanceledAppointments']);
 
         Route::post('create-appointment', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'createAppointment']);
         Route::post('cancel-appointment', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'cancelAppointment']);
