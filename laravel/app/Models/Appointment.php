@@ -127,18 +127,18 @@ class Appointment extends Model
     public function scopeNotCanceled($query)
     {
         return $query->whereNotIn('appointment_status_id', [2, 5, 3])
-            ->where('is_rejected_by_baby_sitter', null);
+            ->where('is_rejected_by_baby_sitter', null)
+            ->where('rejected_time_range', null);
     }
 
     public function scopeFuture($query, int $days = 15)
     {
-        $query->notCanceled();
         $nowDate = now()->format('Y-m-d');
         $futureDate = now()->addDays($days)->format('Y-m-d');
         $nowHour = now()->format('H:i');
         return $query->where('date', '>', $nowDate)->where('date', '<', $futureDate)->orWhere(function ($query) use ($nowDate, $nowHour) {
             $query->where('date', $nowDate)->where('start', '>', $nowHour);
-        });/*->orWhere(function ($query) use ($futureDate, $nowHour) {
+        })->notCanceled();/*->orWhere(function ($query) use ($futureDate, $nowHour) {
             $query->where('date', $futureDate)->where('date')->where('start', '>', $nowHour);
         });*/
     }
