@@ -27,7 +27,7 @@ class ProfileController extends BaseController
     public function storeGeneralInformation(BabySitterStoreGeneralInformationRequest $request)
     {
         try {
-            $data = $request->only('name', 'surname', 'tc', 'gender_id', 'birthday', 'criminal_record', 'address', 'email', 'photo', 'iban', 'introducing');
+            $data = $request->only('name', 'surname', 'tc', 'gender_id', 'birthday', 'criminal_record', 'address', 'email', 'photo', 'iban', 'introducing','optional_contact');
             $result = $this->profileService->updateBasicInformation(\auth()->user(), $data);
             return $this->sendResponse($result['status'], $result['message']);
         } catch (\Exception $exception) {
@@ -38,7 +38,7 @@ class ProfileController extends BaseController
     public function updateGeneralInformation(BabySitterUpdateGeneralInformationRequest $request)
     {
         try {
-            $data = $request->only('surname', 'email', 'photo', 'iban', 'introducing');
+            $data = $request->only('surname', 'email', 'photo', 'iban', 'introducing','optional_contact');
             $result = $this->profileService->updateBasicInformation(\auth()->user(), $data);
             return $this->sendResponse($result['status'], $result['message']);
         } catch (\Exception $exception) {
