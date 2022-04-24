@@ -17,7 +17,7 @@ class AppointmentChildrenResource extends JsonResource
         return [
             'year'=>$this->child_year->name,
             'gender'=>$this->gender->child_name,
-            'disabled'=>$this->disabled ? 'Engel durumu var' : 'Engel durumu yok'
+            'disabled'=>$this->disabled ? 'Özel durumu var' : 'Özel durumu yok'
         ];
     }
 }
