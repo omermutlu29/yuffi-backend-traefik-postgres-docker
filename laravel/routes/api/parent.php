@@ -26,6 +26,8 @@ Route::prefix('parent')->group(function () {
         Route::get('detail/{appointment}', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'getAppointmentDetail']);
         Route::get('get/future', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'getFutureAppointments']);
         Route::get('get/past', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'getPastAppointments']);
+        Route::get('get/canceled', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'canceledAppointment']);
+
         Route::post('create-appointment', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'createAppointment']);
         Route::post('cancel-appointment', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'cancelAppointment']);
         //Route::post('{appointment}/pay-with-threeD', [\App\Http\Controllers\API\Parent\Appointment\AppointmentController::class, 'confirmAppointmentPayThreeD']);
@@ -64,11 +66,11 @@ Route::prefix('parent')->group(function () {
     });
 
     Route::prefix('contracts')->group(function () {
-        Route::get('hizmet-sozlesmesi',function (){
+        Route::get('hizmet-sozlesmesi', function () {
 
             return \App\Models\Contract::find(1);
         });
-        Route::get('aydinlatma-metni',function (){
+        Route::get('aydinlatma-metni', function () {
             return \App\Models\Contract::find(3);
         });
     });

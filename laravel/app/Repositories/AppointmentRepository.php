@@ -101,4 +101,14 @@ class AppointmentRepository implements IAppointmentRepository
         return Appointment::where('baby_sitter_id', $babySitterId)->future(3)->orderBy('created_at', 'DESC')->get();
 
     }
+
+    public function getCanceledAppointmentsByParentId(int $parentId)
+    {
+        return Appointment::where('parent_id', $parentId)->canceled()->orderBy('created_at', 'DESC')->get();
+    }
+
+    public function getCanceledAppointmentsByBabySitterId(int $babySitterId)
+    {
+        return Appointment::where('baby_sitter_id', $babySitterId)->canceled()->orderBy('created_at', 'DESC')->get();
+    }
 }

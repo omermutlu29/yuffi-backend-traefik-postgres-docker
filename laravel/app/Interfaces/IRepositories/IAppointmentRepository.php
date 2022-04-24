@@ -32,11 +32,15 @@ interface IAppointmentRepository
 
     public function getPastAppointmentsByParentId(int $parentId);
 
+    public function getCanceledAppointmentsByParentId(int $parentId);
+
     public function getFutureAppointmentsByParentId(int $parentId);
 
     public function getPastAppointmentsByBabySitterId(int $babySitterId);
 
     public function getFutureAppointmentsByBabySitterId(int $babySitterId);
+
+    public function getCanceledAppointmentsByBabySitterId(int $babySitterId);
 
     public function getUpcomingAppointments(int $babySitterId);
 }

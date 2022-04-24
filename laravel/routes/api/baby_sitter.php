@@ -36,6 +36,7 @@ Route::prefix('baby-sitter')->group(function () {
         Route::get('get/future', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'getFutureAppointments']);
         Route::get('get/upcoming', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'getUpcomingAppointments']);
         Route::get('get/past', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'getPastAppointments']);
+        Route::get('get/canceled', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'getPastAppointments']);
         Route::post('cancel-appointment', [\App\Http\Controllers\API\BabySitter\Appointment\AppointmentController::class, 'disapprove']);
     });
 

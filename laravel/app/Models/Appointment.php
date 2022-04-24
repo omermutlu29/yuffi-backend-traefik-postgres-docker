@@ -151,5 +151,11 @@ class Appointment extends Model
         return $query->where('sent_point_notification', false)->notCanceled();
     }
 
+    public function scopeCanceled($query){
+        return $query->whereIn('appointment_status_id', [2, 5, 3])
+            ->where('is_rejected_by_baby_sitter','!=', null)
+            ->where('rejected_time_range','!=', null);
+    }
+
 
 }
