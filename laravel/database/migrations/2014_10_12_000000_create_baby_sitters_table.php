@@ -31,6 +31,7 @@ class CreateBabySittersTable extends Migration
             $table->boolean('service_contract')->nullable();
             $table->foreignId('gender_id')->nullable()->references('id')->on('genders');
 
+            $table->boolean('optional_contact')->default(false)->nullable();
             $table->boolean('kvkk')->nullable();
             $table->boolean('is_accepted')->default(0);
             $table->boolean('black_list')->default(0);

@@ -25,6 +25,7 @@ class CreateParentsTable extends Migration
             $table->string('phone')->unique();
             $table->boolean('service_contract')->nullable();
             $table->foreignId('gender_id')->nullable()->references('id')->on('genders');
+            $table->boolean('optional_contact')->default(false)->nullable();
             $table->boolean('kvkk');
             $table->boolean('black_list')->default(0);
             $table->string('google_st')->nullable();

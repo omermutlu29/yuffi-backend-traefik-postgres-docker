@@ -35,10 +35,12 @@ class BabySitterUpdateGeneralInformationRequest extends BaseApiRequest
             // 'birthday' => 'required|date_format:d-m-Y|before_or_equal:' . $date,
             // 'criminal_record' => 'required|file|mimes:pdf|max:2048',
             // 'address' => '',
-            'email' => 'required|unique:baby_sitters,email,'.auth()->id(),
+            'email' => 'required|unique:baby_sitters,email,' . auth()->id(),
             'photo' => 'image|mimes:jpg,png,jpeg|max:8192',
             'iban' => ['required', new IBANRule()],
-            'introducing'=>'max:500'
+            'introducing' => 'max:500',
+            'optional_contact' => 'required'
+
         ];
     }
 

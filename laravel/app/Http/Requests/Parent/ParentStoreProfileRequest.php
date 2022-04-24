@@ -33,6 +33,7 @@ class ParentStoreProfileRequest extends BaseApiRequest
             //'gender_id' => 'required|numeric|exists:genders,id',
             //'photo' => 'required|image|mimes:jpg,png,jpeg|max:2048',
             'email' => 'required|email',
+            'optional_contact' => 'required'
         ];
     }
 
