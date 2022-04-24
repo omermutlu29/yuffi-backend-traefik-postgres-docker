@@ -116,12 +116,11 @@ class Appointment extends Model
 
     public function scopePast($query)
     {
-        $query->notCanceled();
         $nowDate = now()->format('Y-m-d');
         $nowHour = now()->format('H:i');
         return $query->where('date', '<', $nowDate)->orWhere(function ($query) use ($nowDate, $nowHour) {
             $query->where('date', $nowDate)->where('start', '<', $nowHour);
-        });
+        })->notCanceled();
     }
 
     public function scopeNotCanceled($query)
@@ -143,13 +142,13 @@ class Appointment extends Model
 
     public function scopeNotificationDidNotSent($query)
     {
-        $query->notCanceled();
+        //Puanlama için gerekli. Bu fonksiyon puanı henüz verilmemiş ve üzerinden iki saat geçmiş randevuları çeker
         $nowDate = now()->format('Y-m-d');
         $nowSubTwoHour = now()->subHours(2)->format('H:i');
         $query->where('date', '<', $nowDate)->orWhere(function ($query) use ($nowDate, $nowSubTwoHour) {
             $query->where('date', $nowDate)->where('finish', '<=', $nowSubTwoHour);
         });
-        return $query->where('sent_point_notification', false);
+        return $query->where('sent_point_notification', false)->notCanceled();
     }
 
 
